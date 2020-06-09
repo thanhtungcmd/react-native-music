@@ -7,3 +7,7 @@ export const ApiHomeBanner = () => {
 export const ApiHomeRank = () => {
     return axios.get("https://m.ibolero.vn/info/rank");
 }
+
+export const ApiHomeAll = () => {
+    return axios.get("https://m.ibolero.vn/info/home");
+}

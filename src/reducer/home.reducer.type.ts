@@ -1,6 +1,15 @@
 export interface HomeState {
     banner?: Array<BannerItem>,
-    rank?: Array<SongItem>
+    rank?: Array<SongItem>,
+    home?: Array<HomeItem>,
+    home_active?: Array<SongItem>,
+}
+
+export interface HomeItem {
+    id: string,
+    list: Array<SongItem>,
+    name: string,
+    slug: string,
 }
 
 export interface BannerItem {

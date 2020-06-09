@@ -61,7 +61,7 @@ const Banner: React.FunctionComponent<PropInterface> = props => {
                     inactiveSlideScale={1}
                     inactiveSlideOpacity={1}
                     activeSlideAlignment={'start'}
-                    onSnapToItem={(index) => setBannerActive(index ) }/>
+                    onSnapToItem={(index) => setBannerActive(index) }/>
             )
         }
 

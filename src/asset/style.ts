@@ -224,5 +224,44 @@ export const HomeStyle = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 6,
         marginTop: 15
+    },
+    cateSongBox: {
+        marginTop: 30,
+        flexDirection: "row",
+        flexWrap: "wrap"
+    },
+    cateSongItemLeft: {
+        width: (windowWidth * 0.5) - 10,
+        marginBottom: 20,
+        marginRight: 10
+    },
+    cateSongTextLeft: {
+        paddingLeft: 10,
+        fontSize: 14,
+        fontWeight: "bold",
+        marginTop: 5,
+    },
+    cateSongSubLeft: {
+        paddingLeft: 10,
+        fontSize: 12,
+        color: "#737376"
+    },
+    cateSongItemRight: {
+        width: (windowWidth * 0.5) - 10,
+        marginBottom: 20,
+        marginLeft: 10
+    },
+    cateSongTextRight: {
+        fontSize: 14,
+        fontWeight: "bold",
+        marginTop: 5,
+    },
+    cateSongSubRight: {
+        fontSize: 12,
+        color: "#737376"
+    },
+    cateSongImage: {
+        width: (windowWidth * 0.5 - 10),
+        height: (windowWidth * 0.5 - 10) * (9/16)
     }
 })
