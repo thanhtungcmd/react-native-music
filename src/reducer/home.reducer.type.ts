@@ -3,6 +3,7 @@ export interface HomeState {
     rank?: Array<SongItem>,
     home?: Array<HomeItem>,
     home_active?: Array<SongItem>,
+    singer?: Array<SingerItem>
 }
 
 export interface HomeItem {
@@ -13,6 +14,14 @@ export interface HomeItem {
 }
 
 export interface BannerItem {
+    id: string,
+    description: string,
+    name_ansii: string,
+    slug: string,
+    thumbnail_url: string
+}
+
+export interface SingerItem {
     id: string,
     description: string,
     name_ansii: string,

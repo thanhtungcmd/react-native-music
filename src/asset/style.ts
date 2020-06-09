@@ -263,5 +263,22 @@ export const HomeStyle = StyleSheet.create({
     cateSongImage: {
         width: (windowWidth * 0.5 - 10),
         height: (windowWidth * 0.5 - 10) * (9/16)
+    },
+    cateSingerSlide: {
+        marginTop: 20,
+        marginBottom: 20
+    },
+    cateSingerSlideImage: {
+        height: (windowWidth * 0.3 - 10),
+        width: (windowWidth * 0.3 - 10),
+        borderRadius: 100,
+        borderColor: "#ffff77",
+        borderWidth: 3,
+        margin: 5
+    },
+    cateSingerSlideText: {
+        width: (windowWidth * 0.3),
+        textAlign: "center",
+        fontWeight: "bold"
     }
 })

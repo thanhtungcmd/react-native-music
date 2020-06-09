@@ -12,6 +12,7 @@ import Header from "../plugin/Header";
 import Menu from "../plugin/Menu";
 import Banner from "../plugin/Banner";
 import HomeCate from "../plugin/HomeCate";
+import HomeSinger from "../plugin/HomeSinger";
 import {HomeStyle} from "../asset/style";
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 
@@ -113,6 +114,7 @@ const Home: React.FunctionComponent<PropsInterface> = props => {
                 <ImageBackground source={ require('../asset/img/main-bg.png') } style={ HomeStyle.homeBg }>
                     { renderRank() }
                     <HomeCate/>
+                    <HomeSinger/>
                 </ImageBackground>
             </View>
         )

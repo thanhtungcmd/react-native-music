@@ -11,3 +11,7 @@ export const ApiHomeRank = () => {
 export const ApiHomeAll = () => {
     return axios.get("https://m.ibolero.vn/info/home");
 }
+
+export const ApiHomeSinger = () => {
+    return axios.get("https://m.ibolero.vn/info/artist");
+}

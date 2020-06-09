@@ -15,6 +15,12 @@ const homeReducer = (state: HomeState = {}, action: HOME_ACTION): HomeState => {
                 rank: action.data
             }
 
+        case "GET_SINGER":
+            return {
+                ...state,
+                singer: action.data
+            }
+
         case "GET_HOME":
             return {
                 ...state,

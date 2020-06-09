@@ -7,8 +7,6 @@ import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
 import * as HomeAction from "../action/home.action";
 import {connect} from "react-redux";
-import * as lodash from "lodash"
-import Home from "../component/Home";
 
 interface StatePropsInterface {
     home?: HomeState
