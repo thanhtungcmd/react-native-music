@@ -68,6 +68,17 @@ export const HeaderStyle = StyleSheet.create({
     },
 })
 
+export const PlayStyle = StyleSheet.create({
+    videoBox: {
+
+    },
+    videoPlayer: {
+        width: windowWidth,
+        height: windowWidth * (9/16)
+    }
+
+})
+
 export const MenuStyle = StyleSheet.create({
     headerBox: {
         height: 70,

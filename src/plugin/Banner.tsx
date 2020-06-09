@@ -43,7 +43,9 @@ const Banner: React.FunctionComponent<PropInterface> = props => {
 
     const renderBannerItem = ({item, index}: any) => {
         return (
-            <TouchableWithoutFeedback onPress={() => { navigation.navigate('Demo') } }>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('Play', {
+                id: item.id
+            }) }>
                 <Image
                     resizeMode={'cover'}
                     style={ HomeStyle.carouselImage }
