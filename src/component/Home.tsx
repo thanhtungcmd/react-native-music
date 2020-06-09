@@ -15,6 +15,7 @@ import HomeCate from "../plugin/HomeCate";
 import HomeSinger from "../plugin/HomeSinger";
 import {HomeStyle} from "../asset/style";
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
 
 IconAntDesign.loadFont();
 
@@ -45,6 +46,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 const Home: React.FunctionComponent<PropsInterface> = props => {
 
     const [refreshing, setRefreshing] = React.useState(false);
+
+    const navigation = useNavigation();
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);

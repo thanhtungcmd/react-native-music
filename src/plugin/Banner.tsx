@@ -3,6 +3,7 @@ import {Image, TouchableWithoutFeedback, View} from "react-native";
 import Carousel, {Pagination} from "react-native-snap-carousel";
 import {HomeStyle, windowWidth} from "../asset/style";
 import {BannerItem} from "../reducer/home.reducer.type";
+import { useNavigation } from '@react-navigation/native';
 
 interface PropInterface {
     banner?: Array<BannerItem>
@@ -11,6 +12,8 @@ interface PropInterface {
 const Banner: React.FunctionComponent<PropInterface> = props => {
 
     const [bannerActive, setBannerActive] = React.useState(0);
+
+    const navigation = useNavigation();
 
     const pagination = () => {
         if (typeof props.banner != "undefined") {
@@ -40,7 +43,7 @@ const Banner: React.FunctionComponent<PropInterface> = props => {
 
     const renderBannerItem = ({item, index}: any) => {
         return (
-            <TouchableWithoutFeedback onPress={() => {} }>
+            <TouchableWithoutFeedback onPress={() => { navigation.navigate('Demo') } }>
                 <Image
                     resizeMode={'cover'}
                     style={ HomeStyle.carouselImage }

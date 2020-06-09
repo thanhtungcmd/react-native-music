@@ -89,7 +89,7 @@ const TabRender: React.PropsWithChildren<any> = (props: any) => {
 const TabView: React.FunctionComponent = props => {
 
     return (
-        <NavigationContainer>
+        // <NavigationContainer>
             <Tab.Navigator tabBar={ props => <TabRender {...props} /> }>
                 <Tab.Screen name="TRANG CHỦ" component={ Home }/>
                 <Tab.Screen name="BXH" component={ Demo }/>
@@ -97,7 +97,7 @@ const TabView: React.FunctionComponent = props => {
                 <Tab.Screen name="CA SĨ" component={ Demo }/>
                 <Tab.Screen name="IBOLERO" component={ Demo }/>
             </Tab.Navigator>
-        </NavigationContainer>
+        // </NavigationContainer>
     )
 
 }
