@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, Text, PanResponder, Animated} from "react-native";
+import {View, Text, PanResponder, Animated, SafeAreaView} from "react-native";
 import {PlayState} from "../reducer/play.reducer.type";
 import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
@@ -73,16 +73,6 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
     const translateYPlayAnim = playAnim.interpolate({
         inputRange: [-300, 0, 300, 600],
         outputRange: [0, 0, videoSmallTop, videoSmallTop]
-    });
-
-    const scaleXPlayAnim = playAnim.interpolate({
-        inputRange: [-300, 0, 300, 600],
-        outputRange: [1, 1, 0.5, 0.5]
-    });
-
-    const scaleYPlayAnim = playAnim.interpolate({
-        inputRange: [-300, 0, 300, 600],
-        outputRange: [1, 1, 0.5, 0.5]
     });
 
     useEffect(() => {
@@ -167,37 +157,39 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
     const renderVideo = () => {
         if (typeof props.play?.song != "undefined") {
             return (
-                <Animated.View style={[ PlayStyle.videoBox, {
-                    // scaleX: scaleXPlayAnim,
-                    // scaleY: scaleYPlayAnim,
-                    height: heightVideoPlayAnim
-                } ]}
-                {...panResponder.panHandlers}>
-                    <Animated.View style={[ PlayStyle.videoContent, {
-                        width: widthVideoPlayAnim,
+                <SafeAreaView>
+                    <Animated.View style={[ PlayStyle.videoBox, {
+                        // scaleX: scaleXPlayAnim,
+                        // scaleY: scaleYPlayAnim,
                         height: heightVideoPlayAnim
-                    } ]}>
-                        <Video style={PlayStyle.videoPlayer} source={{ uri: props.play.song.link_stream }}/>
+                    } ]}
+                    {...panResponder.panHandlers}>
+                        <Animated.View style={[ PlayStyle.videoContent, {
+                            width: widthVideoPlayAnim,
+                            height: heightVideoPlayAnim
+                        } ]}>
+                            <Video style={PlayStyle.videoPlayer} source={{ uri: props.play.song.link_stream }}/>
+                        </Animated.View>
+                        <Animated.View style={[ PlayStyle.videoTitle, {
+                            width: widthTitlePlayAnim,
+                            height: heightVideoPlayAnim
+                        } ]}>
+                            <View style={PlayStyle.videoTitleName}>
+                                <Text style={PlayStyle.videoTitleNameText}
+                                      numberOfLines={1} ellipsizeMode={"tail"}>
+                                    { props.play.song.name }
+                                </Text>
+                                <Text style={PlayStyle.videoTitleNameSub}
+                                      numberOfLines={1} ellipsizeMode={"tail"}>
+                                    { props.play.song.artist }
+                                </Text>
+                            </View>
+                            <View style={PlayStyle.videoTitleButton}>
+                                <IconAntDesign name={'caretright'} size={30} />
+                            </View>
+                        </Animated.View>
                     </Animated.View>
-                    <Animated.View style={[ PlayStyle.videoTitle, {
-                        width: widthTitlePlayAnim,
-                        height: heightVideoPlayAnim
-                    } ]}>
-                        <View style={PlayStyle.videoTitleName}>
-                            <Text style={PlayStyle.videoTitleNameText}
-                                  numberOfLines={1} ellipsizeMode={"tail"}>
-                                { props.play.song.name }
-                            </Text>
-                            <Text style={PlayStyle.videoTitleNameSub}
-                                  numberOfLines={1} ellipsizeMode={"tail"}>
-                                { props.play.song.artist }
-                            </Text>
-                        </View>
-                        <View style={PlayStyle.videoTitleButton}>
-                            <IconAntDesign name={'caretright'} size={30} />
-                        </View>
-                    </Animated.View>
-                </Animated.View>
+                </SafeAreaView>
             )
         }
     }
@@ -205,9 +197,9 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
     return (
         <Animated.View style={[PlayStyle.playBox, {
             top: topOpenPlayAnim,
-            translateY: translateYPlayAnim,
-            // scaleX: scaleXPlayAnim,
-            // scaleY: scaleYPlayAnim,
+            transform: [{
+                translateY: translateYPlayAnim
+            }],
             height: heightPlayAnim
         }]}>
             { renderVideo() }
