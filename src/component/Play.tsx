@@ -9,10 +9,13 @@ import {useEffect, useRef, useState} from "react";
 import {connect} from "react-redux";
 import Video from 'react-native-video';
 import {
-    PlayStyle, videoFullHeight, videoSmallHeight,
-    videoSmallTop,
-    windowHeight,
+    PlayStyle, titleSmallWidth, videoFullHeight, videoSmallHeight,
+    videoSmallTop, videoSmallWidth,
+    windowHeight, windowWidth,
 } from "../asset/style";
+import IconAntDesign from 'react-native-vector-icons/AntDesign';
+
+IconAntDesign.loadFont();
 
 interface StatePropsInterface {
     play?: PlayState
@@ -47,9 +50,24 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
 
     const playAnim = useRef(new Animated.Value(0)).current;
 
+    const widthTitlePlayAnim = playAnim.interpolate({
+        inputRange: [-300, 0, 300, 600],
+        outputRange: [windowWidth, windowWidth, titleSmallWidth, titleSmallWidth]
+    });
+
+    const widthVideoPlayAnim = playAnim.interpolate({
+        inputRange: [-300, 0, 300, 600],
+        outputRange: [windowWidth, windowWidth, videoSmallWidth, videoSmallWidth]
+    });
+
+    const heightVideoPlayAnim = playAnim.interpolate({
+        inputRange: [-300, 0, 300, 600],
+        outputRange: [videoFullHeight, videoFullHeight, videoSmallHeight, videoSmallHeight]
+    });
+
     const heightPlayAnim = playAnim.interpolate({
         inputRange: [-300, 0, 300, 600],
-        outputRange: [windowHeight, windowHeight, videoFullHeight, videoFullHeight]
+        outputRange: [windowHeight, windowHeight, videoSmallHeight, videoSmallHeight]
     });
 
     const translateYPlayAnim = playAnim.interpolate({
@@ -106,7 +124,6 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
                 })(evt, gestureState);
             },
             onPanResponderRelease: (evt, gestureState) => {
-                console.log(gestureState.moveY, gestureState.dy)
                 if (gestureState.dy >= 0) {
                     if (gestureState.dy > 100) {
                         Animated.timing(playAnim, {
@@ -151,11 +168,35 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
         if (typeof props.play?.song != "undefined") {
             return (
                 <Animated.View style={[ PlayStyle.videoBox, {
-                    // scaleX: scaleXVideoAnim,
-                    // scaleY: scaleYVideoAnim,
+                    // scaleX: scaleXPlayAnim,
+                    // scaleY: scaleYPlayAnim,
+                    height: heightVideoPlayAnim
                 } ]}
                 {...panResponder.panHandlers}>
-                    <Video style={PlayStyle.videoPlayer} source={{ uri: props.play.song.link_stream }}/>
+                    <Animated.View style={[ PlayStyle.videoContent, {
+                        width: widthVideoPlayAnim,
+                        height: heightVideoPlayAnim
+                    } ]}>
+                        <Video style={PlayStyle.videoPlayer} source={{ uri: props.play.song.link_stream }}/>
+                    </Animated.View>
+                    <Animated.View style={[ PlayStyle.videoTitle, {
+                        width: widthTitlePlayAnim,
+                        height: heightVideoPlayAnim
+                    } ]}>
+                        <View style={PlayStyle.videoTitleName}>
+                            <Text style={PlayStyle.videoTitleNameText}
+                                  numberOfLines={1} ellipsizeMode={"tail"}>
+                                { props.play.song.name }
+                            </Text>
+                            <Text style={PlayStyle.videoTitleNameSub}
+                                  numberOfLines={1} ellipsizeMode={"tail"}>
+                                { props.play.song.artist }
+                            </Text>
+                        </View>
+                        <View style={PlayStyle.videoTitleButton}>
+                            <IconAntDesign name={'caretright'} size={30} />
+                        </View>
+                    </Animated.View>
                 </Animated.View>
             )
         }
@@ -165,8 +206,8 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
         <Animated.View style={[PlayStyle.playBox, {
             top: topOpenPlayAnim,
             translateY: translateYPlayAnim,
-            scaleX: scaleXPlayAnim,
-            scaleY: scaleYPlayAnim,
+            // scaleX: scaleXPlayAnim,
+            // scaleY: scaleYPlayAnim,
             height: heightPlayAnim
         }]}>
             { renderVideo() }
