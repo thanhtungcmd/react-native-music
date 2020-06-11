@@ -79,11 +79,21 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
         // @ts-ignore
         if (typeof props.play?.song_id != "undefined") {
             props.actions?.getSongAction(props.play?.song_id);
+            // Show Animation
             Animated.timing(openPlayAnim, {
                 useNativeDriver: false,
                 toValue: 1,
                 duration: 300
             }).start();
+            // Play Animation
+            playAnim.setOffset(-300);
+            Animated.timing(playAnim, {
+                toValue: 0,
+                duration: 500,
+                useNativeDriver: false,
+            }).start(() => {
+                playAnim.setOffset(0);
+            });
         }
     }, [props.play?.song_id]);
 
