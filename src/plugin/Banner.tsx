@@ -2,24 +2,53 @@ import React, {useEffect} from 'react';
 import {Image, TouchableWithoutFeedback, View} from "react-native";
 import Carousel, {Pagination} from "react-native-snap-carousel";
 import {HomeStyle, windowWidth} from "../asset/style";
-import {BannerItem} from "../reducer/home.reducer.type";
-import { useNavigation } from '@react-navigation/native';
+import {BannerItem, HomeState} from "../reducer/home.reducer.type";
+import StateInterface from "../reducer/index.reducer.type";
+import {bindActionCreators, Dispatch} from "redux";
+import * as HomeAction from "../action/home.action";
+import * as PlayAction from "../action/play.action";
+import {connect} from "react-redux";
+import {PlayState} from "../reducer/play.reducer.type";
 
-interface PropInterface {
-    banner?: Array<BannerItem>
+interface StatePropsInterface {
+    home?: HomeState,
+    play?: PlayState
 }
 
-const Banner: React.FunctionComponent<PropInterface> = props => {
+interface DispatchPropsInterface {
+    actions?: {
+        getHomeBannerAction: any,
+        changeSongAction: any
+    }
+}
+
+type PropsInterface = StatePropsInterface & DispatchPropsInterface
+
+const mapStateToProps = (state: StateInterface) => ({
+    home: state.home,
+    play: state.play
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    actions: bindActionCreators({
+        getHomeBannerAction: HomeAction.getHomeBannerAction,
+        changeSongAction: PlayAction.changeSongAction,
+    }, dispatch)
+});
+
+const Banner: React.FunctionComponent<PropsInterface> = props => {
 
     const [bannerActive, setBannerActive] = React.useState(0);
 
-    const navigation = useNavigation();
+    useEffect(() => {
+        props.actions?.getHomeBannerAction();
+    }, []);
 
     const pagination = () => {
-        if (typeof props.banner != "undefined") {
+        if (typeof props.home?.banner != "undefined") {
             return (
                 <Pagination
-                    dotsLength={props.banner?.length as number}
+                    dotsLength={props.home.banner?.length as number}
                     activeDotIndex={bannerActive}
                     containerStyle={HomeStyle.carouselDot}
                     dotStyle={{
@@ -43,9 +72,9 @@ const Banner: React.FunctionComponent<PropInterface> = props => {
 
     const renderBannerItem = ({item, index}: any) => {
         return (
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('Play', {
-                id: item.id
-            }) }>
+            <TouchableWithoutFeedback onPress={ () => {
+                props.actions?.changeSongAction(item.id);
+            } }>
                 <Image
                     resizeMode={'cover'}
                     style={ HomeStyle.carouselImage }
@@ -55,11 +84,11 @@ const Banner: React.FunctionComponent<PropInterface> = props => {
     }
 
     const renderBanner = () => {
-        if (typeof props.banner != "undefined") {
+        if (typeof props.home?.banner != "undefined") {
             return (
                 <Carousel
                     style={ HomeStyle.carousel }
-                    data={props.banner as any}
+                    data={props.home.banner as any}
                     renderItem={renderBannerItem}
                     sliderWidth={windowWidth}
                     itemWidth={windowWidth}
@@ -82,7 +111,10 @@ const Banner: React.FunctionComponent<PropInterface> = props => {
 
 }
 
-export default Banner
+export default connect<StatePropsInterface, DispatchPropsInterface, PropsInterface, StateInterface>(
+    mapStateToProps,
+    mapDispatchToProps
+)(Banner);
 
 
 

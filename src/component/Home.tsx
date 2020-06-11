@@ -25,7 +25,6 @@ interface StatePropsInterface {
 
 interface DispatchPropsInterface {
     actions: {
-        getHomeBannerAction: any,
         getHomeRankAction: any
     }
 }
@@ -58,7 +57,6 @@ const Home: React.FunctionComponent<PropsInterface> = props => {
     }, [refreshing]);
 
     useEffect(() => {
-        props.actions.getHomeBannerAction();
         props.actions.getHomeRankAction();
     }, []);
 
@@ -129,7 +127,7 @@ const Home: React.FunctionComponent<PropsInterface> = props => {
                 refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> }>
                 <Header/>
                 <Menu/>
-                <Banner banner={ props.home.banner as any }/>
+                <Banner/>
                 { renderBox() }
             </ScrollView>
         </SafeAreaView>

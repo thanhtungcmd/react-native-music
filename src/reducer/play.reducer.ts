@@ -9,6 +9,12 @@ const playReducer = (state: PlayState = {}, action: PLAY_ACTION): PlayState => {
                 song: action.data,
             };
 
+        case "CHANGE_SONG":
+            return {
+                ...state,
+                song_id: action.data,
+            };
+
         default:
             return state;
     }

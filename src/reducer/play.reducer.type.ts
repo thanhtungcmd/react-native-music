@@ -11,5 +11,6 @@ export interface PlayState {
         song_time: number,
         view_count: number,
         relate_song: Array<SongItem>
-    }
+    },
+    song_id?: string
 }

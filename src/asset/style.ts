@@ -6,6 +6,17 @@ export const windowHeight = Dimensions.get('window').height;
 export const screenWidth = Dimensions.get('screen').width;
 export const screenHeight = Dimensions.get('screen').height;
 
+export const videoSmallWidth = windowWidth / 2;
+export const videoSmallHeight = (windowWidth / 2) * (9/16);
+export const videoSmallTop = windowHeight - videoSmallHeight - 140;
+export const videoFullHeight = windowWidth * (9/16);
+
+export const ContainerApp = StyleSheet.create({
+    main: {
+        flex: 1
+    }
+});
+
 export const TabNavigation = StyleSheet.create({
     tabBox: {
         borderTopColor: '#efdd6c',
@@ -69,12 +80,21 @@ export const HeaderStyle = StyleSheet.create({
 })
 
 export const PlayStyle = StyleSheet.create({
+    playBox: {
+        backgroundColor: '#fff',
+        top: windowHeight,
+        position: "absolute",
+        width: windowWidth,
+        height: windowHeight,
+        zIndex: 100
+    },
     videoBox: {
-
+        width: windowWidth,
+        height: windowWidth * (9/16),
     },
     videoPlayer: {
         width: windowWidth,
-        height: windowWidth * (9/16)
+        height: windowWidth * (9/16),
     }
 
 })

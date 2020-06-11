@@ -5,17 +5,21 @@ import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
 import * as PlayAction from "../action/play.action";
 import { useRoute } from '@react-navigation/native';
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {connect} from "react-redux";
 import Video from 'react-native-video';
-import {PlayStyle} from "../asset/style";
+import {
+    PlayStyle, videoFullHeight, videoSmallHeight,
+    videoSmallTop,
+    windowHeight,
+} from "../asset/style";
 
 interface StatePropsInterface {
-    play: PlayState
+    play?: PlayState
 }
 
 interface DispatchPropsInterface {
-    actions: {
+    actions?: {
         getSongAction: any,
     }
 }
@@ -34,14 +38,52 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 const Play: React.FunctionComponent<PropsInterface> = props => {
 
-    const route = useRoute();
+    const openPlayAnim = useRef(new Animated.Value(0)).current;
 
-    // const videoAnim = useRef(new Animated.Value(0)).current;
-    const videoAnim = useRef(new Animated.ValueXY()).current;
+    const topOpenPlayAnim = openPlayAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [windowHeight, 0]
+    });
+
+    const playAnim = useRef(new Animated.Value(0)).current;
+
+    const heightPlayAnim = playAnim.interpolate({
+        inputRange: [-300, 0, 300, 600],
+        outputRange: [windowHeight, windowHeight, videoFullHeight, videoFullHeight]
+    });
+
+    const translateYPlayAnim = playAnim.interpolate({
+        inputRange: [-300, 0, 300, 600],
+        outputRange: [0, 0, videoSmallTop, videoSmallTop]
+    });
+
+    const scaleXPlayAnim = playAnim.interpolate({
+        inputRange: [-300, 0, 300, 600],
+        outputRange: [1, 1, 0.5, 0.5]
+    });
+
+    const scaleYPlayAnim = playAnim.interpolate({
+        inputRange: [-300, 0, 300, 600],
+        outputRange: [1, 1, 0.5, 0.5]
+    });
 
     useEffect(() => {
         // @ts-ignore
-        props.actions.getSongAction(route.params.id);
+        if (typeof props.play?.song_id != "undefined") {
+            props.actions?.getSongAction(props.play?.song_id);
+            Animated.timing(openPlayAnim, {
+                useNativeDriver: false,
+                toValue: 1,
+                duration: 300
+            }).start();
+        }
+    }, [props.play?.song_id]);
+
+    useEffect(() => {
+         setInterval(() => {
+             // @ts-ignore
+             //console.log(playAnim.__getValue())
+         }, 1000)
     }, []);
 
     const panResponder = useRef(
@@ -51,36 +93,46 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
             onMoveShouldSetPanResponder: (evt, gestureState) => true,
             onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
             onPanResponderGrant: (evt, gestureState) => {
-                videoAnim.setOffset({
-                    // @ts-ignore
-                    x: videoAnim.x._value,
-                    // @ts-ignore
-                    y: videoAnim.y._value
-                });
             },
             onPanResponderMove: (evt, gestureState) => {
+                // Play
+                console.log(playAnim);
                 return Animated.event([
                     null,
                     {
-                        dx: videoAnim.x,
-                        dy: videoAnim.y
+                        dy: playAnim,
                     }
                 ], {
                     useNativeDriver: false
                 })(evt, gestureState);
             },
             onPanResponderRelease: (evt, gestureState) => {
-                videoAnim.flattenOffset();
+                if (gestureState.dy > 100) {
+                    Animated.timing(playAnim, {
+                        toValue: 300,
+                        duration: 500,
+                        useNativeDriver: false,
+                    }).start(() => {
+                        playAnim.setOffset(300);
+                    });
+                } else {
+                    playAnim.setOffset(0);
+                    Animated.timing(playAnim, {
+                        toValue: 0,
+                        duration: 500,
+                        useNativeDriver: false,
+                    }).start();
+                }
             }
         })
     ).current;
 
     const renderVideo = () => {
-        if (typeof props.play.song != "undefined") {
+        if (typeof props.play?.song != "undefined") {
             return (
                 <Animated.View style={[ PlayStyle.videoBox, {
-                    translateX: videoAnim.x,
-                    translateY: videoAnim.y
+                    // scaleX: scaleXVideoAnim,
+                    // scaleY: scaleYVideoAnim,
                 } ]}
                 {...panResponder.panHandlers}>
                     <Video style={PlayStyle.videoPlayer} source={{ uri: props.play.song.link_stream }}/>
@@ -90,9 +142,15 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
     }
 
     return (
-        <View>
+        <Animated.View style={[PlayStyle.playBox, {
+            top: topOpenPlayAnim,
+            translateY: translateYPlayAnim,
+            scaleX: scaleXPlayAnim,
+            scaleY: scaleYPlayAnim,
+            height: heightPlayAnim
+        }]}>
             { renderVideo() }
-        </View>
+        </Animated.View>
     )
 
 }

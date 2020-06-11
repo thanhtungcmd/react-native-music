@@ -19,3 +19,10 @@ export const getSongSuccess = (data: any) => {
         data: data.data
     }
 }
+
+export const changeSongAction = (data: string) => {
+    return {
+        type: types.CHANGE_SONG,
+        data: data
+    }
+}
