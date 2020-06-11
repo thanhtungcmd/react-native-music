@@ -96,7 +96,6 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
             },
             onPanResponderMove: (evt, gestureState) => {
                 // Play
-                console.log(playAnim);
                 return Animated.event([
                     null,
                     {
@@ -107,21 +106,42 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
                 })(evt, gestureState);
             },
             onPanResponderRelease: (evt, gestureState) => {
-                if (gestureState.dy > 100) {
-                    Animated.timing(playAnim, {
-                        toValue: 300,
-                        duration: 500,
-                        useNativeDriver: false,
-                    }).start(() => {
-                        playAnim.setOffset(300);
-                    });
-                } else {
-                    playAnim.setOffset(0);
-                    Animated.timing(playAnim, {
-                        toValue: 0,
-                        duration: 500,
-                        useNativeDriver: false,
-                    }).start();
+                console.log(gestureState.moveY, gestureState.dy)
+                if (gestureState.dy >= 0) {
+                    if (gestureState.dy > 100) {
+                        Animated.timing(playAnim, {
+                            toValue: 300,
+                            duration: 500,
+                            useNativeDriver: false,
+                        }).start(() => {
+                            playAnim.setOffset(300);
+                        });
+                    }
+                    if (gestureState.dy >= 10 && gestureState.dy < 100) {
+                        Animated.timing(playAnim, {
+                            toValue: 0,
+                            duration: 500,
+                            useNativeDriver: false,
+                        }).start();
+                    }
+                } else if (gestureState.dy < 0) {
+                    if (gestureState.dy < -10 && gestureState.dy > -100) {
+                        Animated.timing(playAnim, {
+                            toValue: 300,
+                            duration: 500,
+                            useNativeDriver: false,
+                        }).start();
+                    }
+                    if (gestureState.dy < -100) {
+                        playAnim.setOffset(-300);
+                        Animated.timing(playAnim, {
+                            toValue: 0,
+                            duration: 500,
+                            useNativeDriver: false,
+                        }).start(() => {
+                            playAnim.setOffset(0);
+                        });
+                    }
                 }
             }
         })
