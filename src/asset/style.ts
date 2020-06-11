@@ -102,7 +102,7 @@ export const PlayStyle = StyleSheet.create({
         alignContent: "flex-start",
     },
     videoTitleName: {
-        flexGrow: 3,
+        width: "75%",
         paddingTop: 15,
         paddingLeft: 15,
     },
@@ -115,7 +115,7 @@ export const PlayStyle = StyleSheet.create({
     },
     videoTitleButton: {
         flexDirection: "column",
-        flexGrow: 2,
+        width: "25%",
         alignContent: "center",
         alignItems: "center",
         paddingTop: 20,
