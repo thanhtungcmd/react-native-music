@@ -14,6 +14,8 @@ import {
     windowHeight, windowWidth,
 } from "../asset/style";
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
+// @ts-ignore
+import { VideoPlayer } from "../plugin/VideoPlayer"
 
 IconAntDesign.loadFont();
 
@@ -172,6 +174,7 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
                             height: heightVideoPlayAnim
                         } ]}>
                             <Video style={PlayerStyle.videoPlayer} source={{ uri: props.play.song.link_stream }}/>
+                            {/*<VideoPlayer link={ props.play.song.link_stream }/>*/}
                         </Animated.View>
                         <Animated.View style={[ PlayStyle.videoTitle, {
                             width: widthTitlePlayAnim,
