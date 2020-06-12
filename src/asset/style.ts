@@ -120,11 +120,18 @@ export const PlayStyle = StyleSheet.create({
         alignItems: "center",
         paddingTop: 20,
     },
+})
+
+export const PlayerStyle = StyleSheet.create({
     videoPlayer: {
         ...StyleSheet.absoluteFillObject
+    },
+    videoPlayerFullscreen: {
+        width: windowWidth,
+        height: windowHeight,
+        backgroundColor: "black"
     }
-
-})
+});
 
 export const MenuStyle = StyleSheet.create({
     headerBox: {

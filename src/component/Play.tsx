@@ -4,11 +4,11 @@ import {PlayState} from "../reducer/play.reducer.type";
 import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
 import * as PlayAction from "../action/play.action";
-import { useRoute } from '@react-navigation/native';
 import {useEffect, useRef, useState} from "react";
 import {connect} from "react-redux";
 import Video from 'react-native-video';
 import {
+    PlayerStyle,
     PlayStyle, titleSmallWidth, videoFullHeight, videoSmallHeight,
     videoSmallTop, videoSmallWidth,
     windowHeight, windowWidth,
@@ -97,13 +97,6 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
         }
     }, [props.play?.song_id]);
 
-    useEffect(() => {
-         setInterval(() => {
-             // @ts-ignore
-             //console.log(playAnim.__getValue())
-         }, 1000)
-    }, []);
-
     const panResponder = useRef(
         PanResponder.create({
             onStartShouldSetPanResponder: (evt, gestureState) => true,
@@ -178,7 +171,7 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
                             width: widthVideoPlayAnim,
                             height: heightVideoPlayAnim
                         } ]}>
-                            <Video style={PlayStyle.videoPlayer} source={{ uri: props.play.song.link_stream }}/>
+                            <Video style={PlayerStyle.videoPlayer} source={{ uri: props.play.song.link_stream }}/>
                         </Animated.View>
                         <Animated.View style={[ PlayStyle.videoTitle, {
                             width: widthTitlePlayAnim,
