@@ -90,13 +90,13 @@ export const PlayerStyle = StyleSheet.create({
         width: windowWidth,
         height: windowWidth * (9/16)
     },
-    videoFullScreenBox: {
+    videoBoxFS: {
         width: windowWidth,
         height: windowHeight,
         justifyContent: "center",
         alignItems: "center",
     },
-    videoFullScreen: {
+    videoPlayerFS: {
         backgroundColor: "#000",
         width: windowHeight,
         height: windowWidth,
@@ -121,6 +121,10 @@ export const PlayerStyle = StyleSheet.create({
     },
     sliderControl: {
         width: "90%",
+        alignItems: "flex-end"
+    },
+    slider: {
+        width: "95%"
     },
     fullscreenControl: {
         width: "10%",

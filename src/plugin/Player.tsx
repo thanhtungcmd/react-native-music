@@ -37,16 +37,25 @@ const Player: React.FunctionComponent<PropInterface> = props => {
         }));
     }
 
+    const handleFullScreen = () => {
+        setState(value => ({
+            ...value,
+            fullscreen: !state.fullscreen
+        }));
+    }
+
     return (
-        <View style={PlayerStyle.videoBox}>
-            <Video style={PlayerStyle.videoPlayer} source={{ uri: props.source }}
+        <View style={ (state.fullscreen) ? PlayerStyle.videoBoxFS : PlayerStyle.videoBox }>
+            <Video style={ (state.fullscreen) ? PlayerStyle.videoPlayerFS : PlayerStyle.videoPlayer }
+                   source={{ uri: props.source }}
                     onLoad={ onLoad }
                     onProgress={ onProgress }/>
-            <View style={PlayerStyle.controlOverlay}>
+            <View style={ (state.fullscreen) ? PlayerStyle.controlOverlayFS : PlayerStyle.controlOverlay }>
                 <View></View>
                 <View style={PlayerStyle.bottomControl}>
                     <View style={PlayerStyle.sliderControl}>
                         <Slider
+                            style={PlayerStyle.slider}
                             value={state.currentTime}
                             minimumValue={0}
                             maximumValue={state.duration}
@@ -59,7 +68,10 @@ const Player: React.FunctionComponent<PropInterface> = props => {
                             thumbTintColor={'#F44336'}/>
                     </View>
                     <View style={PlayerStyle.fullscreenControl}>
-                        <IconMC name="fullscreen" size={30} color={"#fff"}/>
+                        <TouchableWithoutFeedback
+                            onPress={ handleFullScreen }>
+                            <IconMC name="fullscreen" size={30} color={"#fff"}/>
+                        </TouchableWithoutFeedback>
                     </View>
                 </View>
             </View>
