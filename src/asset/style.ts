@@ -93,10 +93,8 @@ export const PlayerStyle = StyleSheet.create({
     videoFullScreenBox: {
         width: windowWidth,
         height: windowHeight,
-        backgroundColor: "blue",
         justifyContent: "center",
         alignItems: "center",
-        alignContent: "center",
     },
     videoFullScreen: {
         backgroundColor: "#000",
@@ -107,7 +105,44 @@ export const PlayerStyle = StyleSheet.create({
                 rotate: "90deg"
             }
         ]
-    }
+    },
+    controlOverlay: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'space-between',
+    },
+    bottomControl: {
+        flexDirection: "row",
+        flexWrap: "nowrap",
+    },
+    sliderControl: {
+        width: "90%",
+    },
+    fullscreenControl: {
+        width: "10%",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    // Control Full Screen
+    controlOverlayFS: {
+        width: windowHeight,
+        height: windowWidth,
+        position: 'absolute',
+        left: 0 - ((windowHeight - windowWidth) / 2),
+        top: (windowHeight - windowWidth) / 2,
+        margin: "auto",
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'space-between',
+        transform: [
+            {
+                rotate: "90deg"
+            }
+        ]
+    },
 });
 
 export const MenuStyle = StyleSheet.create({
