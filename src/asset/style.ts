@@ -91,20 +91,13 @@ export const PlayerStyle = StyleSheet.create({
         height: windowWidth * (9/16)
     },
     videoBoxFS: {
-        width: windowWidth,
-        height: windowHeight,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    videoPlayerFS: {
-        backgroundColor: "#000",
         width: windowHeight,
         height: windowWidth,
-        transform: [
-            {
-                rotate: "90deg"
-            }
-        ]
+    },
+    videoPlayerFS: {
+        width: windowHeight,
+        height: windowWidth,
+        backgroundColor: "#000"
     },
     controlOverlay: {
         position: 'absolute',
@@ -136,16 +129,12 @@ export const PlayerStyle = StyleSheet.create({
         width: windowHeight,
         height: windowWidth,
         position: 'absolute',
-        left: 0 - ((windowHeight - windowWidth) / 2),
-        top: (windowHeight - windowWidth) / 2,
-        margin: "auto",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         backgroundColor: 'rgba(0,0,0,0.5)',
         justifyContent: 'space-between',
-        transform: [
-            {
-                rotate: "90deg"
-            }
-        ]
     },
 });
 
