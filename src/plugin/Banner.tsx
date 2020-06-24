@@ -9,6 +9,7 @@ import * as HomeAction from "../action/home.action";
 import * as PlayAction from "../action/play.action";
 import {connect} from "react-redux";
 import {PlayState} from "../reducer/play.reducer.type";
+import {useNavigation} from "@react-navigation/native";
 
 interface StatePropsInterface {
     home?: HomeState,
@@ -39,6 +40,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 const Banner: React.FunctionComponent<PropsInterface> = props => {
 
     const [bannerActive, setBannerActive] = React.useState(0);
+
+    const navigation = useNavigation();
 
     useEffect(() => {
         props.actions?.getHomeBannerAction();
@@ -73,7 +76,9 @@ const Banner: React.FunctionComponent<PropsInterface> = props => {
     const renderBannerItem = ({item, index}: any) => {
         return (
             <TouchableWithoutFeedback onPress={ () => {
-                props.actions?.changeSongAction(item.id);
+                navigation.navigate('Play', {
+                    song_id: item.id
+                });
             } }>
                 <Image
                     resizeMode={'cover'}

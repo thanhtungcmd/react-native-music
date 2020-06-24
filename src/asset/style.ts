@@ -81,55 +81,32 @@ export const HeaderStyle = StyleSheet.create({
     },
 })
 
-export const PlayStyle = StyleSheet.create({
-    playBox: {
-        backgroundColor: '#fff',
-        top: windowHeight,
-        position: "absolute",
-        width: windowWidth,
-        height: windowHeight,
-        zIndex: 100
-    },
-    videoBox: {
-        flexDirection: "row",
-        alignContent: "flex-start",
-    },
-    videoContent: {
-
-    },
-    videoTitle: {
-        flexDirection: "row",
-        alignContent: "flex-start",
-    },
-    videoTitleName: {
-        width: "75%",
-        paddingTop: 15,
-        paddingLeft: 15,
-    },
-    videoTitleNameText: {
-        fontSize: 15,
-        textTransform: "uppercase"
-    },
-    videoTitleNameSub: {
-        fontSize: 13,
-    },
-    videoTitleButton: {
-        flexDirection: "column",
-        width: "25%",
-        alignContent: "center",
-        alignItems: "center",
-        paddingTop: 20,
-    },
-})
-
 export const PlayerStyle = StyleSheet.create({
-    videoPlayer: {
-        ...StyleSheet.absoluteFillObject
+    videoBox: {
+        width: windowWidth,
+        height: windowWidth * (9/16)
     },
-    videoPlayerFullscreen: {
+    videoPlayer: {
+        width: windowWidth,
+        height: windowWidth * (9/16)
+    },
+    videoFullScreenBox: {
         width: windowWidth,
         height: windowHeight,
-        backgroundColor: "black"
+        backgroundColor: "blue",
+        justifyContent: "center",
+        alignItems: "center",
+        alignContent: "center",
+    },
+    videoFullScreen: {
+        backgroundColor: "#000",
+        width: windowHeight,
+        height: windowWidth,
+        transform: [
+            {
+                rotate: "90deg"
+            }
+        ]
     }
 });
 

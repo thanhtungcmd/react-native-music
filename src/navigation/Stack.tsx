@@ -11,6 +11,7 @@ const StackView: React.FunctionComponent = () => {
     return (
         <Stack.Navigator headerMode="none" mode="modal">
             <Stack.Screen name="Tab" component={Tab} />
+            <Stack.Screen name="Play" component={Play} />
         </Stack.Navigator>
     )
 
