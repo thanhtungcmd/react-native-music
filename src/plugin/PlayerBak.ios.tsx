@@ -17,6 +17,7 @@ class Player extends React.Component<PropInterface, {}> {
                     key={1}
                     source={{ uri: this.props.source }}
                     style={PlayerStyle.videoPlayer}
+                    ignoreSilentSwitch={"ignore"}
                     controls={true}
                 />
             </View>

@@ -19,12 +19,12 @@ interface StateInterface {
     currentTime: number,
     duration: number,
     showControls: boolean,
+    countShowControls: number,
 }
 
 class PlayerIos extends React.Component<PropInterface, StateInterface> {
 
     private videoRef: React.RefObject<Video>;
-    private controlTimeOut: any;
 
     constructor(props: any) {
         super(props);
@@ -35,31 +35,22 @@ class PlayerIos extends React.Component<PropInterface, StateInterface> {
             currentTime: 0,
             duration: 0,
             showControls: true,
+            countShowControls: 0
         }
     }
 
     componentDidMount() {
         setInterval(() => {
             Orientation.lockToPortrait()
+            this.setState({
+                countShowControls: (this.state.countShowControls > 0) ? (this.state.countShowControls - 1000) : 0,
+                showControls: (this.state.countShowControls != 0)
+            })
         }, 1000)
-        BackHandler.addEventListener("hardwareBackPress", this.handleBackButtonClick.bind(this));
     }
 
     componentWillUnmount() {
-        Orientation.lockToPortrait()
-        BackHandler.removeEventListener("hardwareBackPress", this.handleBackButtonClick.bind(this));
-    }
 
-    handleBackButtonClick() {
-        if (this.state.fullscreen) {
-            this.setState({
-                fullscreen: false
-            })
-        } else {
-            this.props.navigation.goBack();
-        }
-
-        return true
     }
 
     onProgress(data: OnProgressData) {
@@ -85,7 +76,8 @@ class PlayerIos extends React.Component<PropInterface, StateInterface> {
 
     handleFullScreen() {
         this.setState({
-            fullscreen: !this.state.fullscreen
+            fullscreen: !this.state.fullscreen,
+            play: false
         });
         this.execShowControl();
     }
@@ -98,15 +90,9 @@ class PlayerIos extends React.Component<PropInterface, StateInterface> {
     }
 
     execShowControl() {
-        console.log(1);
-        if (typeof this.controlTimeOut === "object") {
-            this.controlTimeOut.clearInterval();
-        }
-        this.controlTimeOut = setTimeout(() => {
-            this.setState({
-                showControls: false
-            });
-        }, 3000)
+        this.setState({
+            countShowControls: 4000
+        });
     }
 
     handleSlider(time: number) {
@@ -188,7 +174,7 @@ class PlayerIos extends React.Component<PropInterface, StateInterface> {
                            fullscreen={ this.state.fullscreen }
                            fullscreenAutorotate={false}
                            fullscreenOrientation={"landscape"}
-                           //playInBackground={true}
+                           ignoreSilentSwitch={"ignore"}
                            paused={ !this.state.play }/>
                 </TouchableWithoutFeedback>
                 { this.renderControl() }

@@ -19,12 +19,12 @@ interface StateInterface {
     currentTime: number,
     duration: number,
     showControls: boolean,
+    countShowControls: number
 }
 
 class Player extends React.Component<PropInterface, StateInterface> {
 
     private videoRef: React.RefObject<Video>;
-    private controlTimeOut: any;
 
     constructor(props: any) {
         super(props);
@@ -35,11 +35,18 @@ class Player extends React.Component<PropInterface, StateInterface> {
             currentTime: 0,
             duration: 0,
             showControls: true,
+            countShowControls: 0
         }
     }
 
     componentDidMount() {
         this.execShowControl();
+        setInterval(() => {
+            this.setState({
+                countShowControls: (this.state.countShowControls > 0) ? (this.state.countShowControls - 1000) : 0,
+                showControls: (this.state.countShowControls != 0)
+            })
+        }, 1000)
         BackHandler.addEventListener("hardwareBackPress", this.handleBackButtonClick.bind(this));
     }
 
@@ -97,15 +104,9 @@ class Player extends React.Component<PropInterface, StateInterface> {
     }
 
     execShowControl() {
-        console.log(1);
-        if (typeof this.controlTimeOut === "object") {
-            this.controlTimeOut.clearInterval();
-        }
-        this.controlTimeOut = setTimeout(() => {
-            this.setState({
-                showControls: false
-            });
-        }, 3000)
+        this.setState({
+            countShowControls: 4000
+        });
     }
 
     handleSlider(time: number) {
