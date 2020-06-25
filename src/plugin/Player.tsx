@@ -184,6 +184,7 @@ class Player extends React.Component<PropInterface, StateInterface> {
                            source={{ uri: this.props.source }}
                            onLoad={ this.onLoad.bind(this) }
                            onProgress={ this.onProgress.bind(this) }
+                           playInBackground={true}
                            paused={ !this.state.play }/>
                 </TouchableWithoutFeedback>
                 { this.renderControl() }

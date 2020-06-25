@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, Text, SafeAreaView, ScrollView, Switch, FlatList} from "react-native";
+import {View, Text, SafeAreaView, ScrollView, Switch, FlatList, TouchableWithoutFeedback} from "react-native";
 import {PlayState} from "../reducer/play.reducer.type";
 import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
@@ -52,6 +52,7 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
     const navigation = useNavigation();
 
     const [isEnabled, setIsEnabled] = useState(false);
+
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
     useEffect(() => {
@@ -61,20 +62,26 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
     useEffect(() => {
     }, [props.play]);
 
+    const handlePressSong = (song_id: string) => {
+        props.actions?.getSongAction(song_id);
+        return true;
+    }
 
     const ShowItem = (item: any) => {
         return (
-            <View style={HomeStyle.rankItem}>
-                <View style={HomeStyle.rankItemLeft}>
-                    <Image style={HomeStyle.rankImage} source={{uri: item.item.thumbnail_url}}/>
+            <TouchableWithoutFeedback onPress={ () => handlePressSong(item.item.id) }>
+                <View style={HomeStyle.rankItem}>
+                    <View style={HomeStyle.rankItemLeft}>
+                        <Image style={HomeStyle.rankImage} source={{uri: item.item.thumbnail_url}}/>
+                    </View>
+                    <View style={HomeStyle.rankItemRight}>
+                        <Text numberOfLines={1} ellipsizeMode={"tail"}
+                              style={PlayStyle.relateText}>{item.item.name}</Text>
+                        <Text numberOfLines={1} ellipsizeMode={"tail"}
+                              style={PlayStyle.relateSub}>{item.item.artist}</Text>
+                    </View>
                 </View>
-                <View style={HomeStyle.rankItemRight}>
-                    <Text numberOfLines={1} ellipsizeMode={"tail"}
-                          style={PlayStyle.relateText}>{item.item.name}</Text>
-                    <Text numberOfLines={1} ellipsizeMode={"tail"}
-                          style={PlayStyle.relateSub}>{item.item.artist}</Text>
-                </View>
-            </View>
+            </TouchableWithoutFeedback>
         )
     };
 
