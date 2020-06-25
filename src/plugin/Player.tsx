@@ -13,16 +13,25 @@ interface PropInterface {
     navigation: any
 }
 
-class Player extends React.Component<PropInterface, any> {
+interface StateInterface {
+    fullscreen: boolean,
+    play: boolean,
+    currentTime: number,
+    duration: number,
+    showControls: boolean,
+}
+
+class Player extends React.Component<PropInterface, StateInterface> {
 
     private videoRef: React.RefObject<Video>;
+    private controlTimeOut: any;
 
     constructor(props: any) {
         super(props);
         this.videoRef = React.createRef<Video>();
         this.state = {
             fullscreen: false,
-            play: false,
+            play: true,
             currentTime: 0,
             duration: 0,
             showControls: true,
@@ -30,6 +39,7 @@ class Player extends React.Component<PropInterface, any> {
     }
 
     componentDidMount() {
+        this.execShowControl();
         BackHandler.addEventListener("hardwareBackPress", this.handleBackButtonClick.bind(this));
     }
 
@@ -64,7 +74,6 @@ class Player extends React.Component<PropInterface, any> {
     }
 
     onSeek(data: OnSeekData) {
-        console.log(data.seekTime);
         // @ts-ignore
         this.videoRef.current.seek(data.seekTime)
         this.setState({
@@ -77,6 +86,26 @@ class Player extends React.Component<PropInterface, any> {
         this.setState({
             fullscreen: !this.state.fullscreen
         });
+        this.execShowControl();
+    }
+
+    handlePlayPause() {
+        this.setState({
+            play: !this.state.play
+        })
+        this.execShowControl();
+    }
+
+    execShowControl() {
+        console.log(1);
+        if (typeof this.controlTimeOut === "object") {
+            this.controlTimeOut.clearInterval();
+        }
+        this.controlTimeOut = setTimeout(() => {
+            this.setState({
+                showControls: false
+            });
+        }, 3000)
     }
 
     handleSlider(time: number) {
@@ -84,24 +113,42 @@ class Player extends React.Component<PropInterface, any> {
             currentTime: this.state.currentTime,
             seekTime: time
         })
+        this.execShowControl();
     }
 
-    render() {
+    handleShowControl() {
+        this.setState({
+            showControls: true
+        })
+        this.execShowControl();
+    }
+
+    renderControlCenter() {
+        let iconPlay;
+        if (!this.state.play) {
+            iconPlay = (<IconMC name="play-arrow" size={50} color={"#fff"}/>)
+        } else {
+            iconPlay = (<IconMC name="pause" size={50} color={"#fff"}/>)
+        }
+
         return (
-            <View style={ (this.state.fullscreen) ? PlayerStyle.videoBoxFS : PlayerStyle.videoBox }>
-                <StatusBar hidden={ this.state.fullscreen } />
-                <Video style={ (this.state.fullscreen) ? PlayerStyle.videoPlayerFS : PlayerStyle.videoPlayer }
-                       ref={ this.videoRef }
-                       source={{ uri: this.props.source }}
-                       onLoad={ this.onLoad.bind(this) }
-                       onProgress={ this.onProgress.bind(this) } />
-                <View style={ (this.state.fullscreen) ? PlayerStyle.controlOverlayFS : PlayerStyle.controlOverlay }>
+            <View style={PlayerStyle.controlCenter}>
+                <TouchableWithoutFeedback
+                    onPress={ this.handlePlayPause.bind(this) }>
+                    { iconPlay }
+                </TouchableWithoutFeedback>
+            </View>
+        )
+    }
+
+    renderControl() {
+        if (this.state.showControls) {
+            return (
+                <View style={(this.state.fullscreen) ? PlayerStyle.controlOverlayFS : PlayerStyle.controlOverlay}>
                     <View>
                         <IconMC name="arrow-back" size={30} color={"#fff"}/>
                     </View>
-                    <View style={PlayerStyle.controlCenter}>
-                        <IconMC name="play-arrow" size={50} color={"#fff"}/>
-                    </View>
+                    {this.renderControlCenter()}
                     <View style={PlayerStyle.bottomControl}>
                         <View style={PlayerStyle.sliderControl}>
                             <Slider
@@ -110,21 +157,36 @@ class Player extends React.Component<PropInterface, any> {
                                 minimumValue={0}
                                 maximumValue={this.state.duration}
                                 step={1}
-                                onValueChange={ this.handleSlider.bind(this) }
-                                // onSlidingStart={onSlideStart}
-                                // onSlidingComplete={onSlideComplete}
+                                onValueChange={this.handleSlider.bind(this)}
                                 minimumTrackTintColor={'#F44336'}
                                 maximumTrackTintColor={'#FFFFFF'}
                                 thumbTintColor={'#F44336'}/>
                         </View>
                         <View style={PlayerStyle.fullscreenControl}>
                             <TouchableWithoutFeedback
-                                onPress={ this.handleFullScreen.bind(this) }>
+                                onPress={this.handleFullScreen.bind(this)}>
                                 <IconMC name="fullscreen" size={30} color={"#fff"}/>
                             </TouchableWithoutFeedback>
                         </View>
                     </View>
                 </View>
+            )
+        }
+    }
+
+    render() {
+        return (
+            <View style={ (this.state.fullscreen) ? PlayerStyle.videoBoxFS : PlayerStyle.videoBox }>
+                <StatusBar hidden={ this.state.fullscreen } />
+                <TouchableWithoutFeedback onPress={ this.handleShowControl.bind(this) }>
+                    <Video style={ (this.state.fullscreen) ? PlayerStyle.videoPlayerFS : PlayerStyle.videoPlayer }
+                           ref={ this.videoRef }
+                           source={{ uri: this.props.source }}
+                           onLoad={ this.onLoad.bind(this) }
+                           onProgress={ this.onProgress.bind(this) }
+                           paused={ !this.state.play }/>
+                </TouchableWithoutFeedback>
+                { this.renderControl() }
             </View>
         )
     }

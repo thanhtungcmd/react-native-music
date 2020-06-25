@@ -125,8 +125,6 @@ export const PlayerStyle = StyleSheet.create({
         justifyContent: "center"
     },
     controlCenter: {
-        // alignItems: "center",
-        // justifyContent: "center"
         alignItems: "center"
     },
     // Control Full Screen
