@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, Text, PanResponder, Animated, SafeAreaView} from "react-native";
+import {View, Text, SafeAreaView, ScrollView, Switch, FlatList} from "react-native";
 import {PlayState} from "../reducer/play.reducer.type";
 import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
@@ -9,6 +9,9 @@ import {connect} from "react-redux";
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import Player from "../plugin/Player"
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {HomeStyle, PlayStyle, windowHeight, windowWidth} from "../asset/style";
+import { Image } from 'react-native-elements';
+import { ActivityIndicator } from 'react-native';
 
 IconAntDesign.loadFont();
 
@@ -48,6 +51,9 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
 
     const navigation = useNavigation();
 
+    const [isEnabled, setIsEnabled] = useState(false);
+    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
     useEffect(() => {
         props.actions?.getSongAction(route.params.song_id);
     }, []);
@@ -55,20 +61,75 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
     useEffect(() => {
     }, [props.play]);
 
+
+    const ShowItem = (item: any) => {
+        return (
+            <View style={HomeStyle.rankItem}>
+                <View style={HomeStyle.rankItemLeft}>
+                    <Image style={HomeStyle.rankImage} source={{uri: item.item.thumbnail_url}}/>
+                </View>
+                <View style={HomeStyle.rankItemRight}>
+                    <Text numberOfLines={1} ellipsizeMode={"tail"}
+                          style={PlayStyle.relateText}>{item.item.name}</Text>
+                    <Text numberOfLines={1} ellipsizeMode={"tail"}
+                          style={PlayStyle.relateSub}>{item.item.artist}</Text>
+                </View>
+            </View>
+        )
+    };
+
+    const renderSong = () => {
+        if (typeof props.play?.song != "undefined") {
+            return (
+                <FlatList data={props.play.song.relate_song}
+                    renderItem={ ({item}) => (<ShowItem item={item}/>) }
+                    keyExtractor={item => item.id} />
+            );
+        }
+    }
+
     const renderVideo = () => {
         if (typeof props.play?.song != "undefined") {
             return (
-                <SafeAreaView>
-                    <Player source={ props.play.song.link_stream } navigation={ navigation }/>
-                </SafeAreaView>
+                <Player source={ props.play.song.link_stream } navigation={ navigation }/>
+            )
+        }
+    }
+
+    const renderContent = () => {
+        if (typeof props.play?.song != "undefined") {
+            return (
+                <View>
+                    <View style={PlayStyle.infoBox}>
+                        <Text style={PlayStyle.infoName}>{ props.play.song.name }</Text>
+                        <Text style={PlayStyle.infoSub}>{ props.play.song.artist }</Text>
+                    </View>
+                    <View style={PlayStyle.viewBox}>
+                        <View style={PlayStyle.viewCount}>
+                            <Text>{ props.play.song.view_count } lượt xem</Text>
+                        </View>
+                        <View style={PlayStyle.viewAuto}>
+                            <Switch
+                                style={PlayStyle.viewAutoSwift}
+                                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                thumbColor={isEnabled ? "#90caf9" : "#f4f3f4"}
+                                ios_backgroundColor="#3e3e3e"
+                                onValueChange={toggleSwitch}
+                                value={isEnabled}/>
+                            <Text style={PlayStyle.viewAutoText}>Tự động phát</Text>
+                        </View>
+                    </View>
+                    { renderSong() }
+                </View>
             )
         }
     }
 
     return (
-        <View>
+        <SafeAreaView>
             { renderVideo() }
-        </View>
+            { renderContent() }
+        </SafeAreaView>
     )
 
 }

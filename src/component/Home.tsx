@@ -16,7 +16,6 @@ import HomeSinger from "../plugin/HomeSinger";
 import {HomeStyle} from "../asset/style";
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
-import Orientation from 'react-native-orientation-locker';
 
 IconAntDesign.loadFont();
 
@@ -59,7 +58,6 @@ const Home: React.FunctionComponent<PropsInterface> = props => {
 
     useEffect(() => {
         props.actions.getHomeRankAction();
-        Orientation.lockToPortrait();
     }, []);
 
     const renderRankSong = () => {

@@ -81,6 +81,60 @@ export const HeaderStyle = StyleSheet.create({
     },
 })
 
+export const PlayStyle = StyleSheet.create({
+    infoBox: {
+        marginTop: 15,
+        paddingHorizontal: 15
+    },
+    infoName: {
+        fontSize: 20,
+        fontWeight: "bold",
+    },
+    infoSub: {
+        marginTop: 5,
+        fontSize: 14,
+        color: "#a8a8a8"
+    },
+    viewBox: {
+        marginTop: 10,
+        paddingLeft: 15,
+        paddingRight: 5,
+        marginBottom: 15,
+        flexDirection: "row"
+    },
+    viewCount: {
+        fontSize: 14,
+        width: "50%"
+    },
+    viewAuto: {
+        alignItems: "flex-start",
+        width: "50%",
+        flexDirection: "row-reverse"
+    },
+    viewAutoSwift: {
+        paddingLeft: 0
+    },
+    viewAutoText: {
+        fontWeight: "700",
+        fontSize: 16,
+        paddingRight: 10,
+        paddingTop: 2
+    },
+    relateText: {
+        color: "#000",
+        fontSize: 16,
+        textAlign: "left",
+        width: (windowWidth / 2) - 20,
+        fontWeight: "700",
+        marginBottom: 5
+    },
+    relateSub: {
+        color: '#7f7f7f',
+        fontSize: 14,
+        width: (windowWidth / 2) - 20,
+    }
+});
+
 export const PlayerStyle = StyleSheet.create({
     videoBox: {
         width: windowWidth,
