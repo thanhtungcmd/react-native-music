@@ -1,122 +1,133 @@
 import * as React from 'react';
 import {View, TouchableWithoutFeedback, StatusBar, BackHandler} from "react-native";
-import {useRef, useState, useEffect, useCallback} from "react";
 import Video, { OnProgressData, OnLoadData, OnSeekData } from "react-native-video";
 import {PlayerStyle} from "../asset/style";
 import { Slider } from 'react-native-elements';
 import IconMC from 'react-native-vector-icons/MaterialIcons';
 import Orientation from 'react-native-orientation-locker';
-import {useNavigation} from "@react-navigation/native";
 
 IconMC.loadFont();
 
 interface PropInterface {
-    source: string
+    source: string,
+    navigation: any
 }
 
-const Player: React.FunctionComponent<PropInterface> = props => {
+class Player extends React.Component<PropInterface, any> {
 
-    const videoRef = useRef<Video>(null);
+    private videoRef: React.RefObject<Video>;
 
-    const navigation = useNavigation();
-
-    const [state, setState] = useState({
-        fullscreen: false,
-        play: false,
-        currentTime: 0,
-        duration: 0,
-        showControls: true,
-    });
-
-    const handleBackButtonClick = useCallback(() => {
-        console.log(state.fullscreen);
-        return true
-    }, [])
-
-    useEffect(() => {
-        Orientation.lockToPortrait();
-
-        BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
-        return () => {
-            BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
-        };
-    }, []);
-
-    const onProgress = (data: OnProgressData) => {
-        setState(value => ({
-            ...value,
-            currentTime: data.currentTime,
-        }));
+    constructor(props: any) {
+        super(props);
+        this.videoRef = React.createRef<Video>();
+        this.state = {
+            fullscreen: false,
+            play: false,
+            currentTime: 0,
+            duration: 0,
+            showControls: true,
+        }
     }
 
-    const onLoad = (data: OnLoadData) => {
-        setState(value => ({
-            ...value,
+    componentDidMount() {
+        BackHandler.addEventListener("hardwareBackPress", this.handleBackButtonClick.bind(this));
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener("hardwareBackPress", this.handleBackButtonClick.bind(this));
+    }
+
+    handleBackButtonClick() {
+        if (this.state.fullscreen) {
+            Orientation.lockToPortrait();
+            this.setState({
+                fullscreen: false
+            })
+        } else {
+            this.props.navigation.goBack();
+        }
+
+        return true
+    }
+
+    onProgress(data: OnProgressData) {
+        this.setState({
+            currentTime: data.currentTime,
+        });
+    }
+
+    onLoad(data: OnLoadData) {
+        this.setState({
             duration: data.duration,
             currentTime: data.currentTime,
-        }));
+        });
     }
 
-    const onSeek = (data: OnSeekData) => {
+    onSeek(data: OnSeekData) {
         console.log(data.seekTime);
         // @ts-ignore
-        videoRef.current.seek(data.seekTime)
-        setState(value => ({
-            ...value,
+        this.videoRef.current.seek(data.seekTime)
+        this.setState({
             currentTime: data.seekTime
-        }));
+        });
     }
 
-    const handleFullScreen = () => {
-        state.fullscreen ? Orientation.lockToPortrait() : Orientation.lockToLandscapeLeft();
-        setState(value => ({
-            ...value,
-            fullscreen: !state.fullscreen
-        }));
+    handleFullScreen() {
+        this.state.fullscreen ? Orientation.lockToPortrait() : Orientation.lockToLandscapeLeft();
+        this.setState({
+            fullscreen: !this.state.fullscreen
+        });
     }
 
-    const handleSlider = (time: number) => {
-        console.log(time);
-        onSeek({
-            currentTime: state.currentTime,
+    handleSlider(time: number) {
+        this.onSeek({
+            currentTime: this.state.currentTime,
             seekTime: time
         })
     }
 
-    return (
-        <View style={ (state.fullscreen) ? PlayerStyle.videoBoxFS : PlayerStyle.videoBox }>
-            <Video style={ (state.fullscreen) ? PlayerStyle.videoPlayerFS : PlayerStyle.videoPlayer }
-                ref={ videoRef }
-                source={{ uri: props.source }}
-                onLoad={ onLoad }
-                onProgress={ onProgress } />
-            <View style={ (state.fullscreen) ? PlayerStyle.controlOverlayFS : PlayerStyle.controlOverlay }>
-                <View></View>
-                <View style={PlayerStyle.bottomControl}>
-                    <View style={PlayerStyle.sliderControl}>
-                        <Slider
-                            style={PlayerStyle.slider}
-                            value={state.currentTime}
-                            minimumValue={0}
-                            maximumValue={state.duration}
-                            step={1}
-                            onValueChange={ handleSlider }
-                            // onSlidingStart={onSlideStart}
-                            // onSlidingComplete={onSlideComplete}
-                            minimumTrackTintColor={'#F44336'}
-                            maximumTrackTintColor={'#FFFFFF'}
-                            thumbTintColor={'#F44336'}/>
+    render() {
+        return (
+            <View style={ (this.state.fullscreen) ? PlayerStyle.videoBoxFS : PlayerStyle.videoBox }>
+                <StatusBar hidden={ this.state.fullscreen } />
+                <Video style={ (this.state.fullscreen) ? PlayerStyle.videoPlayerFS : PlayerStyle.videoPlayer }
+                       ref={ this.videoRef }
+                       source={{ uri: this.props.source }}
+                       onLoad={ this.onLoad.bind(this) }
+                       onProgress={ this.onProgress.bind(this) } />
+                <View style={ (this.state.fullscreen) ? PlayerStyle.controlOverlayFS : PlayerStyle.controlOverlay }>
+                    <View>
+                        <IconMC name="arrow-back" size={30} color={"#fff"}/>
                     </View>
-                    <View style={PlayerStyle.fullscreenControl}>
-                        <TouchableWithoutFeedback
-                            onPress={ handleFullScreen }>
-                            <IconMC name="fullscreen" size={30} color={"#fff"}/>
-                        </TouchableWithoutFeedback>
+                    <View style={PlayerStyle.controlCenter}>
+                        <IconMC name="play-arrow" size={50} color={"#fff"}/>
+                    </View>
+                    <View style={PlayerStyle.bottomControl}>
+                        <View style={PlayerStyle.sliderControl}>
+                            <Slider
+                                style={PlayerStyle.slider}
+                                value={this.state.currentTime}
+                                minimumValue={0}
+                                maximumValue={this.state.duration}
+                                step={1}
+                                onValueChange={ this.handleSlider.bind(this) }
+                                // onSlidingStart={onSlideStart}
+                                // onSlidingComplete={onSlideComplete}
+                                minimumTrackTintColor={'#F44336'}
+                                maximumTrackTintColor={'#FFFFFF'}
+                                thumbTintColor={'#F44336'}/>
+                        </View>
+                        <View style={PlayerStyle.fullscreenControl}>
+                            <TouchableWithoutFeedback
+                                onPress={ this.handleFullScreen.bind(this) }>
+                                <IconMC name="fullscreen" size={30} color={"#fff"}/>
+                            </TouchableWithoutFeedback>
+                        </View>
                     </View>
                 </View>
             </View>
-        </View>
-    )
+        )
+    }
 
 }
 

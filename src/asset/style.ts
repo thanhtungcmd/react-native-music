@@ -124,6 +124,11 @@ export const PlayerStyle = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
+    controlCenter: {
+        // alignItems: "center",
+        // justifyContent: "center"
+        alignItems: "center"
+    },
     // Control Full Screen
     controlOverlayFS: {
         width: windowHeight,

@@ -8,7 +8,7 @@ import {useEffect, useRef, useState} from "react";
 import {connect} from "react-redux";
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import Player from "../plugin/Player"
-import { useRoute } from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 IconAntDesign.loadFont();
 
@@ -46,6 +46,8 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
 
     const route = useRoute<RouteInterface>();
 
+    const navigation = useNavigation();
+
     useEffect(() => {
         props.actions?.getSongAction(route.params.song_id);
     }, []);
@@ -57,7 +59,7 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
         if (typeof props.play?.song != "undefined") {
             return (
                 <SafeAreaView>
-                    <Player source={ props.play.song.link_stream }/>
+                    <Player source={ props.play.song.link_stream } navigation={ navigation }/>
                 </SafeAreaView>
             )
         }
