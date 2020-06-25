@@ -7,7 +7,8 @@ import * as PlayAction from "../action/play.action";
 import {useEffect, useRef, useState} from "react";
 import {connect} from "react-redux";
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
-import Player from "../plugin/Player"
+// @ts-ignore
+import PlayerAndroid from "../plugin/Player"
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {HomeStyle, PlayStyle, windowHeight, windowWidth} from "../asset/style";
 import { Image } from 'react-native-elements';
@@ -56,6 +57,7 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
     useEffect(() => {
+        console.log(route.params.song_id);
         props.actions?.getSongAction(route.params.song_id);
     }, []);
 
@@ -98,7 +100,7 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
     const renderVideo = () => {
         if (typeof props.play?.song != "undefined") {
             return (
-                <Player source={ props.play.song.link_stream } navigation={ navigation }/>
+                <PlayerAndroid source={ props.play.song.link_stream } navigation={ navigation }/>
             )
         }
     }
