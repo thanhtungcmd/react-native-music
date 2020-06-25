@@ -33,6 +33,12 @@ const homeReducer = (state: HomeState = {}, action: HOME_ACTION): HomeState => {
                 home_active: action.data
             }
 
+        case "GET_RANK_ALL":
+            return {
+                ...state,
+                rank_all: action.data
+            }
+
         default:
             return state;
     }

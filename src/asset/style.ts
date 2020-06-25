@@ -72,13 +72,20 @@ export const HeaderStyle = StyleSheet.create({
         resizeMode: 'cover',
         justifyContent: 'space-between',
         paddingVertical: 15,
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        minHeight: 65
     },
     badge: {
         position: "absolute",
         right: -4,
         top: -4
     },
+    headerText: {
+        textTransform: "uppercase",
+        fontSize: 16,
+        color: "#fff",
+        fontWeight: "bold"
+    }
 })
 
 export const PlayStyle = StyleSheet.create({

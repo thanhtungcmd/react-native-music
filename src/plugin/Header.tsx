@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ImageBackground, TouchableWithoutFeedback, View} from "react-native";
+import {ImageBackground, TouchableWithoutFeedback, View, Text} from "react-native";
 import {HeaderStyle} from "../asset/style";
 import {Avatar, Badge} from "react-native-elements";
 import {MenuState} from "../reducer/menu.reducer.type";
@@ -7,6 +7,10 @@ import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
 import * as MenuAction from "../action/menu.action";
 import {connect} from "react-redux";
+
+interface ComponentInterface {
+    header?: string
+}
 
 interface StatePropsInterface {
     menu?: MenuState
@@ -18,7 +22,7 @@ interface DispatchPropsInterface {
     }
 }
 
-type PropsInterface = StatePropsInterface & DispatchPropsInterface
+type PropsInterface = StatePropsInterface & DispatchPropsInterface & ComponentInterface
 
 const mapStateToProps = (state: StateInterface) => ({
     menu: state.menu,
@@ -47,10 +51,21 @@ const Header: React.FunctionComponent<PropsInterface> = props => {
         )
     }
 
+    const CenterMenu = () => {
+        let header = (typeof props.header != "undefined") ? (
+            <Text style={HeaderStyle.headerText}>{ props.header }</Text>
+        ) : null;
+        return (
+            <View style={{ alignItems: "center", justifyContent: "center" }}>{header}</View>
+        )
+    }
+
     return (
         <View>
             <ImageBackground source={ require('../asset/img/header-bg.png') } style={ HeaderStyle.headerBg }>
                 { LeftMenu() }
+                { CenterMenu() }
+                <View></View>
             </ImageBackground>
         </View>
     );

@@ -4,6 +4,7 @@ export interface HomeState {
     home?: Array<HomeItem>,
     home_active?: Array<SongItem>,
     singer?: Array<SingerItem>
+    rank_all?: Array<SongItem>
 }
 
 export interface HomeItem {

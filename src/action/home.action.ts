@@ -1,6 +1,6 @@
 import * as types from './home.action.type'
 import { Dispatch } from "redux"
-import {ApiHomeBanner, ApiHomeRank, ApiHomeAll, ApiHomeSinger} from "../api/index.api"
+import {ApiHomeBanner, ApiHomeRank, ApiHomeAll, ApiHomeSinger, ApiGetRankAll} from "../api/index.api"
 
 export const getHomeBannerAction = () => {
     return async (dispatch: Dispatch) => {
@@ -77,6 +77,24 @@ export const getHomeSingerAction = () => {
 export const getHomeSingerSuccess = (data: any) => {
     return {
         type: types.GET_SINGER,
+        data: data.data
+    }
+}
+
+export const getRankAllAction = () => {
+    return async (dispatch: Dispatch) => {
+        let response = await ApiGetRankAll();
+        if (response.status == 200) {
+            dispatch(
+                getRankAllSuccess(response.data)
+            )
+        }
+    }
+}
+
+export const getRankAllSuccess = (data: any) => {
+    return {
+        type: types.GET_RANK_ALL,
         data: data.data
     }
 }

@@ -19,3 +19,7 @@ export const ApiHomeSinger = () => {
 export const ApiPlaySong = (id: string) => {
     return axios.get("https://m.ibolero.vn/song/"+ id +"?type=nm");
 }
+
+export const ApiGetRankAll = () => {
+    return axios.get("https://m.ibolero.vn/rank");
+}

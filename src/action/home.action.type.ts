@@ -13,6 +13,9 @@ export type GET_SINGER = typeof GET_SINGER;
 export const CHANGE_HOME = 'CHANGE_HOME';
 export type CHANGE_HOME = typeof CHANGE_HOME;
 
+export const GET_RANK_ALL = 'GET_RANK_ALL';
+export type GET_RANK_ALL = typeof GET_RANK_ALL;
+
 export interface GET_BANNER_ACTION {
     type: GET_BANNER,
     data: any
@@ -38,8 +41,14 @@ export interface CHANGE_HOME_ACTION {
     data: any
 }
 
+export interface GET_RANK_ALL_ACTION {
+    type: GET_RANK_ALL,
+    data: any
+}
+
 export type HOME_ACTION = GET_BANNER_ACTION
     | GET_RANK_ACTION
     | GET_HOME_ACTION
     | CHANGE_HOME_ACTION
     | GET_SINGER_ACTION
+    | GET_RANK_ALL_ACTION
