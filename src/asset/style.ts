@@ -416,3 +416,15 @@ export const HomeStyle = StyleSheet.create({
         fontWeight: "bold"
     }
 })
+
+export const RankStyle = StyleSheet.create({
+    homeBg: {
+       width: windowWidth,
+       height: windowHeight - 50
+    },
+    textRank: {
+        fontSize: 40,
+        color: '#fff',
+        lineHeight: 40
+    }
+});

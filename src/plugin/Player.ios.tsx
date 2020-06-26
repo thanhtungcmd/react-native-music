@@ -25,6 +25,7 @@ interface StateInterface {
 class PlayerIos extends React.Component<PropInterface, StateInterface> {
 
     private videoRef: React.RefObject<Video>;
+    private dataInterval: any;
 
     constructor(props: any) {
         super(props);
@@ -40,7 +41,7 @@ class PlayerIos extends React.Component<PropInterface, StateInterface> {
     }
 
     componentDidMount() {
-        setInterval(() => {
+        this.dataInterval = setInterval(() => {
             Orientation.lockToPortrait()
             this.setState({
                 countShowControls: (this.state.countShowControls > 0) ? (this.state.countShowControls - 1000) : 0,
@@ -50,7 +51,7 @@ class PlayerIos extends React.Component<PropInterface, StateInterface> {
     }
 
     componentWillUnmount() {
-
+        this.dataInterval.clearInterval();
     }
 
     onProgress(data: OnProgressData) {
