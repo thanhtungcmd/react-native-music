@@ -4,7 +4,7 @@ import {ActivityIndicator, FlatList, Image,
 import {useNavigation, useRoute} from "@react-navigation/native";
 import Header from "../plugin/Header";
 import {SongItem} from "../reducer/home.reducer.type";
-import {ApiCategoryItem} from "../api/index.api";
+import {ApiCategoryItem, ApiSingerItem} from "../api/index.api";
 import {HomeStyle, RankStyle} from "../asset/style";
 
 interface RouteInterface {
@@ -12,12 +12,11 @@ interface RouteInterface {
     name: string,
     params: {
         id: string,
-        name: string,
-        slug: string
+        name: string
     }
 }
 
-const CateItem: React.FunctionComponent = () => {
+const SingerItem: React.FunctionComponent = () => {
 
     const route = useRoute<RouteInterface>();
     const navigation = useNavigation();
@@ -26,8 +25,8 @@ const CateItem: React.FunctionComponent = () => {
     const [page, setPage] = useState(1);
 
     useEffect(() => {
-        ApiCategoryItem(route.params.id, '1').then((response) => {
-            setSong(response.data.data.list.data);
+        ApiSingerItem(route.params.id, '1').then((response) => {
+            setSong(response.data.data.list_song.data);
         })
     }, []);
 
@@ -57,8 +56,8 @@ const CateItem: React.FunctionComponent = () => {
 
     const handleLoadMore = () => {
         setTimeout(() => {
-            ApiCategoryItem(route.params.id, page + 1).then((response) => {
-                setSong(song.concat(response.data.data.list.data));
+            ApiSingerItem(route.params.id, page + 1).then((response) => {
+                setSong(song.concat(response.data.data.list_song.data));
                 setPage(page + 1);
             })
         }, 1000);
@@ -98,4 +97,4 @@ const CateItem: React.FunctionComponent = () => {
 
 }
 
-export default CateItem
+export default SingerItem

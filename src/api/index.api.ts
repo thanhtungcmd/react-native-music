@@ -31,3 +31,11 @@ export const ApiGetCategory = () => {
 export const ApiCategoryItem = (id: string, page: string | number) => {
     return axios.get(`https://m.ibolero.vn/category/${id}?page=${page}`);
 }
+
+export const ApiGetSinger = (page: string | number) => {
+    return axios.get(`https://m.ibolero.vn/artist?page=${page}`);
+}
+
+export const ApiSingerItem = (id: string, page: string | number) => {
+    return axios.get(`https://m.ibolero.vn/artist/${id}?page=${page}`);
+}

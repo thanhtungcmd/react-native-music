@@ -7,6 +7,9 @@ import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
 import * as MenuAction from "../action/menu.action";
 import {connect} from "react-redux";
+import IconAntDesign from 'react-native-vector-icons/AntDesign';
+
+IconAntDesign.loadFont();
 
 interface ComponentInterface {
     header?: string
@@ -65,7 +68,9 @@ const Header: React.FunctionComponent<PropsInterface> = props => {
             <ImageBackground source={ require('../asset/img/header-bg.png') } style={ HeaderStyle.headerBg }>
                 { LeftMenu() }
                 { CenterMenu() }
-                <View></View>
+                <View>
+                    <IconAntDesign size={30} name={'search1'} color={"#fff"} />
+                </View>
             </ImageBackground>
         </View>
     );

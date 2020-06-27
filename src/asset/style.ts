@@ -419,11 +419,12 @@ export const HomeStyle = StyleSheet.create({
 
 export const RankStyle = StyleSheet.create({
     homeBg: {
-       width: windowWidth,
+        width: windowWidth,
+        height: windowHeight
     },
     homeBgNoTab: {
         width: windowWidth,
-        height: windowHeight
+        height: windowHeight - 70
     },
     textRank: {
         fontSize: 40,
@@ -458,3 +459,30 @@ export const CategoryStyle = StyleSheet.create({
         height: "100%"
     }
 });
+
+export const SingerStyle = StyleSheet.create({
+    flatBox: {
+        flexDirection: "row",
+
+        backgroundColor: "red",
+    },
+    singerBox: {
+        width: windowWidth / 2,
+        height: windowWidth / 2,
+        padding: 20,
+        marginBottom: 30
+    },
+    singerImg: {
+        borderRadius: 100,
+        borderColor: "#ffff77",
+        borderWidth: 3,
+        width: "100%",
+        height: "100%"
+    },
+    singerName: {
+        marginTop: 10,
+        color: '#fff',
+        fontSize: 18,
+        textAlign: "center"
+    }
+})
