@@ -39,6 +39,12 @@ const homeReducer = (state: HomeState = {}, action: HOME_ACTION): HomeState => {
                 rank_all: action.data
             }
 
+        case "GET_CATEGORY":
+            return {
+                ...state,
+                category: action.data
+            }
+
         default:
             return state;
     }

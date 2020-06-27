@@ -428,3 +428,30 @@ export const RankStyle = StyleSheet.create({
         lineHeight: 40
     }
 });
+
+export const CategoryStyle = StyleSheet.create({
+    cateBox: {
+        flexDirection: "row",
+        flex: 1,
+        flexWrap: "wrap"
+    },
+    cateItemLeft: {
+        width: "50%",
+        height: ((windowWidth - 40) / 2) * (331/449),
+        paddingLeft: 15,
+        paddingRight: 5,
+        marginBottom: 15,
+    },
+    cateItemRight: {
+        width: "50%",
+        height: ((windowWidth - 40) / 2) * (331/449),
+        paddingLeft: 5,
+        paddingRight: 15,
+        marginBottom: 15,
+    },
+    cateImg: {
+        resizeMode: "stretch",
+        width: "100%",
+        height: "100%"
+    }
+});

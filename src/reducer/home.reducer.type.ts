@@ -3,8 +3,15 @@ export interface HomeState {
     rank?: Array<SongItem>,
     home?: Array<HomeItem>,
     home_active?: Array<SongItem>,
-    singer?: Array<SingerItem>
-    rank_all?: Array<SongItem>
+    singer?: Array<SingerItem>,
+    rank_all?: Array<SongItem>,
+    category?: Array<CategoryItem>,
+}
+
+export interface CategoryItem {
+    id: string,
+    name: string,
+    slug: string
 }
 
 export interface HomeItem {

@@ -112,7 +112,7 @@ const Rank: React.FunctionComponent<PropsInterface> = props => {
                     <Header header="Bảng xếp hạng" />
                     <Menu/>
                 </View>
-            { renderRank() }
+                { renderRank() }
             </ImageBackground>
         </SafeAreaView>
     )

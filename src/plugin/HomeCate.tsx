@@ -38,6 +38,10 @@ const HomeCate: React.FunctionComponent<PropsInterface> = props => {
 
     const [cate, setCate] = useState([
         {
+            slug: 'nhac-xuan-tuyen-chon',
+            img: require('../asset/img/cate-spring.png')
+        },
+        {
             slug: 'tuyet-dinh-song-ca',
             img: require('../asset/img/cate-bolero.png')
         },

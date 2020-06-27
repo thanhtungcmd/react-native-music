@@ -8,6 +8,7 @@ import { TabNavigation } from '../asset/style';
 import Demo from "../component/Demo";
 import Home from "../component/Home";
 import Rank from "../component/Rank";
+import Category from "../component/Category";
 
 const Tab = createBottomTabNavigator();
 
@@ -92,7 +93,7 @@ const TabView: React.FunctionComponent = props => {
         <Tab.Navigator tabBar={ props => <TabRender {...props} /> }>
             <Tab.Screen name="TRANG CHỦ" component={ Home }/>
             <Tab.Screen name="BXH" component={ Rank }/>
-            <Tab.Screen name="CHỦ ĐỀ" component={ Demo }/>
+            <Tab.Screen name="CHỦ ĐỀ" component={ Category }/>
             <Tab.Screen name="CA SĨ" component={ Demo }/>
             <Tab.Screen name="IBOLERO" component={ Demo }/>
         </Tab.Navigator>

@@ -7,6 +7,9 @@ export type GET_RANK = typeof GET_RANK;
 export const GET_HOME = 'GET_HOME';
 export type GET_HOME = typeof GET_HOME;
 
+export const GET_CATEGORY = 'GET_CATEGORY';
+export type GET_CATEGORY = typeof GET_CATEGORY;
+
 export const GET_SINGER = 'GET_SINGER';
 export type GET_SINGER = typeof GET_SINGER;
 
@@ -46,9 +49,15 @@ export interface GET_RANK_ALL_ACTION {
     data: any
 }
 
+export interface GET_CATEGORY_ACTION {
+    type: GET_CATEGORY,
+    data: any
+}
+
 export type HOME_ACTION = GET_BANNER_ACTION
     | GET_RANK_ACTION
     | GET_HOME_ACTION
     | CHANGE_HOME_ACTION
     | GET_SINGER_ACTION
     | GET_RANK_ALL_ACTION
+    | GET_CATEGORY_ACTION

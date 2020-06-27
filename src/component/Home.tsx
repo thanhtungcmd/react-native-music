@@ -16,6 +16,7 @@ import HomeSinger from "../plugin/HomeSinger";
 import {HomeStyle} from "../asset/style";
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 IconAntDesign.loadFont();
 
@@ -45,7 +46,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 const Home: React.FunctionComponent<PropsInterface> = props => {
 
     const [refreshing, setRefreshing] = React.useState(false);
-
+    const [spinner , setSpinner] = React.useState(true);
     const navigation = useNavigation();
 
     const onRefresh = React.useCallback(() => {
@@ -55,6 +56,16 @@ const Home: React.FunctionComponent<PropsInterface> = props => {
             setRefreshing(false)
         }, 1000)
     }, [refreshing]);
+
+    useEffect(() => {
+        if (typeof props.home.banner != "undefined"
+            && typeof props.home.rank != "undefined"
+            && typeof props.home.home != "undefined"
+            && typeof props.home.singer != "undefined"
+        ) {
+            setSpinner(false);
+        }
+    })
 
     useEffect(() => {
         props.actions.getHomeRankAction();
@@ -123,6 +134,7 @@ const Home: React.FunctionComponent<PropsInterface> = props => {
 
     return (
         <SafeAreaView>
+            <Spinner visible={spinner}/>
             <ScrollView
                 refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> }>
                 <Header/>
