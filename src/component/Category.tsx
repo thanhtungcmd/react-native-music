@@ -3,12 +3,13 @@ import {HomeState} from "../reducer/home.reducer.type";
 import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
 import * as HomeAction from "../action/home.action";
-import {SafeAreaView, View, ScrollView, Image} from "react-native";
+import {SafeAreaView, View, ScrollView, Image, TouchableWithoutFeedback} from "react-native";
 import Header from "../plugin/Header";
 import Menu from "../plugin/Menu";
 import {connect} from "react-redux";
 import {CategoryStyle, HomeStyle} from "../asset/style";
 import * as lodash from "lodash";
+import {useNavigation} from "@react-navigation/native";
 
 interface StatePropsInterface {
     home?: HomeState
@@ -33,6 +34,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 });
 
 const Category: React.FunctionComponent<PropsInterface> = props => {
+
+    const navigation = useNavigation();
 
     const [cate, setCate] = useState([
         {
@@ -95,10 +98,18 @@ const Category: React.FunctionComponent<PropsInterface> = props => {
                     return (
                         <View key={key}
                             style={ (key % 2 == 0) ? CategoryStyle.cateItemLeft : CategoryStyle.cateItemRight}>
-                            <Image
-                                resizeMode={'cover'}
-                                style={ CategoryStyle.cateImg }
-                                source={ image.img } />
+                            <TouchableWithoutFeedback onPress={() => {
+                                navigation.navigate("CateItem", {
+                                    id: item.id,
+                                    name: item.name,
+                                    slug: item.slug
+                                })
+                            }}>
+                                <Image
+                                    resizeMode={'cover'}
+                                    style={ CategoryStyle.cateImg }
+                                    source={ image.img } />
+                            </TouchableWithoutFeedback>
                         </View>
                     )
                 }

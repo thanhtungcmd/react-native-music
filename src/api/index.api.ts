@@ -27,3 +27,7 @@ export const ApiGetRankAll = () => {
 export const ApiGetCategory = () => {
     return axios.get("https://m.ibolero.vn/categories");
 }
+
+export const ApiCategoryItem = (id: string, page: string | number) => {
+    return axios.get(`https://m.ibolero.vn/category/${id}?page=${page}`);
+}

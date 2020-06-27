@@ -420,7 +420,10 @@ export const HomeStyle = StyleSheet.create({
 export const RankStyle = StyleSheet.create({
     homeBg: {
        width: windowWidth,
-       height: windowHeight - 50
+    },
+    homeBgNoTab: {
+        width: windowWidth,
+        height: windowHeight
     },
     textRank: {
         fontSize: 40,
