@@ -47,7 +47,11 @@ const Header: React.FunctionComponent<PropsInterface> = props => {
         return (
             <TouchableWithoutFeedback onPress={ clickLeft }>
                 <View>
-                    <Avatar rounded source={ require('../asset/img/icon-user.png') }/>
+                    <Avatar rounded
+                        source={
+                            (typeof props.menu?.token != "undefined")
+                                ? require('../asset/img/icon-user.png')
+                                : require('../asset/img/icon-user2.png') }/>
                     <Badge status="error" value="8" containerStyle={ HeaderStyle.badge }/>
                 </View>
             </TouchableWithoutFeedback>

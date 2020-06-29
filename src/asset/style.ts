@@ -525,6 +525,17 @@ export const OverlayStyle = StyleSheet.create({
         left: 0,
         right: 0,
         backgroundColor: "rgba(0,0,0,0.5)",
-        zIndex: 10000
+        zIndex: 100
+    },
+    overlayHide: {
+        width: 0,
+        height: 0,
+        position: "absolute",
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: "rgba(0,0,0,0.5)",
+        zIndex: 100
     }
 })

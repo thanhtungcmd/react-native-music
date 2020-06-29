@@ -4,7 +4,7 @@ import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
 import * as MenuAction from "../action/menu.action";
 import {connect} from "react-redux";
-import {View} from "react-native";
+import {TouchableWithoutFeedback, View} from "react-native";
 import {OverlayStyle} from "../asset/style";
 
 interface StatePropsInterface {
@@ -32,7 +32,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 const Overlay: React.FunctionComponent<PropsInterface> = props => {
 
     return (
-        <View style={OverlayStyle.overlayBox}></View>
+        <TouchableWithoutFeedback onPress={() => {
+            props.actions?.toggleMenuAction(false)
+        }}>
+            <View style={ props.menu?.show_menu ? OverlayStyle.overlayBox : OverlayStyle.overlayHide}/>
+        </TouchableWithoutFeedback>
     )
 
 }

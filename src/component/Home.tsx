@@ -18,6 +18,7 @@ import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Preload from "../plugin/Preload";
+import Overlay from "../plugin/Overlay";
 
 IconAntDesign.loadFont();
 
@@ -139,6 +140,7 @@ const Home: React.FunctionComponent<PropsInterface> = props => {
             <ScrollView
                 refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> }>
                 <Preload/>
+                <Overlay/>
                 <Header/>
                 <Menu/>
                 <Banner/>
