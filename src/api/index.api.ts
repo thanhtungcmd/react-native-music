@@ -39,3 +39,13 @@ export const ApiGetSinger = (page: string | number) => {
 export const ApiSingerItem = (id: string, page: string | number) => {
     return axios.get(`https://m.ibolero.vn/artist/${id}?page=${page}`);
 }
+
+export const ApiCheckLogin = () => {
+    return axios.get("https://m.ibolero.vn/service/app");
+}
+
+export const ApiAutoLogin = (phone: string) => {
+    return axios.post("https://m.ibolero.vn/auto-login", {
+        phone: phone
+    });
+}
