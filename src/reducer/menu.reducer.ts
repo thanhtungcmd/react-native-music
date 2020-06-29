@@ -13,6 +13,18 @@ const homeReducer = (state: MenuState = initState, action: MENU_ACTION): MenuSta
                 show_menu: action.data,
             };
 
+        case "SET_TOKEN":
+            return {
+                ...state,
+                token: action.data
+            }
+
+        case "SET_PHONE":
+            return {
+                ...state,
+                phone: action.data
+            }
+
         default:
             return state;
     }

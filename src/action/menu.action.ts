@@ -7,3 +7,17 @@ export const toggleMenuAction = (data: boolean) => {
         data: data
     }
 }
+
+export const setTokenAction = (data: string) => {
+    return {
+        type: types.SET_TOKEN,
+        data: data
+    }
+}
+
+export const setPhoneAction = (data: string) => {
+    return {
+        type: types.SET_PHONE,
+        data: data
+    }
+}

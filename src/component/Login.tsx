@@ -6,15 +6,50 @@ import {HeaderStyle, LoginStyle, MenuStyle, RankStyle} from "../asset/style";
 import IconAntDesign from "react-native-vector-icons/AntDesign";
 import { Input } from 'react-native-elements';
 import {useNavigation} from "@react-navigation/native";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {ApiLoginAuth} from "../api/index.api";
 import AsyncStorage from "@react-native-community/async-storage";
+import {MenuState} from "../reducer/menu.reducer.type";
+import StateInterface from "../reducer/index.reducer.type";
+import {bindActionCreators, Dispatch} from "redux";
+import * as MenuAction from "../action/menu.action";
+import {connect} from "react-redux";
 
-const Login: React.FunctionComponent = props => {
+interface StatePropsInterface {
+    menu?: MenuState
+}
+
+interface DispatchPropsInterface {
+    actions?: {
+        setTokenAction: any,
+        setPhoneAction: any,
+        toggleMenuAction: any
+    }
+}
+
+type PropsInterface = StatePropsInterface & DispatchPropsInterface
+
+const mapStateToProps = (state: StateInterface) => ({
+    menu: state.menu,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    actions: bindActionCreators({
+        setTokenAction: MenuAction.setTokenAction,
+        setPhoneAction: MenuAction.setPhoneAction,
+        toggleMenuAction: MenuAction.toggleMenuAction
+    }, dispatch)
+});
+
+const Login: React.FunctionComponent<PropsInterface> = props => {
 
     const navigation = useNavigation();
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("0906228870");
+    const [password, setPassword] = useState("652099");
+
+    useEffect(() => {
+        props.actions?.toggleMenuAction(false)
+    }, [])
 
     const handleLogin = async () => {
         if (username.length > 0 && password.length > 0) {
@@ -22,7 +57,9 @@ const Login: React.FunctionComponent = props => {
             if (response.status == 200) {
                 await AsyncStorage.setItem('@token', response.data.data.token);
                 await AsyncStorage.setItem('@msisdn', response.data.data.data.phone);
-                Alert.alert(
+                props.actions?.setTokenAction(response.data.data.token);
+                props.actions?.setPhoneAction(response.data.data.data.phone);
+                return Alert.alert(
                     "Đăng nhập thành công",
                     "Bạn đã đăng nhập thành công dịch vụ",
                     [
@@ -34,21 +71,21 @@ const Login: React.FunctionComponent = props => {
                     ],
                     { cancelable: false }
                 );
-            } else {
-                Alert.alert(
-                    "Đăng nhập thất bại",
-                    "Nội dung bạn nhập chưa chính xác!",
-                    [
-                        {
-                            text: "Đóng", onPress: () => {
-                                console.log("Login Fail")
-                            }
-                        }
-                    ],
-                    { cancelable: false }
-                );
             }
         }
+
+        Alert.alert(
+            "Đăng nhập thất bại",
+            "Nội dung bạn nhập chưa chính xác!",
+            [
+                {
+                    text: "Đóng", onPress: () => {
+                        console.log("Login Fail")
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
     }
 
     return (
@@ -75,7 +112,7 @@ const Login: React.FunctionComponent = props => {
                                 inputStyle={{ color: "#fff", textAlign: "center" }}
                                 placeholder='Tên đăng nhập'
                                 placeholderTextColor="#fff"
-                                //value={"0906228870"}
+                                value={"0906228870"}
                                 onChangeText={ text => setUsername(text) }
                             />
                             <Input
@@ -83,7 +120,7 @@ const Login: React.FunctionComponent = props => {
                                 placeholder='Mật khẩu'
                                 placeholderTextColor="#fff"
                                 secureTextEntry={true}
-                                //value={"652099"}
+                                value={"652099"}
                                 onChangeText={ text => setPassword(text) }
                             />
                             <TouchableNativeFeedback onPress={() => {
@@ -116,4 +153,7 @@ const Login: React.FunctionComponent = props => {
 
 }
 
-export default Login
+export default connect<StatePropsInterface, DispatchPropsInterface, PropsInterface, StateInterface>(
+    mapStateToProps,
+    mapDispatchToProps
+)(Login);
