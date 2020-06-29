@@ -8,8 +8,8 @@ export const checkLogin3G = async () => {
         let phone = checkLoginResponse.data;
         let response = await ApiAutoLogin(phone);
         if (response.status == 200) {
-            await AsyncStorage.setItem('@token', response.data.data.data.token);
-            await AsyncStorage.setItem('@msisdn', response.data.data.data.data.phone);
+            await AsyncStorage.setItem('@token', response.data.data.token);
+            await AsyncStorage.setItem('@msisdn', response.data.data.data.phone);
         }
     }
 }

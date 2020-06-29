@@ -49,3 +49,10 @@ export const ApiAutoLogin = (phone: string) => {
         phone: phone
     });
 }
+
+export const ApiLoginAuth = (phone: string, password: string) => {
+    return axios.post("https://m.ibolero.vn/login", {
+        phone: phone,
+        password: password
+    });
+}
