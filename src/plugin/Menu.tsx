@@ -63,7 +63,9 @@ const Menu: React.FunctionComponent<PropsInterface> = props => {
                         width: 27,
                         marginRight: 5
                     }]} source={ require('../asset/img/icon-user.png') } />
-                    <Text style={[MenuStyle.menuTitle, {fontWeight: "bold"}]}>Xin chào { props.menu.phone?.substr(0,6) }****</Text>
+                    <Text numberOfLines={1} style={[MenuStyle.menuTitle, {fontWeight: "bold"}]}>
+                        Xin chào { props.menu.phone?.substr(0,6) }****
+                    </Text>
                 </View>
             )
         } else {

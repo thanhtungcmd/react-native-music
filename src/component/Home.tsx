@@ -17,7 +17,7 @@ import {HomeStyle} from "../asset/style";
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {checkLogin3G} from "../plugin/Function";
+import Preload from "../plugin/Preload";
 
 IconAntDesign.loadFont();
 
@@ -70,7 +70,6 @@ const Home: React.FunctionComponent<PropsInterface> = props => {
 
     useEffect(() => {
         props.actions.getHomeRankAction();
-        checkLogin3G();
     }, []);
 
     const renderRankSong = () => {
@@ -139,6 +138,7 @@ const Home: React.FunctionComponent<PropsInterface> = props => {
             <Spinner visible={spinner}/>
             <ScrollView
                 refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> }>
+                <Preload/>
                 <Header/>
                 <Menu/>
                 <Banner/>
