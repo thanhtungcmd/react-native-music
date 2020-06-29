@@ -19,7 +19,6 @@ const Login: React.FunctionComponent = props => {
     const handleLogin = async () => {
         if (username.length > 0 && password.length > 0) {
             let response = await ApiLoginAuth(username, password)
-            console.log(response);
             if (response.status == 200) {
                 await AsyncStorage.setItem('@token', response.data.data.token);
                 await AsyncStorage.setItem('@msisdn', response.data.data.data.phone);
