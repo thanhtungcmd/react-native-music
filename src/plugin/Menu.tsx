@@ -8,6 +8,7 @@ import {MenuStyle} from "../asset/style";
 import {MenuState} from "../reducer/menu.reducer.type";
 import StateInterface from "../reducer/index.reducer.type";
 import {connect} from "react-redux";
+import {useNavigation} from "@react-navigation/native";
 
 interface StatePropsInterface {
     menu?: MenuState
@@ -22,6 +23,7 @@ const mapStateToProps = (state: StateInterface) => ({
 const Menu: React.FunctionComponent<PropsInterface> = props => {
 
     const menuAnim = useRef(new Animated.Value(0)).current;
+    const navigation = useNavigation();
 
     const heightMenuAnim = menuAnim.interpolate({
         inputRange: [0, 1],
@@ -55,15 +57,19 @@ const Menu: React.FunctionComponent<PropsInterface> = props => {
             width: widthMenuAnim
         } ]}>
             {/*{ menuItem }*/}
-            <View style={[MenuStyle.menuItem, {
-                marginTop: 10
-            } ]}>
-                <Image style={[MenuStyle.menuImage, {
-                    width: 27,
-                    marginRight: 5
-                }]} source={ require('../asset/img/icon-user.png') } />
-                <Text style={ MenuStyle.menuTitle }>Đăng nhập</Text>
-            </View>
+            <TouchableWithoutFeedback onPress={() => {
+                navigation.navigate("Login")
+            }}>
+                <View style={[MenuStyle.menuItem, {
+                    marginTop: 10
+                } ]}>
+                    <Image style={[MenuStyle.menuImage, {
+                        width: 27,
+                        marginRight: 5
+                    }]} source={ require('../asset/img/icon-user.png') } />
+                    <Text style={ MenuStyle.menuTitle }>Đăng nhập</Text>
+                </View>
+            </TouchableWithoutFeedback>
             <View style={ MenuStyle.menuItem }>
                 <Image style={ MenuStyle.menuImage } source={ require('../asset/img/icon-noti.png') }/>
                 <Text style={ MenuStyle.menuTitle }>Thông báo</Text>

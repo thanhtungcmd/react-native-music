@@ -463,8 +463,6 @@ export const CategoryStyle = StyleSheet.create({
 export const SingerStyle = StyleSheet.create({
     flatBox: {
         flexDirection: "row",
-
-        backgroundColor: "red",
     },
     singerBox: {
         width: windowWidth / 2,
@@ -484,5 +482,35 @@ export const SingerStyle = StyleSheet.create({
         color: '#fff',
         fontSize: 18,
         textAlign: "center"
+    }
+})
+
+export const LoginStyle = StyleSheet.create({
+    loginBox: {
+        width: windowWidth,
+        height: windowHeight - 60,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    logoImg: {
+        width: windowWidth / 3,
+        height: (windowWidth / 3) * (169 / 355),
+        marginBottom: 50
+    },
+    loginForm: {
+        width: windowWidth / (4/3),
+        alignItems: "center"
+    },
+    loginBtn: {
+        width: "100%",
+        backgroundColor: "#dfa345",
+        color: "#fff",
+        paddingVertical: 15,
+        textAlign: "center",
+        borderRadius: 8
+    },
+    subBox: {
+        flexDirection: "row",
+        marginTop: 15
     }
 })
