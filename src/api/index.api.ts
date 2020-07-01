@@ -103,7 +103,7 @@ export const ApiInfoMe = async () => {
     return axios.get("https://m.ibolero.vn/package/me");
 }
 
-export const ApiFavoriteSong = async () => {
+export const ApiFavoriteSong = async (page: string | number) => {
     await checkTokenKey()
-    return axios.get("https://m.ibolero.vn/song/list-favorite");
+    return axios.get(`https://m.ibolero.vn/song/list-favorite?page=${page}`);
 }

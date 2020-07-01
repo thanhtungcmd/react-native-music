@@ -24,9 +24,11 @@ const Singer: React.FunctionComponent = () => {
 
     const [singer, setSinger] = useState<Array<SingerItem>>([]);
     const [page, setPage] = useState(1);
+    const [meta, setMeta] = useState(0);
 
     useEffect(() => {
         ApiGetSinger(1).then((response) => {
+            setMeta(response.data.data.meta.pagination.total_pages);
             setSinger(response.data.data.data)
         })
     }, []);
@@ -63,11 +65,15 @@ const Singer: React.FunctionComponent = () => {
     }
 
     const FooterComponent = () => {
-        return (
-            <View>
-                <ActivityIndicator size={ 70 } color={"#fff"}/>
-            </View>
-        )
+        if (meta > page) {
+            return (
+                <View>
+                    <ActivityIndicator size={70} color={"#fff"}/>
+                </View>
+            )
+        }
+
+        return null
     }
 
     const renderSinger = () => {

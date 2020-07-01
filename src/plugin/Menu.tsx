@@ -150,6 +150,24 @@ const Menu: React.FunctionComponent<PropsInterface> = props => {
         if (typeof props.menu?.token != "undefined") {
             return (
                 <TouchableWithoutFeedback onPress={() => {
+                    navigation.navigate("Favorite");
+                }}>
+                    <View style={ MenuStyle.menuItem }>
+                        <Image style={[MenuStyle.menuImage, {
+                            width: 32,
+                            marginRight: -2
+                        }]} source={ require('../asset/img/icon-favorite.png') }/>
+                        <Text style={ MenuStyle.menuTitle }>Yêu thích</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            )
+        }
+    }
+
+    const renderFavorite = () => {
+        if (typeof props.menu?.token != "undefined") {
+            return (
+                <TouchableWithoutFeedback onPress={() => {
                     handleLogout()
                 }}>
                     <View style={MenuStyle.menuItem}>
@@ -179,13 +197,7 @@ const Menu: React.FunctionComponent<PropsInterface> = props => {
                 <Image style={ MenuStyle.menuImage } source={ require('../asset/img/icon-playlist.png') }/>
                 <Text style={ MenuStyle.menuTitle }>Playlist</Text>
             </View>
-            <View style={ MenuStyle.menuItem }>
-                <Image style={[MenuStyle.menuImage, {
-                    width: 32,
-                    marginRight: -2
-                }]} source={ require('../asset/img/icon-favorite.png') }/>
-                <Text style={ MenuStyle.menuTitle }>Yêu thích</Text>
-            </View>
+            { renderFavorite() }
             { renderLogout() }
         </Animated.View>
     );

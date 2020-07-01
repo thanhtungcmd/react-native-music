@@ -4,22 +4,11 @@ import {ActivityIndicator, FlatList, Image,
 import {useNavigation, useRoute} from "@react-navigation/native";
 import Header from "../plugin/Header";
 import {SongItem} from "../reducer/home.reducer.type";
-import {ApiCategoryItem} from "../api/index.api";
+import {ApiCategoryItem, ApiFavoriteSong} from "../api/index.api";
 import {HomeStyle, RankStyle} from "../asset/style";
 
-interface RouteInterface {
-    key: string,
-    name: string,
-    params: {
-        id: string,
-        name: string,
-        slug: string
-    }
-}
+const Favorite: React.FunctionComponent = () => {
 
-const CateItem: React.FunctionComponent = () => {
-
-    const route = useRoute<RouteInterface>();
     const navigation = useNavigation();
 
     const [song, setSong] = useState<Array<SongItem>>([]);
@@ -27,9 +16,9 @@ const CateItem: React.FunctionComponent = () => {
     const [meta, setMeta] = useState(0);
 
     useEffect(() => {
-        ApiCategoryItem(route.params.id, '1').then((response) => {
-            setMeta(response.data.data.list.meta.pagination.total_pages);
-            setSong(response.data.data.list.data);
+        ApiFavoriteSong('1').then((response) => {
+            setMeta(response.data.data.meta.pagination.total_pages);
+            setSong(response.data.data.data);
         })
     }, []);
 
@@ -55,8 +44,8 @@ const CateItem: React.FunctionComponent = () => {
 
     const handleLoadMore = () => {
         setTimeout(() => {
-            ApiCategoryItem(route.params.id, page + 1).then((response) => {
-                setSong(song.concat(response.data.data.list.data));
+            ApiFavoriteSong(page + 1).then((response) => {
+                setSong(song.concat(response.data.data.data));
                 setPage(page + 1);
             })
         }, 1000);
@@ -78,11 +67,11 @@ const CateItem: React.FunctionComponent = () => {
         if (typeof song != "undefined") {
             return (
                 <FlatList data={ song }
-                    renderItem={({item}) => (<RenderSongItem item={item}/>)}
-                    keyExtractor={item => item.id}
-                    onEndReached={ handleLoadMore }
-                    onEndReachedThreshold={1}
-                    ListFooterComponent={ <FooterComponent/> }/>
+                          renderItem={({item}) => (<RenderSongItem item={item}/>)}
+                          keyExtractor={item => item.id}
+                          onEndReached={ handleLoadMore }
+                          onEndReachedThreshold={1}
+                          ListFooterComponent={ <FooterComponent/> }/>
             )
         }
     }
@@ -91,7 +80,7 @@ const CateItem: React.FunctionComponent = () => {
         <SafeAreaView>
             <ImageBackground source={ require('../asset/img/main-bg.png') } style={ RankStyle.homeBg }>
                 <View style={{ height: 75 }}>
-                    <Header back={true} header={ route.params.name } />
+                    <Header back={true} header={ "Yêu thích" } />
                 </View>
                 { renderSong() }
             </ImageBackground>
@@ -100,4 +89,4 @@ const CateItem: React.FunctionComponent = () => {
 
 }
 
-export default CateItem
+export default Favorite
