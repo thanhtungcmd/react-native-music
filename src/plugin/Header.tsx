@@ -8,11 +8,13 @@ import {bindActionCreators, Dispatch} from "redux";
 import * as MenuAction from "../action/menu.action";
 import {connect} from "react-redux";
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
+import {useNavigation} from "@react-navigation/native";
 
 IconAntDesign.loadFont();
 
 interface ComponentInterface {
-    header?: string
+    header?: string,
+    back?: boolean
 }
 
 interface StatePropsInterface {
@@ -39,23 +41,39 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 const Header: React.FunctionComponent<PropsInterface> = props => {
 
+    const navigation = useNavigation();
+
     const LeftMenu = () => {
         const clickLeft = () => {
             props.actions?.toggleMenuAction(!props.menu?.show_menu)
         }
 
-        return (
-            <TouchableWithoutFeedback onPress={ clickLeft }>
-                <View>
-                    <Avatar rounded
-                        source={
-                            (typeof props.menu?.token !== "undefined")
-                                ? require('../asset/img/icon-user.png')
-                                : require('../asset/img/icon-user2.png') }/>
-                    <Badge status="error" value="8" containerStyle={ HeaderStyle.badge }/>
-                </View>
-            </TouchableWithoutFeedback>
-        )
+        const clickBack = () => {
+            navigation.goBack();
+        }
+
+        if (!props.back) {
+            return (
+                <TouchableWithoutFeedback onPress={clickLeft}>
+                    <View>
+                        <Avatar rounded
+                            source={
+                                (typeof props.menu?.token !== "undefined")
+                                    ? require('../asset/img/icon-user.png')
+                                    : require('../asset/img/icon-user2.png')}/>
+                        <Badge status="error" value="8" containerStyle={HeaderStyle.badge}/>
+                    </View>
+                </TouchableWithoutFeedback>
+            )
+        } else {
+            return (
+                <TouchableWithoutFeedback onPress={clickBack}>
+                    <View>
+                        <IconAntDesign size={30} name={'arrowleft'} color={"#fff"} />
+                    </View>
+                </TouchableWithoutFeedback>
+            )
+        }
     }
 
     const CenterMenu = () => {

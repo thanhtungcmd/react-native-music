@@ -45,8 +45,6 @@ const Preload: React.FunctionComponent<PropsInterface> = props => {
         if (token === null && phone === null) {
             checkLogin3G()
         } else {
-            let infoMe = await ApiFavoriteSong();
-            console.log(infoMe.data.data);
             props.actions?.setPhoneAction(phone);
             props.actions?.setTokenAction(token);
         }

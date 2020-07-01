@@ -84,7 +84,7 @@ const SingerItem: React.FunctionComponent = () => {
         <SafeAreaView>
             <ImageBackground source={ require('../asset/img/main-bg.png') } style={ RankStyle.homeBg }>
                 <View style={{ height: 75 }}>
-                    <Header header={ route.params.name } />
+                    <Header back={true} header={ route.params.name } />
                 </View>
                 { renderSong() }
             </ImageBackground>
