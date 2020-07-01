@@ -31,10 +31,6 @@ const CateItem: React.FunctionComponent = () => {
         })
     }, []);
 
-    useEffect(() => {
-        console.log(page);
-    }, [page])
-
     const RenderSongItem = (item: any) => {
         return (
             <TouchableWithoutFeedback onPress={() => {

@@ -11,7 +11,6 @@ export const videoSmallHeight = (windowWidth / 3) * (9/16);
 export const videoSmallTop = windowHeight - videoSmallHeight - 90;
 export const videoFullHeight = windowWidth * (9/16);
 export const titleSmallWidth = windowWidth * (2/3);
-console.log(videoSmallTop);
 
 export const ContainerApp = StyleSheet.create({
     main: {

@@ -29,7 +29,6 @@ const PlayerBak: React.FunctionComponent<PropInterface> = props => {
     });
 
     const handleBackButtonClick = useCallback(() => {
-        console.log(state.fullscreen);
         return true
     }, [])
 
@@ -58,7 +57,6 @@ const PlayerBak: React.FunctionComponent<PropInterface> = props => {
     }
 
     const onSeek = (data: OnSeekData) => {
-        console.log(data.seekTime);
         // @ts-ignore
         videoRef.current.seek(data.seekTime)
         setState(value => ({
@@ -76,7 +74,6 @@ const PlayerBak: React.FunctionComponent<PropInterface> = props => {
     }
 
     const handleSlider = (time: number) => {
-        console.log(time);
         onSeek({
             currentTime: state.currentTime,
             seekTime: time

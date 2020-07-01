@@ -11,6 +11,7 @@ import Menu from "../plugin/Menu";
 import {useNavigation} from "@react-navigation/native";
 import {HomeStyle, RankStyle} from "../asset/style";
 import IconAntDesign from "react-native-vector-icons/AntDesign";
+import Overlay from "../plugin/Overlay";
 
 
 interface StatePropsInterface {
@@ -111,6 +112,7 @@ const Rank: React.FunctionComponent<PropsInterface> = props => {
                 <View style={{ height: 75 }}>
                     <Header header="Bảng xếp hạng" />
                     <Menu/>
+                    <Overlay/>
                 </View>
                 { renderRank() }
             </ImageBackground>

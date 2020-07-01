@@ -49,7 +49,7 @@ const Header: React.FunctionComponent<PropsInterface> = props => {
                 <View>
                     <Avatar rounded
                         source={
-                            (typeof props.menu?.token != "undefined")
+                            (typeof props.menu?.token !== "undefined")
                                 ? require('../asset/img/icon-user.png')
                                 : require('../asset/img/icon-user2.png') }/>
                     <Badge status="error" value="8" containerStyle={ HeaderStyle.badge }/>

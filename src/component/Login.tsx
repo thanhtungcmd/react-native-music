@@ -79,9 +79,7 @@ const Login: React.FunctionComponent<PropsInterface> = props => {
             "Nội dung bạn nhập chưa chính xác!",
             [
                 {
-                    text: "Đóng", onPress: () => {
-                        console.log("Login Fail")
-                    }
+                    text: "Đóng", onPress: () => {}
                 }
             ],
             { cancelable: false }

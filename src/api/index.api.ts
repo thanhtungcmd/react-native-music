@@ -1,4 +1,23 @@
 import axios from "axios"
+import AsyncStorage from "@react-native-community/async-storage";
+
+AsyncStorage.getItem('@token').then((token) => {
+    console.log(token);
+    if (typeof token === "string") {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+        axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    }
+});
+
+axios.interceptors.response.use( (response) =>  {
+    return response;
+}, (error) => {
+    if (error.response.code == 401) {
+        AsyncStorage.removeItem('@token');
+        AsyncStorage.getItem('@msisdn');
+    }
+    return error;
+});
 
 export const ApiHomeBanner = () => {
     return axios.get("https://m.ibolero.vn/info/banner");
@@ -55,4 +74,12 @@ export const ApiLoginAuth = (phone: string, password: string) => {
         phone: phone,
         password: password
     });
+}
+
+export const ApiInfoMe = () => {
+    return axios.get("https://m.ibolero.vn/package/me");
+}
+
+export const ApiFavoriteSong = () => {
+    return axios.get("https://m.ibolero.vn/song/list-favorite");
 }

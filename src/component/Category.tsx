@@ -10,6 +10,7 @@ import {connect} from "react-redux";
 import {CategoryStyle, HomeStyle} from "../asset/style";
 import * as lodash from "lodash";
 import {useNavigation} from "@react-navigation/native";
+import Overlay from "../plugin/Overlay";
 
 interface StatePropsInterface {
     home?: HomeState
@@ -129,6 +130,7 @@ const Category: React.FunctionComponent<PropsInterface> = props => {
                 <View style={{ height: 75 }}>
                     <Header header="Bạn muốn nghe gì" />
                     <Menu/>
+                    <Overlay/>
                 </View>
                 { renderCategory() }
             </ScrollView>

@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {ApiAutoLogin, ApiCheckLogin} from "../api/index.api";
+import {ApiAutoLogin, ApiCheckLogin, ApiFavoriteSong, ApiInfoMe} from "../api/index.api";
 import AsyncStorage from "@react-native-community/async-storage";
 import {MenuState} from "../reducer/menu.reducer.type";
 import StateInterface from "../reducer/index.reducer.type";
@@ -42,10 +42,11 @@ const Preload: React.FunctionComponent<PropsInterface> = props => {
     const checkStore = async () => {
         const token = await AsyncStorage.getItem('@token');
         const phone = await AsyncStorage.getItem('@msisdn');
-        console.log(token, phone);
         if (token === null && phone === null) {
             checkLogin3G()
         } else {
+            let infoMe = await ApiFavoriteSong();
+            console.log(infoMe.data.data);
             props.actions?.setPhoneAction(phone);
             props.actions?.setTokenAction(token);
         }
@@ -53,7 +54,6 @@ const Preload: React.FunctionComponent<PropsInterface> = props => {
 
     const checkLogin3G = async () => {
         let checkLoginResponse = await ApiCheckLogin();
-        console.log(checkLoginResponse.data);
         if (checkLoginResponse.status == 200 && checkLoginResponse.data != "") {
             let phone = checkLoginResponse.data;
             let response = await ApiAutoLogin(phone);

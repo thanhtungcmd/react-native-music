@@ -57,11 +57,11 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
     useEffect(() => {
-        console.log(route.params.song_id);
         props.actions?.getSongAction(route.params.song_id);
     }, []);
 
     useEffect(() => {
+        console.log(props.play)
     }, [props.play]);
 
     const handlePressSong = (song_id: string) => {

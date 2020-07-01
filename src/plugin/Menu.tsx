@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useEffect, useRef, useState} from "react";
-import {Animated, Image, TouchableWithoutFeedback} from "react-native";
+import {Alert, Animated, Image, TouchableWithoutFeedback} from "react-native";
 import {
     Text, View
 } from 'react-native';
@@ -9,15 +9,34 @@ import {MenuState} from "../reducer/menu.reducer.type";
 import StateInterface from "../reducer/index.reducer.type";
 import {connect} from "react-redux";
 import {useNavigation} from "@react-navigation/native";
+import AsyncStorage from "@react-native-community/async-storage";
+import {bindActionCreators, Dispatch} from "redux";
+import * as MenuAction from "../action/menu.action";
 
 interface StatePropsInterface {
     menu?: MenuState
 }
 
-type PropsInterface = StatePropsInterface
+interface DispatchPropsInterface {
+    actions?: {
+        setTokenAction: any,
+        setPhoneAction: any,
+        toggleMenuAction: any
+    }
+}
+
+type PropsInterface = StatePropsInterface & DispatchPropsInterface
 
 const mapStateToProps = (state: StateInterface) => ({
     menu: state.menu,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    actions: bindActionCreators({
+        setTokenAction: MenuAction.setTokenAction,
+        setPhoneAction: MenuAction.setPhoneAction,
+        toggleMenuAction: MenuAction.toggleMenuAction
+    }, dispatch)
 });
 
 const Menu: React.FunctionComponent<PropsInterface> = props => {
@@ -53,6 +72,46 @@ const Menu: React.FunctionComponent<PropsInterface> = props => {
         }
     },[props.menu?.show_menu]);
 
+
+    const logoutConfirm = async () => {
+        await AsyncStorage.removeItem('@token')
+        await AsyncStorage.removeItem('@msisdn')
+        props.actions?.setTokenAction(undefined);
+        props.actions?.setPhoneAction(undefined);
+        props.actions?.toggleMenuAction(false);
+
+        return Alert.alert(
+            "Đăng xuất",
+            "Bạn đã đăng xuất thành công",
+            [
+                {
+                    text: "Đóng", onPress: () => {}
+                }
+            ],
+            { cancelable: false }
+        );
+    }
+
+    const handleLogout = () => {
+        return Alert.alert(
+            "Đăng xuất",
+            "Bạn có chắc chắn muốn đóng",
+            [
+                {
+                    text: "Đăng xuất", onPress: () => {
+                        logoutConfirm()
+                    },
+                },
+                {
+                    text: "Không", onPress: () => {
+
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
+    }
+
     const renderUser = () => {
         if (typeof props.menu?.token != "undefined") {
             return (
@@ -87,6 +146,24 @@ const Menu: React.FunctionComponent<PropsInterface> = props => {
         }
     }
 
+    const renderLogout = () => {
+        if (typeof props.menu?.token != "undefined") {
+            return (
+                <TouchableWithoutFeedback onPress={() => {
+                    handleLogout()
+                }}>
+                    <View style={MenuStyle.menuItem}>
+                        <Image style={[MenuStyle.menuImage, {
+                            width: 32,
+                            marginRight: -2
+                        }]} source={require('../asset/img/icon-logout.png')}/>
+                        <Text style={MenuStyle.menuTitle}>Đăng xuất</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            )
+        }
+    }
+
     return (
         <Animated.View style={[ MenuStyle.menu, {
             height: heightMenuAnim,
@@ -109,18 +186,13 @@ const Menu: React.FunctionComponent<PropsInterface> = props => {
                 }]} source={ require('../asset/img/icon-favorite.png') }/>
                 <Text style={ MenuStyle.menuTitle }>Yêu thích</Text>
             </View>
-            <View style={ MenuStyle.menuItem }>
-                <Image style={[MenuStyle.menuImage, {
-                    width: 32,
-                    marginRight: -2
-                }]} source={ require('../asset/img/icon-logout.png') }/>
-                <Text style={ MenuStyle.menuTitle }>Đăng xuất</Text>
-            </View>
+            { renderLogout() }
         </Animated.View>
     );
 
 }
 
-export default connect<StatePropsInterface, {}, PropsInterface, StateInterface>(
-    mapStateToProps
+export default connect<StatePropsInterface, DispatchPropsInterface, PropsInterface, StateInterface>(
+    mapStateToProps,
+    mapDispatchToProps
 )(Menu);

@@ -15,6 +15,7 @@ import {SingerItem} from "../reducer/home.reducer.type";
 import {ApiCategoryItem, ApiGetSinger} from "../api/index.api";
 import {useNavigation} from "@react-navigation/native";
 import * as lodash from "lodash";
+import Overlay from "../plugin/Overlay";
 
 
 const Singer: React.FunctionComponent = () => {
@@ -29,10 +30,6 @@ const Singer: React.FunctionComponent = () => {
             setSinger(response.data.data.data)
         })
     }, []);
-
-    useEffect(() => {
-        console.log(page);
-    }, [page])
 
     const handleLoadMore = () => {
         setTimeout(() => {
@@ -94,6 +91,7 @@ const Singer: React.FunctionComponent = () => {
                 <View style={{ height: 75 }}>
                     <Header header={"Ca sĩ"} />
                     <Menu/>
+                    <Overlay/>
                 </View>
                 { renderSinger() }
             </ImageBackground>
