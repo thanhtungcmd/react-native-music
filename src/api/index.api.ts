@@ -14,72 +14,96 @@ axios.interceptors.response.use( (response) =>  {
 }, (error) => {
     if (error.response.code == 401) {
         AsyncStorage.removeItem('@token');
-        AsyncStorage.getItem('@msisdn');
+        AsyncStorage.removeItem('@msisdn');
     }
     return error;
 });
 
-export const ApiHomeBanner = () => {
+const checkTokenKey = async () => {
+    let token = await AsyncStorage.getItem('@token');
+    if (typeof token === "string") {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    } else {
+        axios.defaults.headers.common['Authorization'] = null;
+    }
+}
+
+export const ApiHomeBanner = async () => {
+    await checkTokenKey()
     return axios.get("https://m.ibolero.vn/info/banner");
 }
 
-export const ApiHomeRank = () => {
+export const ApiHomeRank = async () => {
+    await checkTokenKey()
     return axios.get("https://m.ibolero.vn/info/rank");
 }
 
-export const ApiHomeAll = () => {
+export const ApiHomeAll = async () => {
+    await checkTokenKey()
     return axios.get("https://m.ibolero.vn/info/home");
 }
 
-export const ApiHomeSinger = () => {
+export const ApiHomeSinger = async () => {
+    await checkTokenKey()
     return axios.get("https://m.ibolero.vn/info/artist");
 }
 
-export const ApiPlaySong = (id: string) => {
+export const ApiPlaySong = async (id: string) => {
+    await checkTokenKey()
     return axios.get("https://m.ibolero.vn/song/"+ id +"?type=nm");
 }
 
-export const ApiGetRankAll = () => {
+export const ApiGetRankAll = async () => {
+    await checkTokenKey()
     return axios.get("https://m.ibolero.vn/rank");
 }
 
-export const ApiGetCategory = () => {
+export const ApiGetCategory = async () => {
+    await checkTokenKey()
     return axios.get("https://m.ibolero.vn/categories");
 }
 
-export const ApiCategoryItem = (id: string, page: string | number) => {
+export const ApiCategoryItem = async (id: string, page: string | number) => {
+    await checkTokenKey()
     return axios.get(`https://m.ibolero.vn/category/${id}?page=${page}`);
 }
 
-export const ApiGetSinger = (page: string | number) => {
+export const ApiGetSinger = async (page: string | number) => {
+    await checkTokenKey()
     return axios.get(`https://m.ibolero.vn/artist?page=${page}`);
 }
 
-export const ApiSingerItem = (id: string, page: string | number) => {
+export const ApiSingerItem = async (id: string, page: string | number) => {
+    await checkTokenKey()
     return axios.get(`https://m.ibolero.vn/artist/${id}?page=${page}`);
 }
 
-export const ApiCheckLogin = () => {
+export const ApiCheckLogin = async () => {
+    await checkTokenKey()
     return axios.get("https://m.ibolero.vn/service/app");
 }
 
-export const ApiAutoLogin = (phone: string) => {
+export const ApiAutoLogin = async (phone: string) => {
+    await checkTokenKey()
     return axios.post("https://m.ibolero.vn/auto-login", {
         phone: phone
     });
 }
 
-export const ApiLoginAuth = (phone: string, password: string) => {
+export const ApiLoginAuth = async (phone: string, password: string) => {
+    await checkTokenKey()
     return axios.post("https://m.ibolero.vn/login", {
         phone: phone,
         password: password
     });
 }
 
-export const ApiInfoMe = () => {
+export const ApiInfoMe = async () => {
+    await checkTokenKey()
     return axios.get("https://m.ibolero.vn/package/me");
 }
 
-export const ApiFavoriteSong = () => {
+export const ApiFavoriteSong = async () => {
+    await checkTokenKey()
     return axios.get("https://m.ibolero.vn/song/list-favorite");
 }
