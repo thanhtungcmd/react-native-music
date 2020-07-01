@@ -150,13 +150,13 @@ const Menu: React.FunctionComponent<PropsInterface> = props => {
         if (typeof props.menu?.token != "undefined") {
             return (
                 <TouchableWithoutFeedback onPress={() => {
-                    navigation.navigate("Favorite");
+                    handleLogout()
                 }}>
                     <View style={ MenuStyle.menuItem }>
                         <Image style={[MenuStyle.menuImage, {
                             width: 32,
                             marginRight: -2
-                        }]} source={ require('../asset/img/icon-favorite.png') }/>
+                        }]} source={ require('../asset/img/icon-logout.png') }/>
                         <Text style={ MenuStyle.menuTitle }>Yêu thích</Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -168,13 +168,13 @@ const Menu: React.FunctionComponent<PropsInterface> = props => {
         if (typeof props.menu?.token != "undefined") {
             return (
                 <TouchableWithoutFeedback onPress={() => {
-                    handleLogout()
+                    navigation.navigate("Favorite");
                 }}>
                     <View style={MenuStyle.menuItem}>
                         <Image style={[MenuStyle.menuImage, {
                             width: 32,
                             marginRight: -2
-                        }]} source={require('../asset/img/icon-logout.png')}/>
+                        }]} source={require('../asset/img/icon-favorite.png')}/>
                         <Text style={MenuStyle.menuTitle}>Đăng xuất</Text>
                     </View>
                 </TouchableWithoutFeedback>

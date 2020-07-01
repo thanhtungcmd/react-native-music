@@ -90,9 +90,13 @@ const Header: React.FunctionComponent<PropsInterface> = props => {
             <ImageBackground source={ require('../asset/img/header-bg.png') } style={ HeaderStyle.headerBg }>
                 { LeftMenu() }
                 { CenterMenu() }
-                <View>
-                    <IconAntDesign size={30} name={'search1'} color={"#fff"} />
-                </View>
+                <TouchableWithoutFeedback onPress={() => {
+                    navigation.navigate("Search");
+                }}>
+                    <View>
+                        <IconAntDesign size={30} name={'search1'} color={"#fff"} />
+                    </View>
+                </TouchableWithoutFeedback>
             </ImageBackground>
         </View>
     );

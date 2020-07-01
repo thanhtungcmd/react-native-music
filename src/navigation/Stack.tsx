@@ -7,6 +7,7 @@ import CateItem from "../component/CateItem";
 import SingerItem from "../component/SingerItem";
 import Login from "../component/Login";
 import Favorite from "../component/Favorite";
+import Search from "../component/Search";
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ const StackView: React.FunctionComponent = () => {
             <Stack.Screen name="CateItem" component={CateItem} />
             <Stack.Screen name="SingerItem" component={SingerItem} />
             <Stack.Screen name="Favorite" component={Favorite} />
+            <Stack.Screen name="Search" component={Search} />
         </Stack.Navigator>
     )
 
