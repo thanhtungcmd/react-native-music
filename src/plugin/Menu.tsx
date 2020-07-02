@@ -157,7 +157,7 @@ const Menu: React.FunctionComponent<PropsInterface> = props => {
                             width: 32,
                             marginRight: -2
                         }]} source={ require('../asset/img/icon-logout.png') }/>
-                        <Text style={ MenuStyle.menuTitle }>Yêu thích</Text>
+                        <Text style={ MenuStyle.menuTitle }>Đăng xuất</Text>
                     </View>
                 </TouchableWithoutFeedback>
             )
@@ -175,7 +175,7 @@ const Menu: React.FunctionComponent<PropsInterface> = props => {
                             width: 32,
                             marginRight: -2
                         }]} source={require('../asset/img/icon-favorite.png')}/>
-                        <Text style={MenuStyle.menuTitle}>Đăng xuất</Text>
+                        <Text style={MenuStyle.menuTitle}>Yêu thích</Text>
                     </View>
                 </TouchableWithoutFeedback>
             )

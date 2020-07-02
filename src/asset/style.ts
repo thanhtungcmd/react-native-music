@@ -540,7 +540,29 @@ export const OverlayStyle = StyleSheet.create({
 });
 
 export const SearchStyle = StyleSheet.create({
+    homeBg: {
+        width: windowWidth,
+        height: windowHeight,
+    },
     searchInput: {
         width: windowWidth - 50
+    },
+    searchHead: {
+        fontSize: 18,
+        color: '#fff',
+        fontWeight: "bold",
+        paddingTop: 15,
+        paddingHorizontal: 15,
+        textTransform: "uppercase"
+    },
+    searchItem: {
+        paddingHorizontal: 15,
+        paddingTop: 15,
+    },
+    itemText: {
+        color: '#fff',
+        fontSize: 14,
+        fontWeight: "bold",
+        marginBottom: 10
     }
 });

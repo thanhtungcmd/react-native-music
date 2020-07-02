@@ -107,3 +107,10 @@ export const ApiFavoriteSong = async (page: string | number) => {
     await checkTokenKey()
     return axios.get(`https://m.ibolero.vn/song/list-favorite?page=${page}`);
 }
+
+export const ApiSearchData = async (query: string) => {
+    await checkTokenKey()
+    return axios.post("http://m.ibolero.vn/search", {
+        query: query
+    })
+}
