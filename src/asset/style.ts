@@ -177,7 +177,21 @@ export const PlayerStyle = StyleSheet.create({
         alignItems: "flex-end"
     },
     slider: {
-        width: "95%"
+        width: "95%",
+    },
+    track: {
+        height: 2,
+        backgroundColor: '#303030',
+    },
+    thumb: {
+        width: 10,
+        height: 10,
+        backgroundColor: '#31a4db',
+        borderRadius: 10 / 2,
+        shadowColor: '#31a4db',
+        shadowOffset: {width: 0, height: 0},
+        shadowRadius: 2,
+        shadowOpacity: 1,
     },
     fullscreenControl: {
         width: "10%",

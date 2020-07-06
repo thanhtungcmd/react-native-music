@@ -6,6 +6,7 @@ import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
 import * as MenuAction from "../action/menu.action";
 import {connect} from "react-redux";
+import {WebView} from "react-native-webview";
 
 interface StatePropsInterface {
     menu?: MenuState
@@ -37,14 +38,10 @@ const Preload: React.FunctionComponent<PropsInterface> = props => {
 
     useEffect(() => {
         checkStore();
-    }, [])
+    }, []);
 
-    const checkLogin3G = async () => {
-        let checkLoginResponse = await ApiCheckLogin();
-        console.log(123);
-        console.log(checkLoginResponse.data, checkLoginResponse.status);
-        if (checkLoginResponse.status == 200 && checkLoginResponse.data != "") {
-            let phone = checkLoginResponse.data;
+    const checkLogin3G = async (phone: any) => {
+        if (phone != "") {
             console.log(phone);
             let response = await ApiAutoLogin(phone);
             if (response.status == 200) {
@@ -57,20 +54,21 @@ const Preload: React.FunctionComponent<PropsInterface> = props => {
     const checkStore = async () => {
         const token = await AsyncStorage.getItem('@token');
         const phone = await AsyncStorage.getItem('@msisdn');
-        console.log("Token: " + token);
-        console.log("phone: " + phone);
-        if (token === null && phone === null) {
-            console.log(123);
-            let checkLoginResponse = await ApiCheckLogin();
-            console.log(checkLoginResponse.data, checkLoginResponse.status);
-        } else {
-            console.log(456);
+        if (token !== null && phone !== null) {
             props.actions?.setPhoneAction(phone);
             props.actions?.setTokenAction(token);
         }
     }
 
-    return null;
+    return (
+        <WebView
+            source={{ uri: 'http://m.ibolero.vn/service/app' }}
+            onMessage={ (event: any) => {
+                checkLogin3G(event.nativeEvent.data);
+            }}
+            style={{ marginTop: 0 }}
+        />
+    );
 }
 
 export default connect<StatePropsInterface, DispatchPropsInterface, PropsInterface, StateInterface>(

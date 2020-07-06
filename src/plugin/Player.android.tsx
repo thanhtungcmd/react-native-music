@@ -154,6 +154,8 @@ class Player extends React.Component<PropInterface, StateInterface> {
                         <View style={PlayerStyle.sliderControl}>
                             <Slider
                                 style={PlayerStyle.slider}
+                                thumbStyle={PlayerStyle.thumb}
+                                trackStyle={PlayerStyle.track}
                                 value={this.state.currentTime}
                                 minimumValue={0}
                                 maximumValue={this.state.duration}
@@ -161,6 +163,7 @@ class Player extends React.Component<PropInterface, StateInterface> {
                                 onValueChange={this.handleSlider.bind(this)}
                                 minimumTrackTintColor={'#F44336'}
                                 maximumTrackTintColor={'#FFFFFF'}
+                                thumbTouchSize={{width: 50, height: 40}}
                                 thumbTintColor={'#F44336'}/>
                         </View>
                         <View style={PlayerStyle.fullscreenControl}>
