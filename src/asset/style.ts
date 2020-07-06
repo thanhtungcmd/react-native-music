@@ -184,11 +184,11 @@ export const PlayerStyle = StyleSheet.create({
         backgroundColor: '#303030',
     },
     thumb: {
-        width: 10,
-        height: 10,
-        backgroundColor: '#31a4db',
-        borderRadius: 10 / 2,
-        shadowColor: '#31a4db',
+        width: 15,
+        height: 15,
+        backgroundColor: '#fff',
+        borderRadius: 100,
+        shadowColor: '#fff',
         shadowOffset: {width: 0, height: 0},
         shadowRadius: 2,
         shadowOpacity: 1,
@@ -200,6 +200,18 @@ export const PlayerStyle = StyleSheet.create({
     },
     controlCenter: {
         alignItems: "center"
+    },
+    controlTop: {
+        paddingTop: 10,
+        paddingHorizontal: 15,
+        flexDirection: "row",
+        justifyContent: 'space-between',
+    },
+    controlTopRight: {
+        flexDirection: "row",
+    },
+    iconTop: {
+        marginRight: 20
     },
     // Control Full Screen
     controlOverlayFS: {

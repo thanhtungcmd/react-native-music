@@ -4,13 +4,17 @@ import Video, { OnProgressData, OnLoadData, OnSeekData } from "react-native-vide
 import {PlayerStyle} from "../asset/style";
 import { Slider } from 'react-native-elements';
 import IconMC from 'react-native-vector-icons/MaterialIcons';
+import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import Orientation from 'react-native-orientation-locker';
+import AsyncStorage from "@react-native-community/async-storage";
 
 IconMC.loadFont();
 
 interface PropInterface {
     source: string,
-    navigation: any
+    navigation: any,
+    next_id: string,
+    change_action: any
 }
 
 interface StateInterface {
@@ -35,7 +39,7 @@ class Player extends React.Component<PropInterface, StateInterface> {
             currentTime: 0,
             duration: 0,
             showControls: true,
-            countShowControls: 0
+            countShowControls: 0,
         }
     }
 
@@ -86,6 +90,14 @@ class Player extends React.Component<PropInterface, StateInterface> {
         this.setState({
             currentTime: data.seekTime
         });
+    }
+
+    async onEnd() {
+        let autoplay = await AsyncStorage.getItem('@autoplay');
+        console.log(autoplay);
+        if (autoplay === "1") {
+            this.props.change_action(this.props.next_id);
+        }
     }
 
     handleFullScreen() {
@@ -146,8 +158,19 @@ class Player extends React.Component<PropInterface, StateInterface> {
         if (this.state.showControls) {
             return (
                 <View style={(this.state.fullscreen) ? PlayerStyle.controlOverlayFS : PlayerStyle.controlOverlay}>
-                    <View>
-                        <IconMC name="arrow-back" size={30} color={"#fff"}/>
+                    <View style={PlayerStyle.controlTop}>
+                        <View>
+                            <TouchableWithoutFeedback
+                                onPress={() => this.handleBackButtonClick()}>
+                                <IconMC name="arrow-back" size={30} color={"#fff"} />
+                            </TouchableWithoutFeedback>
+                        </View>
+                        <View style={PlayerStyle.controlTopRight}>
+                            <IconAntDesign style={PlayerStyle.iconTop} name="sharealt" size={20} color={"#fff"}/>
+                            <IconAntDesign style={PlayerStyle.iconTop} name="download" size={20} color={"#fff"}/>
+                            <IconAntDesign style={PlayerStyle.iconTop} name="hearto" size={20} color={"#fff"}/>
+                            <IconAntDesign name="sync" size={20} color={"#fff"}/>
+                        </View>
                     </View>
                     {this.renderControlCenter()}
                     <View style={PlayerStyle.bottomControl}>
@@ -188,6 +211,7 @@ class Player extends React.Component<PropInterface, StateInterface> {
                            source={{ uri: this.props.source }}
                            onLoad={ this.onLoad.bind(this) }
                            onProgress={ this.onProgress.bind(this) }
+                           onEnd={ this.onEnd.bind(this) }
                            //playInBackground={true}
                            paused={ !this.state.play }/>
                 </TouchableWithoutFeedback>

@@ -13,6 +13,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {HomeStyle, PlayStyle, windowHeight, windowWidth} from "../asset/style";
 import { Image } from 'react-native-elements';
 import { ActivityIndicator } from 'react-native';
+import AsyncStorage from "@react-native-community/async-storage";
 
 IconAntDesign.loadFont();
 
@@ -54,10 +55,27 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
 
     const [isEnabled, setIsEnabled] = useState(false);
 
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    const toggleSwitch = async () => {
+        setIsEnabled(!isEnabled);
+        let autoplay = await AsyncStorage.getItem('@autoplay');
+        if (autoplay === "1") {
+            await AsyncStorage.setItem('@autoplay', "0");
+        } else {
+            await AsyncStorage.setItem('@autoplay', "1");
+        }
+    }
 
     useEffect(() => {
+        const checkAuto = async () => {
+            let autoplay = await AsyncStorage.getItem('@autoplay');
+            if (autoplay === "1") {
+                setIsEnabled(true);
+            } else {
+                setIsEnabled(false);
+            }
+        }
         props.actions?.getSongAction(route.params.song_id);
+        checkAuto();
     }, []);
 
     const handlePressSong = (song_id: string) => {
@@ -96,7 +114,11 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
     const renderVideo = () => {
         if (typeof props.play?.song != "undefined") {
             return (
-                <PlayerAndroid source={ props.play.song.link_stream } navigation={ navigation }/>
+                <PlayerAndroid next_id={ props.play.song.relate_song[0].id }
+                               source={ props.play.song.link_stream }
+                               navigation={ navigation }
+                               change_action={ props.actions?.getSongAction }
+                />
             )
         }
     }
