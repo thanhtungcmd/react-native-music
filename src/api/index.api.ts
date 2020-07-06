@@ -2,7 +2,6 @@ import axios from "axios"
 import AsyncStorage from "@react-native-community/async-storage";
 
 AsyncStorage.getItem('@token').then((token) => {
-    console.log(token);
     if (typeof token === "string") {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
         axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -80,7 +79,7 @@ export const ApiSingerItem = async (id: string, page: string | number) => {
 
 export const ApiCheckLogin = async () => {
     await checkTokenKey()
-    return axios.get("https://m.ibolero.vn/service/app");
+    return axios.get("http://m.ibolero.vn/service/app");
 }
 
 export const ApiAutoLogin = async (phone: string) => {

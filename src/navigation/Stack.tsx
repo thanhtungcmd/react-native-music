@@ -20,6 +20,7 @@ const StackView: React.FunctionComponent = () => {
             <Stack.Screen name="CateItem" component={CateItem} />
             <Stack.Screen name="SingerItem" component={SingerItem} />
             <Stack.Screen name="Favorite" component={Favorite} />
+            <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Search" component={Search} />
         </Stack.Navigator>
     )

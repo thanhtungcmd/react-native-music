@@ -39,26 +39,34 @@ const Preload: React.FunctionComponent<PropsInterface> = props => {
         checkStore();
     }, [])
 
-    const checkStore = async () => {
-        const token = await AsyncStorage.getItem('@token');
-        const phone = await AsyncStorage.getItem('@msisdn');
-        if (token === null && phone === null) {
-            checkLogin3G()
-        } else {
-            props.actions?.setPhoneAction(phone);
-            props.actions?.setTokenAction(token);
-        }
-    }
-
     const checkLogin3G = async () => {
         let checkLoginResponse = await ApiCheckLogin();
+        console.log(123);
+        console.log(checkLoginResponse.data, checkLoginResponse.status);
         if (checkLoginResponse.status == 200 && checkLoginResponse.data != "") {
             let phone = checkLoginResponse.data;
+            console.log(phone);
             let response = await ApiAutoLogin(phone);
             if (response.status == 200) {
                 await AsyncStorage.setItem('@token', response.data.data.token);
                 await AsyncStorage.setItem('@msisdn', response.data.data.data.phone);
             }
+        }
+    }
+
+    const checkStore = async () => {
+        const token = await AsyncStorage.getItem('@token');
+        const phone = await AsyncStorage.getItem('@msisdn');
+        console.log("Token: " + token);
+        console.log("phone: " + phone);
+        if (token === null && phone === null) {
+            console.log(123);
+            let checkLoginResponse = await ApiCheckLogin();
+            console.log(checkLoginResponse.data, checkLoginResponse.status);
+        } else {
+            console.log(456);
+            props.actions?.setPhoneAction(phone);
+            props.actions?.setTokenAction(token);
         }
     }
 

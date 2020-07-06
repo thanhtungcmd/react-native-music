@@ -101,7 +101,6 @@ const Search: React.FunctionComponent = () => {
                                 placeholderTextColor="#fff"
                                 autoFocus={true}
                                 onSubmitEditing={event => {
-                                    console.log(123);
                                 }}
                                 onChangeText={text => {
                                     handleSearch(text)
