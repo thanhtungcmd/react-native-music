@@ -6,7 +6,7 @@ export interface PlayState {
         name: string,
         link_stream: string,
         thumbnail_url: string,
-        favorite: string,
+        favorite: boolean,
         artist: string,
         song_time: number,
         view_count: number,

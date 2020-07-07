@@ -15,6 +15,17 @@ const playReducer = (state: PlayState = {}, action: PLAY_ACTION): PlayState => {
                 song_id: action.data,
             };
 
+        case "TOGGLE_FAVORITE":
+            if (typeof state.song != "undefined") {
+                return {
+                    ...state,
+                    song: {
+                        ...state.song,
+                        favorite: action.data
+                    }
+                }
+            }
+
         default:
             return state;
     }

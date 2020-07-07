@@ -26,3 +26,10 @@ export const changeSongAction = (data: string) => {
         data: data
     }
 }
+
+export const toggleFavoriteAction = (data: boolean) => {
+    return {
+        type: types.TOGGLE_FAVORITE,
+        data: data
+    }
+}

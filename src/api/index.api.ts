@@ -113,3 +113,17 @@ export const ApiSearchData = async (query: string) => {
         query: query
     })
 }
+
+export const ApiAddFavorite = async (song_id: string) => {
+    await checkTokenKey()
+    return axios.post("http://m.ibolero.vn/song/favorite", {
+        song_id: song_id
+    })
+}
+
+export const ApiRemoveFavorite = async (song_id: string) => {
+    await checkTokenKey()
+    return axios.post("http://m.ibolero.vn/song/un-favorite", {
+        song_id: song_id
+    })
+}

@@ -14,6 +14,7 @@ import {HomeStyle, PlayStyle, windowHeight, windowWidth} from "../asset/style";
 import { Image } from 'react-native-elements';
 import { ActivityIndicator } from 'react-native';
 import AsyncStorage from "@react-native-community/async-storage";
+import {ApiAddFavorite, ApiFavoriteSong, ApiRemoveFavorite} from "../api/index.api";
 
 IconAntDesign.loadFont();
 
@@ -24,6 +25,7 @@ interface StatePropsInterface {
 interface DispatchPropsInterface {
     actions?: {
         getSongAction: any,
+        toggleFavoriteAction: any
     }
 }
 
@@ -44,6 +46,7 @@ const mapStateToProps = (state: StateInterface) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     actions: bindActionCreators({
         getSongAction: PlayAction.getSongAction,
+        toggleFavoriteAction: PlayAction.toggleFavoriteAction
     }, dispatch)
 });
 
@@ -83,6 +86,18 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
         return true;
     }
 
+    const handleFavorite = () => {
+        if (typeof props.play?.song != "undefined") {
+            if (!props.play.song.favorite) {
+                ApiAddFavorite(props.play.song.id);
+                props.actions?.toggleFavoriteAction(true)
+            } else {
+                ApiRemoveFavorite(props.play.song.id);
+                props.actions?.toggleFavoriteAction(false)
+            }
+        }
+    }
+
     const ShowItem = (item: any) => {
         return (
             <TouchableWithoutFeedback onPress={ () => handlePressSong(item.item.id) }>
@@ -118,6 +133,8 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
                                source={ props.play.song.link_stream }
                                navigation={ navigation }
                                change_action={ props.actions?.getSongAction }
+                               favorite={ props.play.song.favorite }
+                               change_favorite={ handleFavorite }
                 />
             )
         }

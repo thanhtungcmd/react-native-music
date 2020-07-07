@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, TouchableWithoutFeedback, StatusBar, BackHandler} from "react-native";
+import {View, TouchableWithoutFeedback, StatusBar, BackHandler, Share} from "react-native";
 import Video, { OnProgressData, OnLoadData, OnSeekData } from "react-native-video";
 import {PlayerStyle} from "../asset/style";
 import { Slider } from 'react-native-elements';
@@ -14,7 +14,9 @@ interface PropInterface {
     source: string,
     navigation: any,
     next_id: string,
-    change_action: any
+    favorite: boolean,
+    change_action: any,
+    change_favorite: any
 }
 
 interface StateInterface {
@@ -23,7 +25,8 @@ interface StateInterface {
     currentTime: number,
     duration: number,
     showControls: boolean,
-    countShowControls: number
+    countShowControls: number,
+    replay: boolean,
 }
 
 class Player extends React.Component<PropInterface, StateInterface> {
@@ -40,6 +43,7 @@ class Player extends React.Component<PropInterface, StateInterface> {
             duration: 0,
             showControls: true,
             countShowControls: 0,
+            replay: false
         }
     }
 
@@ -71,6 +75,16 @@ class Player extends React.Component<PropInterface, StateInterface> {
         return true
     }
 
+    handleToggleReplay() {
+        this.setState({
+            replay: !this.state.replay
+        })
+    }
+
+    handleFavorite() {
+        this.props.change_favorite()
+    }
+
     onProgress(data: OnProgressData) {
         this.setState({
             currentTime: data.currentTime,
@@ -99,6 +113,27 @@ class Player extends React.Component<PropInterface, StateInterface> {
             this.props.change_action(this.props.next_id);
         }
     }
+
+    onShare = async () => {
+        try {
+            const result = await Share.share({
+                message:
+                    'React Native | A framework for building native apps using React',
+            });
+
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    // shared with activity type of result.activityType
+                } else {
+                    // shared
+                }
+            } else if (result.action === Share.dismissedAction) {
+                // dismissed
+            }
+        } catch (error) {
+
+        }
+    };
 
     handleFullScreen() {
         this.state.fullscreen ? Orientation.lockToPortrait() : Orientation.lockToLandscapeLeft();
@@ -156,6 +191,28 @@ class Player extends React.Component<PropInterface, StateInterface> {
 
     renderControl() {
         if (this.state.showControls) {
+            let replayIcon;
+            if (this.state.replay) {
+                replayIcon = (
+                    <IconAntDesign name="sync" size={20} color={"#F44336"}/>
+                )
+            } else {
+                replayIcon = (
+                    <IconAntDesign name="sync" size={20} color={"#fff"}/>
+                )
+            }
+
+            let favoriteIcon;
+            if (this.props.favorite) {
+                favoriteIcon = (
+                    <IconAntDesign style={PlayerStyle.iconTop} name="heart" size={20} color={"#F44336"}/>
+                )
+            } else {
+                favoriteIcon = (
+                    <IconAntDesign style={PlayerStyle.iconTop} name="hearto" size={20} color={"#fff"}/>
+                )
+            }
+
             return (
                 <View style={(this.state.fullscreen) ? PlayerStyle.controlOverlayFS : PlayerStyle.controlOverlay}>
                     <View style={PlayerStyle.controlTop}>
@@ -166,10 +223,21 @@ class Player extends React.Component<PropInterface, StateInterface> {
                             </TouchableWithoutFeedback>
                         </View>
                         <View style={PlayerStyle.controlTopRight}>
-                            <IconAntDesign style={PlayerStyle.iconTop} name="sharealt" size={20} color={"#fff"}/>
+                            <TouchableWithoutFeedback onPress={() => {
+                                this.onShare()
+                            }}>
+                                <IconAntDesign style={PlayerStyle.iconTop} name="sharealt" size={20} color={"#fff"}/>
+                            </TouchableWithoutFeedback>
                             <IconAntDesign style={PlayerStyle.iconTop} name="download" size={20} color={"#fff"}/>
-                            <IconAntDesign style={PlayerStyle.iconTop} name="hearto" size={20} color={"#fff"}/>
-                            <IconAntDesign name="sync" size={20} color={"#fff"}/>
+                            <TouchableWithoutFeedback onPress={() => {
+                                this.handleFavorite()
+                            }}>
+                                { favoriteIcon }
+                            </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback
+                                onPress={() => this.handleToggleReplay()}>
+                                { replayIcon }
+                            </TouchableWithoutFeedback>
                         </View>
                     </View>
                     {this.renderControlCenter()}
