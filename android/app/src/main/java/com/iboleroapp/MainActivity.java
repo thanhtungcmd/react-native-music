@@ -1,4 +1,4 @@
-package com.myapp;
+package com.iboleroapp;
 
 import com.facebook.react.ReactActivity;
 
