@@ -10,7 +10,9 @@ export interface PlayState {
         artist: string,
         song_time: number,
         view_count: number,
-        relate_song: Array<SongItem>
+        relate_song: Array<SongItem>,
+        slug: string,
+        link_download: string
     },
     song_id?: string
 }

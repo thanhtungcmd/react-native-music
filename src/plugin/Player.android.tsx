@@ -16,7 +16,8 @@ interface PropInterface {
     next_id: string,
     favorite: boolean,
     change_action: any,
-    change_favorite: any
+    change_favorite: any,
+    download_action: any
 }
 
 interface StateInterface {
@@ -79,6 +80,10 @@ class Player extends React.Component<PropInterface, StateInterface> {
         this.setState({
             replay: !this.state.replay
         })
+    }
+
+    handleDownload() {
+        this.props.download_action()
     }
 
     handleFavorite() {
@@ -228,7 +233,11 @@ class Player extends React.Component<PropInterface, StateInterface> {
                             }}>
                                 <IconAntDesign style={PlayerStyle.iconTop} name="sharealt" size={20} color={"#fff"}/>
                             </TouchableWithoutFeedback>
-                            <IconAntDesign style={PlayerStyle.iconTop} name="download" size={20} color={"#fff"}/>
+                            <TouchableWithoutFeedback onPress={() => {
+                                this.handleDownload()
+                            }}>
+                                <IconAntDesign style={PlayerStyle.iconTop} name="download" size={20} color={"#fff"}/>
+                            </TouchableWithoutFeedback>
                             <TouchableWithoutFeedback onPress={() => {
                                 this.handleFavorite()
                             }}>

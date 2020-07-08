@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {View, Text, SafeAreaView, ScrollView, Switch, FlatList, TouchableWithoutFeedback} from "react-native";
+import {View, Text, SafeAreaView, ScrollView, Switch, FlatList,
+    TouchableWithoutFeedback, ToastAndroid, Platform} from "react-native";
 import {PlayState} from "../reducer/play.reducer.type";
 import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
@@ -15,6 +16,7 @@ import { Image } from 'react-native-elements';
 import { ActivityIndicator } from 'react-native';
 import AsyncStorage from "@react-native-community/async-storage";
 import {ApiAddFavorite, ApiFavoriteSong, ApiRemoveFavorite} from "../api/index.api";
+import RNFetchBlob from 'rn-fetch-blob'
 
 IconAntDesign.loadFont();
 
@@ -98,6 +100,21 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
         }
     }
 
+    const handleDownload = () => {
+        // @ts-ignore
+        if (Platform.OS === "android") {
+            ToastAndroid.show(`Đang tải xuống ${props.play?.song?.name}`, ToastAndroid.SHORT);
+        }
+        let dir = `${RNFetchBlob.fs.dirs.DownloadDir}\/${props.play?.song?.slug}.mp4`;
+        RNFetchBlob.config({
+            path: dir
+        }).fetch("GET", props.play?.song?.link_download[0]["1080"] as string).then(res => {
+            if (Platform.OS === "android") {
+                ToastAndroid.show(`Hoàn thành tải ${props.play?.song?.name}`, ToastAndroid.SHORT);
+            }
+        })
+    }
+
     const ShowItem = (item: any) => {
         return (
             <TouchableWithoutFeedback onPress={ () => handlePressSong(item.item.id) }>
@@ -135,6 +152,7 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
                                change_action={ props.actions?.getSongAction }
                                favorite={ props.play.song.favorite }
                                change_favorite={ handleFavorite }
+                               download_action={ handleDownload }
                 />
             )
         }
