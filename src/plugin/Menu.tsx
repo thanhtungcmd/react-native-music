@@ -44,11 +44,12 @@ const Menu: React.FunctionComponent<PropsInterface> = props => {
     const menuAnim = useRef(new Animated.Value(0)).current;
     const navigation = useNavigation();
 
+    const heightMenu = (typeof props.menu?.token != "undefined") ? 270 : 60;
     const widthMenu = (typeof props.menu?.token != "undefined") ? 230 : 170;
 
     const heightMenuAnim = menuAnim.interpolate({
         inputRange: [0, 1],
-        outputRange: [0, 270]
+        outputRange: [0, heightMenu]
     })
 
     const widthMenuAnim = menuAnim.interpolate({
@@ -189,14 +190,14 @@ const Menu: React.FunctionComponent<PropsInterface> = props => {
         } ]}>
             {/*{ menuItem }*/}
             { renderUser() }
-            <View style={ MenuStyle.menuItem }>
+            {/*<View style={ MenuStyle.menuItem }>
                 <Image style={ MenuStyle.menuImage } source={ require('../asset/img/icon-noti.png') }/>
                 <Text style={ MenuStyle.menuTitle }>Thông báo</Text>
             </View>
             <View style={ MenuStyle.menuItem }>
                 <Image style={ MenuStyle.menuImage } source={ require('../asset/img/icon-playlist.png') }/>
                 <Text style={ MenuStyle.menuTitle }>Playlist</Text>
-            </View>
+            </View>*/}
             { renderFavorite() }
             { renderLogout() }
         </Animated.View>

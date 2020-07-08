@@ -7,6 +7,7 @@ import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
 import * as HomeAction from "../action/home.action";
 import {connect} from "react-redux";
+import {useNavigation} from "@react-navigation/native";
 
 interface StatePropsInterface {
     home?: HomeState
@@ -32,13 +33,20 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 const HomeSinger: React.FunctionComponent<PropsInterface> = props => {
 
+    const navigation = useNavigation();
+
     useEffect(() => {
         props.actions?.getHomeSingerAction();
     }, []);
 
     const renderSlideItem = ({item, index}: any) => {
         return (
-            <TouchableWithoutFeedback onPress={() => {} }>
+            <TouchableWithoutFeedback onPress={() => {
+                navigation.navigate("SingerItem", {
+                    id: item.id,
+                    name: item.name,
+                })
+            } }>
                 <View>
                     <Image
                         resizeMode={'cover'}

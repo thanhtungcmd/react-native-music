@@ -4,7 +4,17 @@ import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
 import * as HomeAction from "../action/home.action";
 import * as MenuAction from "../action/menu.action";
-import {FlatList, Image, ImageBackground, RefreshControl, SafeAreaView, ScrollView, Text, View} from "react-native";
+import {
+    FlatList,
+    Image,
+    ImageBackground,
+    RefreshControl,
+    SafeAreaView,
+    ScrollView,
+    Text,
+    TouchableWithoutFeedback,
+    View
+} from "react-native";
 import {connect} from "react-redux";
 import Header from "../plugin/Header";
 import Menu from "../plugin/Menu";
@@ -77,16 +87,22 @@ const Rank: React.FunctionComponent<PropsInterface> = props => {
         }
 
         return (
-            <View style={HomeStyle.rankItem}>
-                <View style={HomeStyle.rankItemLeft}>
-                    <Image style={HomeStyle.rankImage} source={{ uri: item.item.thumbnail_url }}/>
+            <TouchableWithoutFeedback onPress={() => {
+                navigation.navigate('Play', {
+                    song_id: item.item.id
+                });
+            }}>
+                <View style={HomeStyle.rankItem}>
+                    <View style={HomeStyle.rankItemLeft}>
+                        <Image style={HomeStyle.rankImage} source={{ uri: item.item.thumbnail_url }}/>
+                    </View>
+                    <View style={HomeStyle.rankItemRight}>
+                        { icon }
+                        <Text numberOfLines={1} ellipsizeMode={"tail"} style={HomeStyle.rankItemName}>{ item.item.name }</Text>
+                        <Text numberOfLines={1} ellipsizeMode={"tail"} style={HomeStyle.rankItemSub}>{ item.item.artist }</Text>
+                    </View>
                 </View>
-                <View style={HomeStyle.rankItemRight}>
-                    { icon }
-                    <Text numberOfLines={1} ellipsizeMode={"tail"} style={HomeStyle.rankItemName}>{ item.item.name }</Text>
-                    <Text numberOfLines={1} ellipsizeMode={"tail"} style={HomeStyle.rankItemSub}>{ item.item.artist }</Text>
-                </View>
-            </View>
+            </TouchableWithoutFeedback>
         )
     }
 

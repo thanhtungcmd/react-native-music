@@ -7,6 +7,7 @@ import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
 import * as HomeAction from "../action/home.action";
 import {connect} from "react-redux";
+import {useNavigation} from "@react-navigation/native";
 
 interface StatePropsInterface {
     home?: HomeState
@@ -35,6 +36,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 const HomeCate: React.FunctionComponent<PropsInterface> = props => {
 
     const [cateActive, setCateActive] = useState(0);
+    const navigation = useNavigation();
 
     const [cate, setCate] = useState([
         {
@@ -134,19 +136,31 @@ const HomeCate: React.FunctionComponent<PropsInterface> = props => {
                 if (key < 10) {
                     if (key % 2 == 0) {
                         return (
-                            <View key={key} style={HomeStyle.cateSongItemLeft}>
-                                <Image style={HomeStyle.cateSongImage} source={{uri: item.thumbnail_url}}/>
-                                <Text numberOfLines={2} ellipsizeMode={"tail"} style={HomeStyle.cateSongTextLeft}>{ item.name }</Text>
-                                <Text numberOfLines={1} ellipsizeMode={"tail"} style={HomeStyle.cateSongSubLeft}>{ item.artist }</Text>
-                            </View>
+                            <TouchableWithoutFeedback onPress={() => {
+                                navigation.navigate('Play', {
+                                    song_id: item.id
+                                });
+                            }}>
+                                <View key={key} style={HomeStyle.cateSongItemLeft}>
+                                    <Image style={HomeStyle.cateSongImage} source={{uri: item.thumbnail_url}}/>
+                                    <Text numberOfLines={2} ellipsizeMode={"tail"} style={HomeStyle.cateSongTextLeft}>{ item.name }</Text>
+                                    <Text numberOfLines={1} ellipsizeMode={"tail"} style={HomeStyle.cateSongSubLeft}>{ item.artist }</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
                         )
                     } else {
                         return (
-                            <View key={key} style={HomeStyle.cateSongItemRight}>
-                                <Image style={HomeStyle.cateSongImage} source={{uri: item.thumbnail_url}}/>
-                                <Text numberOfLines={2} ellipsizeMode={"tail"} style={HomeStyle.cateSongTextRight}>{ item.name }</Text>
-                                <Text numberOfLines={1} ellipsizeMode={"tail"} style={HomeStyle.cateSongSubRight}>{ item.artist }</Text>
-                            </View>
+                            <TouchableWithoutFeedback onPress={() => {
+                                navigation.navigate('Play', {
+                                    song_id: item.id
+                                });
+                            }}>
+                                <View key={key} style={HomeStyle.cateSongItemRight}>
+                                    <Image style={HomeStyle.cateSongImage} source={{uri: item.thumbnail_url}}/>
+                                    <Text numberOfLines={2} ellipsizeMode={"tail"} style={HomeStyle.cateSongTextRight}>{ item.name }</Text>
+                                    <Text numberOfLines={1} ellipsizeMode={"tail"} style={HomeStyle.cateSongSubRight}>{ item.artist }</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
                         )
                     }
                 }

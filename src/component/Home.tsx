@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {
     Text, View, SafeAreaView, RefreshControl,
-    ScrollView, Image, ImageBackground
+    ScrollView, Image, ImageBackground, TouchableWithoutFeedback
 } from "react-native";
 import { bindActionCreators, Dispatch } from 'redux';
 import {connect} from "react-redux";
@@ -93,16 +93,22 @@ const Home: React.FunctionComponent<PropsInterface> = props => {
                 }
 
                 return (
-                    <View style={HomeStyle.rankItem} key={key}>
-                        <View style={HomeStyle.rankItemLeft}>
-                            <Image style={HomeStyle.rankImage} source={{ uri: item.thumbnail_url }}/>
+                    <TouchableWithoutFeedback onPress={() => {
+                        navigation.navigate('Play', {
+                            song_id: item.id
+                        });
+                    }}>
+                        <View style={HomeStyle.rankItem} key={key}>
+                            <View style={HomeStyle.rankItemLeft}>
+                                <Image style={HomeStyle.rankImage} source={{ uri: item.thumbnail_url }}/>
+                            </View>
+                            <View style={HomeStyle.rankItemRight}>
+                                { icon }
+                                <Text numberOfLines={1} ellipsizeMode={"tail"} style={HomeStyle.rankItemName}>{ item.name }</Text>
+                                <Text numberOfLines={1} ellipsizeMode={"tail"} style={HomeStyle.rankItemSub}>{ item.artist }</Text>
+                            </View>
                         </View>
-                        <View style={HomeStyle.rankItemRight}>
-                            { icon }
-                            <Text numberOfLines={1} ellipsizeMode={"tail"} style={HomeStyle.rankItemName}>{ item.name }</Text>
-                            <Text numberOfLines={1} ellipsizeMode={"tail"} style={HomeStyle.rankItemSub}>{ item.artist }</Text>
-                        </View>
-                    </View>
+                    </TouchableWithoutFeedback>
                 )
             })
         }
