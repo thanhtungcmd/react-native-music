@@ -61,7 +61,7 @@ const Header: React.FunctionComponent<PropsInterface> = props => {
                                 (typeof props.menu?.token !== "undefined")
                                     ? require('../asset/img/icon-user.png')
                                     : require('../asset/img/icon-user2.png')}/>
-                        <Badge status="error" value="8" containerStyle={HeaderStyle.badge}/>
+                        {/*<Badge status="error" value="8" containerStyle={HeaderStyle.badge}/>*/}
                     </View>
                 </TouchableWithoutFeedback>
             )
