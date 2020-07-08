@@ -134,12 +134,16 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
                 ToastAndroid.show(`Đang tải xuống ${props.play?.song?.name}`, ToastAndroid.SHORT);
             }
             let dir = `${RNFetchBlob.fs.dirs.DownloadDir}\/${props.play?.song?.slug}.mp4`;
+            console.log(dir);
             RNFetchBlob.config({
                 path: dir
                 // @ts-ignore
             }).fetch("GET", props.play?.song?.link_download[0]["1080"] as string).then(res => {
                 if (Platform.OS === "android") {
                     ToastAndroid.show(`Hoàn thành tải ${props.play?.song?.name}`, ToastAndroid.SHORT);
+                }
+                if (Platform.OS === "ios") {
+                    RNFetchBlob.ios.openDocument(res.data);
                 }
             })
         } else {

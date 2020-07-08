@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import {View, StyleSheet, Dimensions, SafeAreaView} from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { WebView } from 'react-native-webview';
 import AsyncStorage from "@react-native-community/async-storage";
+import {windowHeight, windowWidth} from "../asset/style";
 
 const INJECTEDJAVASCRIPT = "document.body.style.userSelect = 'none'";
 
@@ -65,13 +66,18 @@ export default function TabViewExample() {
     );
 
     return (
-        <TabView
-            renderTabBar={renderTabBar}
-            navigationState={{ index, routes }}
-            renderScene={renderScene}
-            onIndexChange={setIndex}
-            initialLayout={initialLayout}
-        />
+        <SafeAreaView>
+            <View style={{ width: windowWidth, height: windowHeight }}>
+            <TabView
+                style={{ width: windowWidth, height: windowHeight }}
+                renderTabBar={renderTabBar}
+                navigationState={{ index, routes }}
+                renderScene={renderScene}
+                onIndexChange={setIndex}
+                initialLayout={initialLayout}
+            />
+            </View>
+        </SafeAreaView>
     );
 }
 
