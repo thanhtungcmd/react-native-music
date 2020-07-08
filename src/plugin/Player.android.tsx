@@ -112,10 +112,15 @@ class Player extends React.Component<PropInterface, StateInterface> {
     }
 
     async onEnd() {
-        let autoplay = await AsyncStorage.getItem('@autoplay');
-        console.log(autoplay);
-        if (autoplay === "1") {
-            this.props.change_action(this.props.next_id);
+        if (!this.state.replay) {
+            let autoplay = await AsyncStorage.getItem('@autoplay');
+            console.log(autoplay);
+            if (autoplay === "1") {
+                this.props.change_action(this.props.next_id);
+            }
+        } else {
+            // @ts-ignore
+            this.videoRef.current.seek(0)
         }
     }
 
