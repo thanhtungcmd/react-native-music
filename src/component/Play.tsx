@@ -1,6 +1,8 @@
 import * as React from 'react';
-import {View, Text, SafeAreaView, ScrollView, Switch, FlatList,
-    TouchableWithoutFeedback, ToastAndroid, Platform} from "react-native";
+import {
+    View, Text, SafeAreaView, ScrollView, Switch, FlatList,
+    TouchableWithoutFeedback, ToastAndroid, Platform, Alert
+} from "react-native";
 import {PlayState} from "../reducer/play.reducer.type";
 import StateInterface from "../reducer/index.reducer.type";
 import {bindActionCreators, Dispatch} from "redux";
@@ -17,11 +19,13 @@ import { ActivityIndicator } from 'react-native';
 import AsyncStorage from "@react-native-community/async-storage";
 import {ApiAddFavorite, ApiFavoriteSong, ApiRemoveFavorite} from "../api/index.api";
 import RNFetchBlob from 'rn-fetch-blob'
+import {MenuState} from "../reducer/menu.reducer.type";
 
 IconAntDesign.loadFont();
 
 interface StatePropsInterface {
-    play?: PlayState
+    play?: PlayState,
+    menu?: MenuState
 }
 
 interface DispatchPropsInterface {
@@ -43,6 +47,7 @@ type PropsInterface = StatePropsInterface & DispatchPropsInterface
 
 const mapStateToProps = (state: StateInterface) => ({
     play: state.play,
+    menu: state.menu,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -88,31 +93,58 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
         return true;
     }
 
+    const alertLogin = () => {
+        return Alert.alert(
+            "Bạn chưa đăng nhập",
+            "Bạn phải đăng nhập để sử dụng tính năng này",
+            [
+                {
+                    text: "Đăng nhập", onPress: () => {
+                        navigation.navigate("Login");
+                    }
+                },
+                {
+                    text: "Đóng", onPress: () => {}
+                }
+            ],
+            { cancelable: false }
+        );
+    }
+
     const handleFavorite = () => {
-        if (typeof props.play?.song != "undefined") {
-            if (!props.play.song.favorite) {
-                ApiAddFavorite(props.play.song.id);
-                props.actions?.toggleFavoriteAction(true)
-            } else {
-                ApiRemoveFavorite(props.play.song.id);
-                props.actions?.toggleFavoriteAction(false)
+        if (typeof props.menu?.phone != "undefined") {
+            if (typeof props.play?.song != "undefined") {
+                if (!props.play.song.favorite) {
+                    ApiAddFavorite(props.play.song.id);
+                    props.actions?.toggleFavoriteAction(true)
+                } else {
+                    ApiRemoveFavorite(props.play.song.id);
+                    props.actions?.toggleFavoriteAction(false)
+                }
             }
+        } else {
+            alertLogin()
         }
     }
 
     const handleDownload = () => {
-        // @ts-ignore
-        if (Platform.OS === "android") {
-            ToastAndroid.show(`Đang tải xuống ${props.play?.song?.name}`, ToastAndroid.SHORT);
-        }
-        let dir = `${RNFetchBlob.fs.dirs.DownloadDir}\/${props.play?.song?.slug}.mp4`;
-        RNFetchBlob.config({
-            path: dir
-        }).fetch("GET", props.play?.song?.link_download[0]["1080"] as string).then(res => {
+        if (typeof props.menu?.phone != "undefined") {
+            // @ts-ignore
             if (Platform.OS === "android") {
-                ToastAndroid.show(`Hoàn thành tải ${props.play?.song?.name}`, ToastAndroid.SHORT);
+                ToastAndroid.show(`Đang tải xuống ${props.play?.song?.name}`, ToastAndroid.SHORT);
             }
-        })
+            let dir = `${RNFetchBlob.fs.dirs.DownloadDir}\/${props.play?.song?.slug}.mp4`;
+            RNFetchBlob.config({
+                path: dir
+                // @ts-ignore
+            }).fetch("GET", props.play?.song?.link_download[0]["1080"] as string).then(res => {
+                if (Platform.OS === "android") {
+                    ToastAndroid.show(`Hoàn thành tải ${props.play?.song?.name}`, ToastAndroid.SHORT);
+                }
+            })
+        } else {
+            alertLogin()
+        }
     }
 
     const ShowItem = (item: any) => {

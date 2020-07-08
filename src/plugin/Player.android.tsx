@@ -122,8 +122,7 @@ class Player extends React.Component<PropInterface, StateInterface> {
     onShare = async () => {
         try {
             const result = await Share.share({
-                message:
-                    'React Native | A framework for building native apps using React',
+                message: "Bài hát"
             });
 
             if (result.action === Share.sharedAction) {
