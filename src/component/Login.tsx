@@ -44,8 +44,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 const Login: React.FunctionComponent<PropsInterface> = props => {
 
     const navigation = useNavigation();
-    const [username, setUsername] = useState("0906228870");
-    const [password, setPassword] = useState("652099");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
     useEffect(() => {
         props.actions?.toggleMenuAction(false)
@@ -110,7 +110,6 @@ const Login: React.FunctionComponent<PropsInterface> = props => {
                                 inputStyle={{ color: "#fff", textAlign: "center" }}
                                 placeholder='Tên đăng nhập'
                                 placeholderTextColor="#fff"
-                                value={"0906228870"}
                                 onChangeText={ text => setUsername(text) }
                             />
                             <Input
@@ -118,7 +117,6 @@ const Login: React.FunctionComponent<PropsInterface> = props => {
                                 placeholder='Mật khẩu'
                                 placeholderTextColor="#fff"
                                 secureTextEntry={true}
-                                value={"652099"}
                                 onChangeText={ text => setPassword(text) }
                             />
                             <TouchableNativeFeedback onPress={() => {
