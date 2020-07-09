@@ -10,6 +10,7 @@ import * as PlayAction from "../action/play.action";
 import {useEffect, useRef, useState} from "react";
 import {connect} from "react-redux";
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
+import Orientation from 'react-native-orientation-locker';
 // @ts-ignore
 import PlayerAndroid from "../plugin/Player"
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -98,11 +99,6 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
             "Bạn chưa đăng nhập",
             "Bạn phải đăng nhập để sử dụng tính năng này",
             [
-                {
-                    text: "Đăng nhập", onPress: () => {
-                        navigation.navigate("Login");
-                    }
-                },
                 {
                     text: "Đóng", onPress: () => {}
                 }

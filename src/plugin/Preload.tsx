@@ -66,7 +66,7 @@ const Preload: React.FunctionComponent<PropsInterface> = props => {
             onMessage={ (event: any) => {
                 checkLogin3G(event.nativeEvent.data);
             }}
-            style={{ marginTop: 0, width: 0, height: 0 }}
+            style={{ position: "absolute", bottom:0, right:0, width:0, height: 0 }}
         />
     );
 }

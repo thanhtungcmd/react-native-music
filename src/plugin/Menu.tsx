@@ -44,7 +44,7 @@ const Menu: React.FunctionComponent<PropsInterface> = props => {
     const menuAnim = useRef(new Animated.Value(0)).current;
     const navigation = useNavigation();
 
-    const heightMenu = (typeof props.menu?.token != "undefined") ? 270 : 60;
+    const heightMenu = (typeof props.menu?.token != "undefined") ? 170 : 60;
     const widthMenu = (typeof props.menu?.token != "undefined") ? 230 : 170;
 
     const heightMenuAnim = menuAnim.interpolate({
