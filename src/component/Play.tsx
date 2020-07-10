@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {
     View, Text, SafeAreaView, ScrollView, Switch, FlatList,
-    TouchableWithoutFeedback, ToastAndroid, Platform, Alert
+    TouchableWithoutFeedback, ToastAndroid, Platform, Alert,
+    PermissionsAndroid
 } from "react-native";
 import {PlayState} from "../reducer/play.reducer.type";
 import StateInterface from "../reducer/index.reducer.type";
@@ -123,25 +124,36 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
         }
     }
 
-    const handleDownload = () => {
+    const handleDownload = async () => {
         if (typeof props.menu?.phone != "undefined") {
-            // @ts-ignore
             if (Platform.OS === "android") {
-                ToastAndroid.show(`Đang tải xuống ${props.play?.song?.name}`, ToastAndroid.SHORT);
+                const grantedWrite = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                    {
+                        title: "Quyền lưu dữ liệu",
+                        message:"Cần quyền lưu dữ liệu",
+                        buttonPositive: "OK"
+                    }
+                );
+                if (grantedWrite == PermissionsAndroid.RESULTS.GRANTED) {
+                    ToastAndroid.show(`Đang tải xuống ${props.play?.song?.name}`, ToastAndroid.SHORT);
+
+                    let dir = `${RNFetchBlob.fs.dirs.DownloadDir}\/${props.play?.song?.slug}.mp4`;
+                    console.log(dir);
+                    RNFetchBlob.config({
+                        path: dir,
+                        fileCache: true
+                        // @ts-ignore
+                    }).fetch("GET", props.play?.song?.link_download[0]["1080"] as string).then(res => {
+                        if (Platform.OS === "android") {
+                            ToastAndroid.show(`Hoàn thành tải ${props.play?.song?.name}`, ToastAndroid.SHORT);
+                        }
+                        if (Platform.OS === "ios") {
+                            RNFetchBlob.ios.openDocument(res.data);
+                        }
+                    })
+                }
             }
-            let dir = `${RNFetchBlob.fs.dirs.DownloadDir}\/${props.play?.song?.slug}.mp4`;
-            console.log(dir);
-            RNFetchBlob.config({
-                path: dir
-                // @ts-ignore
-            }).fetch("GET", props.play?.song?.link_download[0]["1080"] as string).then(res => {
-                if (Platform.OS === "android") {
-                    ToastAndroid.show(`Hoàn thành tải ${props.play?.song?.name}`, ToastAndroid.SHORT);
-                }
-                if (Platform.OS === "ios") {
-                    RNFetchBlob.ios.openDocument(res.data);
-                }
-            })
         } else {
             alertLogin()
         }
