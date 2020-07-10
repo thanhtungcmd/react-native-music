@@ -49,13 +49,26 @@ class Player extends React.Component<PropInterface, StateInterface> {
     }
 
     componentDidMount() {
+        Orientation.unlockAllOrientations();
         this.execShowControl();
         setInterval(() => {
             this.setState({
                 countShowControls: (this.state.countShowControls > 0) ? (this.state.countShowControls - 1000) : 0,
                 showControls: (this.state.countShowControls != 0)
             })
-        }, 1000)
+
+            Orientation.getOrientation((orientation)=> {
+                if (orientation === "LANDSCAPE-RIGHT" || orientation === "LANDSCAPE-LEFT") {
+                    this.setState({
+                        fullscreen: true
+                    })
+                } else {
+                    this.setState({
+                        fullscreen: false
+                    })
+                }
+            });
+        }, 500)
         BackHandler.addEventListener("hardwareBackPress", this.handleBackButtonClick.bind(this));
     }
 
@@ -63,13 +76,17 @@ class Player extends React.Component<PropInterface, StateInterface> {
         BackHandler.removeEventListener("hardwareBackPress", this.handleBackButtonClick.bind(this));
     }
 
+    onOrientationDidChange(orientation: string) {
+        console.log(orientation);
+    }
+
     handleBackButtonClick() {
         if (this.state.fullscreen) {
-            Orientation.lockToPortrait();
             this.setState({
                 fullscreen: false
             })
         } else {
+            Orientation.lockToPortrait();
             this.props.navigation.goBack();
         }
 
