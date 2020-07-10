@@ -4,9 +4,9 @@ import Video, { OnProgressData, OnLoadData, OnSeekData } from "react-native-vide
 import {PlayerStyle} from "../asset/style";
 import { Slider } from 'react-native-elements';
 import IconMC from 'react-native-vector-icons/MaterialIcons';
+import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import Orientation from 'react-native-orientation-locker';
 import AsyncStorage from "@react-native-community/async-storage";
-import IconAntDesign from "react-native-vector-icons/AntDesign";
 
 IconMC.loadFont();
 
@@ -30,10 +30,9 @@ interface StateInterface {
     replay: boolean,
 }
 
-class PlayerIos extends React.Component<PropInterface, StateInterface> {
+class Player extends React.Component<PropInterface, StateInterface> {
 
     private videoRef: React.RefObject<Video>;
-    private dataInterval: any;
 
     constructor(props: any) {
         super(props);
@@ -50,19 +49,18 @@ class PlayerIos extends React.Component<PropInterface, StateInterface> {
     }
 
     componentDidMount() {
-        this.dataInterval = setInterval(() => {
-            Orientation.lockToPortrait()
+        this.execShowControl();
+        setInterval(() => {
             this.setState({
                 countShowControls: (this.state.countShowControls > 0) ? (this.state.countShowControls - 1000) : 0,
                 showControls: (this.state.countShowControls != 0)
             })
         }, 1000)
+        BackHandler.addEventListener("hardwareBackPress", this.handleBackButtonClick.bind(this));
     }
 
     componentWillUnmount() {
-        if (typeof this.dataInterval.clearInterval == "function") {
-            this.dataInterval.clearInterval();
-        }
+        BackHandler.removeEventListener("hardwareBackPress", this.handleBackButtonClick.bind(this));
     }
 
     handleBackButtonClick() {
@@ -113,27 +111,6 @@ class PlayerIos extends React.Component<PropInterface, StateInterface> {
         });
     }
 
-    handleFullScreen() {
-        this.setState({
-            fullscreen: !this.state.fullscreen,
-            play: false
-        });
-        this.execShowControl();
-    }
-
-    handlePlayPause() {
-        this.setState({
-            play: !this.state.play
-        })
-        this.execShowControl();
-    }
-
-    execShowControl() {
-        this.setState({
-            countShowControls: 4000
-        });
-    }
-
     async onEnd() {
         if (!this.state.replay) {
             let autoplay = await AsyncStorage.getItem('@autoplay');
@@ -145,21 +122,6 @@ class PlayerIos extends React.Component<PropInterface, StateInterface> {
             // @ts-ignore
             this.videoRef.current.seek(0)
         }
-    }
-
-    handleSlider(time: number) {
-        this.onSeek({
-            currentTime: this.state.currentTime,
-            seekTime: time
-        })
-        this.execShowControl();
-    }
-
-    handleShowControl() {
-        this.setState({
-            showControls: true
-        })
-        this.execShowControl();
     }
 
     onShare = async () => {
@@ -181,6 +143,42 @@ class PlayerIos extends React.Component<PropInterface, StateInterface> {
 
         }
     };
+
+    handleFullScreen() {
+        this.state.fullscreen ? Orientation.lockToPortrait() : Orientation.lockToLandscapeLeft();
+        this.setState({
+            fullscreen: !this.state.fullscreen
+        });
+        this.execShowControl();
+    }
+
+    handlePlayPause() {
+        this.setState({
+            play: !this.state.play
+        })
+        this.execShowControl();
+    }
+
+    execShowControl() {
+        this.setState({
+            countShowControls: 4000
+        });
+    }
+
+    handleSlider(time: number) {
+        this.onSeek({
+            currentTime: this.state.currentTime,
+            seekTime: time
+        })
+        this.execShowControl();
+    }
+
+    handleShowControl() {
+        this.setState({
+            showControls: true
+        })
+        this.execShowControl();
+    }
 
     renderControlCenter() {
         let iconPlay;
@@ -225,7 +223,7 @@ class PlayerIos extends React.Component<PropInterface, StateInterface> {
             }
 
             return (
-                <View style={PlayerStyle.controlOverlay}>
+                <View style={(this.state.fullscreen) ? PlayerStyle.controlOverlayFS : PlayerStyle.controlOverlay}>
                     <View style={PlayerStyle.controlTop}>
                         <View>
                             <TouchableWithoutFeedback
@@ -256,7 +254,7 @@ class PlayerIos extends React.Component<PropInterface, StateInterface> {
                         </View>
                     </View>
                     {this.renderControlCenter()}
-                    <View style={PlayerStyle.bottomControl}>
+                    <View style={ (this.state.fullscreen) ? PlayerStyle.bottomControlFS : PlayerStyle.bottomControl }>
                         <View style={PlayerStyle.sliderControl}>
                             <Slider
                                 style={PlayerStyle.slider}
@@ -269,6 +267,7 @@ class PlayerIos extends React.Component<PropInterface, StateInterface> {
                                 onValueChange={this.handleSlider.bind(this)}
                                 minimumTrackTintColor={'#F44336'}
                                 maximumTrackTintColor={'#FFFFFF'}
+                                thumbTouchSize={{width: 50, height: 40}}
                                 thumbTintColor={'#F44336'}/>
                         </View>
                         <View style={PlayerStyle.fullscreenControl}>
@@ -285,19 +284,16 @@ class PlayerIos extends React.Component<PropInterface, StateInterface> {
 
     render() {
         return (
-            <View style={ PlayerStyle.videoBox }>
+            <View style={ (this.state.fullscreen) ? PlayerStyle.videoBoxFS : PlayerStyle.videoBox }>
                 <StatusBar hidden={ this.state.fullscreen } />
                 <TouchableWithoutFeedback onPress={ this.handleShowControl.bind(this) }>
-                    <Video style={ PlayerStyle.videoPlayer }
+                    <Video style={ (this.state.fullscreen) ? PlayerStyle.videoPlayerFS : PlayerStyle.videoPlayer }
                            ref={ this.videoRef }
                            source={{ uri: this.props.source }}
                            onLoad={ this.onLoad.bind(this) }
                            onProgress={ this.onProgress.bind(this) }
                            onEnd={ this.onEnd.bind(this) }
-                           fullscreen={ this.state.fullscreen }
-                           fullscreenAutorotate={false}
-                           fullscreenOrientation={"landscape"}
-                           ignoreSilentSwitch={"ignore"}
+                           //playInBackground={true}
                            paused={ !this.state.play }/>
                 </TouchableWithoutFeedback>
                 { this.renderControl() }
@@ -307,4 +303,4 @@ class PlayerIos extends React.Component<PropInterface, StateInterface> {
 
 }
 
-export default PlayerIos
+export default Player

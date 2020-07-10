@@ -1,4 +1,19 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
+
+export function isIphoneX () {
+    const iphoneXLength = 812
+    const iphoneXSMaxLength = 896
+    const windowDimensions = Dimensions.get('window')
+    return (
+        Platform.OS === 'ios' &&
+        !Platform.isPad &&
+        !Platform.isTVOS &&
+        (windowDimensions.width === iphoneXLength ||
+            windowDimensions.height === iphoneXLength ||
+            windowDimensions.width === iphoneXSMaxLength ||
+            windowDimensions.height === iphoneXSMaxLength)
+    )
+}
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
@@ -157,7 +172,7 @@ export const PlayerStyle = StyleSheet.create({
     videoPlayerFS: {
         width: windowHeight,
         height: windowWidth,
-        backgroundColor: "#000"
+        backgroundColor: "#000",
     },
     controlOverlay: {
         position: 'absolute',
@@ -171,6 +186,11 @@ export const PlayerStyle = StyleSheet.create({
     bottomControl: {
         flexDirection: "row",
         flexWrap: "nowrap",
+    },
+    bottomControlFS: {
+        flexDirection: "row",
+        flexWrap: "nowrap",
+        paddingBottom: Platform.OS === 'ios' ? (isIphoneX() ? 30 : 0) : 0,
     },
     sliderControl: {
         width: "90%",
@@ -215,7 +235,9 @@ export const PlayerStyle = StyleSheet.create({
     },
     // Control Full Screen
     controlOverlayFS: {
-        width: windowHeight,
+        width: Platform.OS === 'ios' ? (isIphoneX() ? (windowHeight - 44) : (windowHeight - 20)) : windowHeight,
+        // height: Platform.OS === 'ios' ? (isIphoneX() ? (windowWidth - 44) : (windowWidth - 20)) : windowWidth,
+        // width: windowHeight,
         height: windowWidth,
         position: 'absolute',
         top: 0,
