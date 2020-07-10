@@ -129,10 +129,10 @@ const Category: React.FunctionComponent<PropsInterface> = props => {
             <ScrollView>
                 <View style={{ height: 75 }}>
                     <Header header="Bạn muốn nghe gì" />
-                    <Menu/>
-                    <Overlay/>
                 </View>
                 { renderCategory() }
+                <Menu/>
+                <Overlay/>
             </ScrollView>
         </SafeAreaView>
     )

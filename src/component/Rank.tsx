@@ -127,10 +127,10 @@ const Rank: React.FunctionComponent<PropsInterface> = props => {
             <ImageBackground source={ require('../asset/img/main-bg.png') } style={ RankStyle.homeBg }>
                 <View style={{ height: 75 }}>
                     <Header header="Bảng xếp hạng" />
-                    <Menu/>
-                    <Overlay/>
                 </View>
                 { renderRank() }
+                <Menu/>
+                <Overlay/>
             </ImageBackground>
         </SafeAreaView>
     )

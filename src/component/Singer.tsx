@@ -96,10 +96,10 @@ const Singer: React.FunctionComponent = () => {
             <ImageBackground source={ require('../asset/img/main-bg.png') } style={ RankStyle.homeBgNoTab }>
                 <View style={{ height: 75 }}>
                     <Header header={"Ca sĩ"} />
-                    <Menu/>
-                    <Overlay/>
                 </View>
                 { renderSinger() }
+                <Menu/>
+                <Overlay/>
             </ImageBackground>
         </SafeAreaView>
     )

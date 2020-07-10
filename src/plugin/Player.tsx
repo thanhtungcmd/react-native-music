@@ -293,7 +293,6 @@ class Player extends React.Component<PropInterface, StateInterface> {
                            onLoad={ this.onLoad.bind(this) }
                            onProgress={ this.onProgress.bind(this) }
                            onEnd={ this.onEnd.bind(this) }
-                           //playInBackground={true}
                            paused={ !this.state.play }/>
                 </TouchableWithoutFeedback>
                 { this.renderControl() }
