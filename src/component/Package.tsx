@@ -26,17 +26,27 @@ const Package: React.FunctionComponent = props => {
             let msisdn = await AsyncStorage.getItem('@msisdn') as string;
             setPhone(msisdn);
         }
-
         getPhone()
+        console.log(phone);
     });
 
-    return (
-        <WebView
-            source={{ uri: 'http://ibolero.vn/app/goi-cuoc?phone=' + phone }}
-            injectedJavaScript={INJECTEDJAVASCRIPT}
-            style={{ marginTop: 0, marginBottom: 120 }}
-        />
-    )
+    if (phone) {
+        return (
+            <WebView
+                source={{uri: 'http://ibolero.vn/app/goi-cuoc?link=&phone=' + phone}}
+                injectedJavaScript={INJECTEDJAVASCRIPT}
+                style={{marginTop: 0, marginBottom: 120}}
+            />
+        )
+    } else {
+        return (
+            <WebView
+                source={{uri: 'http://ibolero.vn/app/goi-cuoc?phone=' + phone}}
+                injectedJavaScript={INJECTEDJAVASCRIPT}
+                style={{marginTop: 0, marginBottom: 120}}
+            />
+        )
+    }
 
 }
 
