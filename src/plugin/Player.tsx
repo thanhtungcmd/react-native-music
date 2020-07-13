@@ -75,13 +75,6 @@ class Player extends React.Component<PropInterface, StateInterface> {
         BackHandler.addEventListener("hardwareBackPress", this.handleBackButtonClick.bind(this));
     }
 
-    componentDidUpdate(prevProps: Readonly<PropInterface>) {
-        if (prevProps.source_text != this.props.source_text) {
-            // @ts-ignore
-            this.videoRef.current.seek(this.props.seek_save);
-        }
-    }
-
     componentWillUnmount() {
         Orientation.lockToPortrait();
         BackHandler.removeEventListener("hardwareBackPress", this.handleBackButtonClick.bind(this));
@@ -126,6 +119,8 @@ class Player extends React.Component<PropInterface, StateInterface> {
             duration: data.duration,
             currentTime: data.currentTime,
         });
+        // @ts-ignore
+        this.videoRef.current.seek(this.props.seek_save);
     }
 
     onSeek(data: OnSeekData) {

@@ -109,6 +109,7 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
     }, [props.play?.song])
 
     const handlePressSong = (song_id: string) => {
+        setSeekSave(0);
         props.actions?.getSongAction(song_id);
         return true;
     }
@@ -267,6 +268,8 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
                     setShowModal(false);
                     // @ts-ignore
                     setSeekSave(playerRef.current.state.currentTime);
+                    // @ts-ignore
+                    //console.log(playerRef.current.state.currentTime);
                 }}>
                     <Text style={PlayStyle.modalContentTitle}>360p</Text>
                 </TouchableWithoutFeedback>
