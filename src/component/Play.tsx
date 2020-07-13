@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
     View, Text, SafeAreaView, ScrollView, Switch, FlatList,
     TouchableWithoutFeedback, ToastAndroid, Platform, Alert,
-    PermissionsAndroid
+    PermissionsAndroid, StyleSheet
 } from "react-native";
 import {PlayState} from "../reducer/play.reducer.type";
 import StateInterface from "../reducer/index.reducer.type";
@@ -22,6 +22,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import {ApiAddFavorite, ApiFavoriteSong, ApiRemoveFavorite} from "../api/index.api";
 import RNFetchBlob from 'rn-fetch-blob'
 import {MenuState} from "../reducer/menu.reducer.type";
+import Modal from "react-native-modal";
 
 IconAntDesign.loadFont();
 
@@ -66,6 +67,9 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
     const navigation = useNavigation();
 
     const [isEnabled, setIsEnabled] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [source, setSource] = useState("");
+    const [sourceText, setSourceText] = useState("360p");
 
     const toggleSwitch = async () => {
         setIsEnabled(!isEnabled);
@@ -90,9 +94,25 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
         checkAuto();
     }, []);
 
+    useEffect(() => {
+        if (typeof props.play?.song != "undefined") {
+            if (props.play.song.link_stream_1080 != '') {
+                setSource(props.play.song.link_stream_1080)
+                setSourceText("1080p")
+            } else {
+                setSource(props.play.song.link_stream_360)
+                setSourceText("360p")
+            }
+        }
+    }, [props.play?.song])
+
     const handlePressSong = (song_id: string) => {
         props.actions?.getSongAction(song_id);
         return true;
+    }
+
+    const handleShowModal = () => {
+        setShowModal(true);
     }
 
     const alertLogin = () => {
@@ -188,15 +208,17 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
     }
 
     const renderVideo = () => {
-        if (typeof props.play?.song != "undefined") {
+        if (typeof props.play?.song != "undefined" && source != "") {
             return (
                 <PlayerAndroid next_id={ props.play.song.relate_song[0].id }
-                               source={ props.play.song.link_stream }
-                               navigation={ navigation }
-                               change_action={ props.actions?.getSongAction }
-                               favorite={ props.play.song.favorite }
-                               change_favorite={ handleFavorite }
-                               download_action={ handleDownload }
+                    source={ source }
+                    source_text={ sourceText }
+                    navigation={ navigation }
+                    change_action={ props.actions?.getSongAction }
+                    favorite={ props.play.song.favorite }
+                    change_favorite={ handleFavorite }
+                    download_action={ handleDownload }
+                    modal_action={ handleShowModal }
                 />
             )
         }
@@ -231,13 +253,81 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
         }
     }
 
+    const renderModal = () => {
+        if (typeof props.play?.song != "undefined") {
+            let link360 = props.play.song.link_stream_360 != "" ? (
+                <TouchableWithoutFeedback onPress={() => {
+                    // @ts-ignore
+                    setSource(props.play.song.link_stream_360)
+                    setSourceText("360p")
+                    setShowModal(false)
+                }}>
+                    <Text style={PlayStyle.modalContentTitle}>360p</Text>
+                </TouchableWithoutFeedback>
+            ) : null;
+
+            let link480 = props.play.song.link_stream_480 != "" ? (
+                <TouchableWithoutFeedback onPress={() => {
+                    // @ts-ignore
+                    setSource(props.play.song.link_stream_480)
+                    setSourceText("480p")
+                    setShowModal(false)
+                }}>
+                    <Text style={PlayStyle.modalContentTitle}>480p</Text>
+                </TouchableWithoutFeedback>
+            ) : null;
+
+            let link720 = props.play.song.link_stream_720 != "" ? (
+                <TouchableWithoutFeedback onPress={() => {
+                    // @ts-ignore
+                    setSource(props.play.song.link_stream_720)
+                    setSourceText("720p")
+                    setShowModal(false)
+                }}>
+                    <Text style={PlayStyle.modalContentTitle}>720p</Text>
+                </TouchableWithoutFeedback>
+            ) : null;
+
+            let link1080 = props.play.song.link_stream_1080 != "" ? (
+                <TouchableWithoutFeedback onPress={() => {
+                    // @ts-ignore
+                    setSource(props.play.song.link_stream_1080)
+                    setSourceText("1080p")
+                    setShowModal(false)
+                }}>
+                    <Text style={PlayStyle.modalContentTitle}>1080p</Text>
+                </TouchableWithoutFeedback>
+            ) : null;
+
+            return (
+                <Modal
+                    isVisible={showModal}
+                    onSwipeComplete={() => {
+                        setShowModal(false)
+                    }}
+                    onBackdropPress={() => {
+                        setShowModal(false)
+                    }}
+                    swipeDirection={['down']}
+                    style={PlayStyle.modalView}>
+                    <View style={PlayStyle.modalContent}>
+                        { link360 }
+                        { link480 }
+                        { link720 }
+                        { link1080 }
+                    </View>
+                </Modal>
+            )
+        }
+    }
+
     return (
         <SafeAreaView>
             { renderVideo() }
             { renderContent() }
+            { renderModal() }
         </SafeAreaView>
     )
-
 }
 
 export default connect<StatePropsInterface, DispatchPropsInterface, PropsInterface, StateInterface>(

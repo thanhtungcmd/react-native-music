@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, TouchableWithoutFeedback, StatusBar, BackHandler, Share} from "react-native";
+import {View, TouchableWithoutFeedback, StatusBar, BackHandler, Share, Text} from "react-native";
 import Video, { OnProgressData, OnLoadData, OnSeekData } from "react-native-video";
 import {PlayerStyle} from "../asset/style";
 import { Slider } from 'react-native-elements';
@@ -12,12 +12,14 @@ IconMC.loadFont();
 
 interface PropInterface {
     source: string,
+    source_text: string,
     navigation: any,
     next_id: string,
     favorite: boolean,
     change_action: any,
     change_favorite: any,
-    download_action: any
+    download_action: any,
+    modal_action: any
 }
 
 interface StateInterface {
@@ -264,9 +266,13 @@ class Player extends React.Component<PropInterface, StateInterface> {
                             }}>
                                 { favoriteIcon }
                             </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback
-                                onPress={() => this.handleToggleReplay()}>
+                            <TouchableWithoutFeedback onPress={() => this.handleToggleReplay()}>
                                 { replayIcon }
+                            </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={() => {
+                                this.props.modal_action();
+                            }}>
+                                <Text style={PlayerStyle.qualityTop}>{ this.props.source_text }</Text>
                             </TouchableWithoutFeedback>
                         </View>
                     </View>

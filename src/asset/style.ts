@@ -153,7 +153,25 @@ export const PlayStyle = StyleSheet.create({
         color: '#7f7f7f',
         fontSize: 14,
         width: (windowWidth / 2) - 20,
-    }
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 4,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+    },
+    modalContentTitle: {
+        width: "100%",
+        fontSize: 16,
+        paddingVertical: 15,
+        color: "#000",
+        textAlign: "center"
+    },
+    modalView: {
+        justifyContent: 'flex-end',
+        margin: 0,
+    },
 });
 
 export const PlayerStyle = StyleSheet.create({
@@ -232,6 +250,10 @@ export const PlayerStyle = StyleSheet.create({
     },
     iconTop: {
         marginRight: 20
+    },
+    qualityTop: {
+        marginLeft: 20,
+        color: '#fff'
     },
     // Control Full Screen
     controlOverlayFS: {
