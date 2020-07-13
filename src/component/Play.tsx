@@ -62,14 +62,16 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 const Play: React.FunctionComponent<PropsInterface> = props => {
 
-    const route = useRoute<RouteInterface>();
+    const playerRef = useRef(null);
 
+    const route = useRoute<RouteInterface>();
     const navigation = useNavigation();
 
     const [isEnabled, setIsEnabled] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [source, setSource] = useState("");
     const [sourceText, setSourceText] = useState("360p");
+    const [seekSave, setSeekSave] = useState(0);
 
     const toggleSwitch = async () => {
         setIsEnabled(!isEnabled);
@@ -219,6 +221,8 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
                     change_favorite={ handleFavorite }
                     download_action={ handleDownload }
                     modal_action={ handleShowModal }
+                    seek_save={seekSave}
+                    ref={playerRef}
                 />
             )
         }
@@ -258,9 +262,11 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
             let link360 = props.play.song.link_stream_360 != "" ? (
                 <TouchableWithoutFeedback onPress={() => {
                     // @ts-ignore
-                    setSource(props.play.song.link_stream_360)
-                    setSourceText("360p")
-                    setShowModal(false)
+                    setSource(props.play.song.link_stream_360);
+                    setSourceText("360p");
+                    setShowModal(false);
+                    // @ts-ignore
+                    setSeekSave(playerRef.current.state.currentTime);
                 }}>
                     <Text style={PlayStyle.modalContentTitle}>360p</Text>
                 </TouchableWithoutFeedback>
@@ -269,9 +275,11 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
             let link480 = props.play.song.link_stream_480 != "" ? (
                 <TouchableWithoutFeedback onPress={() => {
                     // @ts-ignore
-                    setSource(props.play.song.link_stream_480)
-                    setSourceText("480p")
-                    setShowModal(false)
+                    setSource(props.play.song.link_stream_480);
+                    setSourceText("480p");
+                    setShowModal(false);
+                    // @ts-ignore
+                    setSeekSave(playerRef.current.state.currentTime);
                 }}>
                     <Text style={PlayStyle.modalContentTitle}>480p</Text>
                 </TouchableWithoutFeedback>
@@ -280,9 +288,11 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
             let link720 = props.play.song.link_stream_720 != "" ? (
                 <TouchableWithoutFeedback onPress={() => {
                     // @ts-ignore
-                    setSource(props.play.song.link_stream_720)
-                    setSourceText("720p")
-                    setShowModal(false)
+                    setSource(props.play.song.link_stream_720);
+                    setSourceText("720p");
+                    setShowModal(false);
+                    // @ts-ignore
+                    setSeekSave(playerRef.current.state.currentTime);
                 }}>
                     <Text style={PlayStyle.modalContentTitle}>720p</Text>
                 </TouchableWithoutFeedback>
@@ -291,9 +301,11 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
             let link1080 = props.play.song.link_stream_1080 != "" ? (
                 <TouchableWithoutFeedback onPress={() => {
                     // @ts-ignore
-                    setSource(props.play.song.link_stream_1080)
-                    setSourceText("1080p")
-                    setShowModal(false)
+                    setSource(props.play.song.link_stream_1080);
+                    setSourceText("1080p");
+                    setShowModal(false);
+                    // @ts-ignore
+                    setSeekSave(playerRef.current.state.currentTime);
                 }}>
                     <Text style={PlayStyle.modalContentTitle}>1080p</Text>
                 </TouchableWithoutFeedback>

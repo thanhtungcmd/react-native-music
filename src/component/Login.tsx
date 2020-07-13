@@ -86,6 +86,32 @@ const Login: React.FunctionComponent<PropsInterface> = props => {
         );
     }
 
+    const handleRegister = () => {
+        Alert.alert(
+            "Đăng ký",
+            "Bạn vui lòng soạn DK1 gửi 9355 để đăng ký tài khoản. Xin cảm ơn!",
+            [
+                {
+                    text: "Đóng", onPress: () => {}
+                }
+            ],
+            { cancelable: false }
+        );
+    }
+
+    const handleForget = () => {
+        Alert.alert(
+            "Quên mật khẩu",
+            "Bạn vui lòng soạn MK gửi 9355 để lấy lại mật khẩu. Xin cảm ơn!",
+            [
+                {
+                    text: "Đóng", onPress: () => {}
+                }
+            ],
+            { cancelable: false }
+        );
+    }
+
     return (
         <SafeAreaView>
             <ScrollView>
@@ -129,16 +155,24 @@ const Login: React.FunctionComponent<PropsInterface> = props => {
                                 </View>
                             </TouchableNativeFeedback>
                             <View style={LoginStyle.subBox}>
-                                <View style={{ width: "50%" }}>
-                                    <Text style={{ color: "#fff", textAlign: "left" }}>
-                                        Đăng ký tài khoản
-                                    </Text>
-                                </View>
-                                <View style={{ width: "50%", alignItems: "flex-end" }}>
-                                    <Text style={{ color: "#fff" }}>
-                                        Quên mật khẩu
-                                    </Text>
-                                </View>
+                                <TouchableWithoutFeedback onPress={() => {
+                                    handleRegister()
+                                }}>
+                                    <View style={{ width: "50%" }}>
+                                        <Text style={{ color: "#fff", textAlign: "left" }}>
+                                            Đăng ký tài khoản
+                                        </Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                                <TouchableWithoutFeedback onPress={() => {
+                                    handleForget()
+                                }}>
+                                    <View style={{ width: "50%", alignItems: "flex-end" }}>
+                                        <Text style={{ color: "#fff" }}>
+                                            Quên mật khẩu
+                                        </Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
                             </View>
                         </View>
                     </View>

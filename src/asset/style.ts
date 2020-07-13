@@ -160,6 +160,7 @@ export const PlayStyle = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 4,
         borderColor: 'rgba(0, 0, 0, 0.1)',
+        paddingBottom: Platform.OS === 'ios' ? (isIphoneX() ? (20) : 0) : 0,
     },
     modalContentTitle: {
         width: "100%",
@@ -252,8 +253,9 @@ export const PlayerStyle = StyleSheet.create({
         marginRight: 20
     },
     qualityTop: {
-        marginLeft: 20,
-        color: '#fff'
+        paddingLeft: 20,
+        color: '#fff',
+        paddingRight: Platform.OS === 'ios' ? (isIphoneX() ? (10) : 0) : 0,
     },
     // Control Full Screen
     controlOverlayFS: {

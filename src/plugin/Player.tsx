@@ -19,7 +19,8 @@ interface PropInterface {
     change_action: any,
     change_favorite: any,
     download_action: any,
-    modal_action: any
+    modal_action: any,
+    seek_save: number
 }
 
 interface StateInterface {
@@ -74,12 +75,16 @@ class Player extends React.Component<PropInterface, StateInterface> {
         BackHandler.addEventListener("hardwareBackPress", this.handleBackButtonClick.bind(this));
     }
 
-    componentWillUnmount() {
-        BackHandler.removeEventListener("hardwareBackPress", this.handleBackButtonClick.bind(this));
+    componentDidUpdate(prevProps: Readonly<PropInterface>) {
+        if (prevProps.source_text != this.props.source_text) {
+            // @ts-ignore
+            this.videoRef.current.seek(this.props.seek_save);
+        }
     }
 
-    onOrientationDidChange(orientation: string) {
-        console.log(orientation);
+    componentWillUnmount() {
+        Orientation.lockToPortrait();
+        BackHandler.removeEventListener("hardwareBackPress", this.handleBackButtonClick.bind(this));
     }
 
     handleBackButtonClick() {
@@ -87,6 +92,7 @@ class Player extends React.Component<PropInterface, StateInterface> {
             this.setState({
                 fullscreen: false
             })
+            Orientation.lockToPortrait();
         } else {
             Orientation.lockToPortrait();
             this.props.navigation.goBack();
