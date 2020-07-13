@@ -11,7 +11,8 @@ import * as PlayAction from "../action/play.action";
 import {useEffect, useRef, useState} from "react";
 import {connect} from "react-redux";
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
-import Orientation from 'react-native-orientation-locker';
+import CameraRoll from "@react-native-community/cameraroll";
+
 // @ts-ignore
 import PlayerAndroid from "../plugin/Player"
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -171,11 +172,36 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
                         if (Platform.OS === "android") {
                             ToastAndroid.show(`Hoàn thành tải ${props.play?.song?.name}`, ToastAndroid.SHORT);
                         }
-                        if (Platform.OS === "ios") {
-                            RNFetchBlob.ios.openDocument(res.data);
-                        }
                     })
                 }
+            }
+
+            if (Platform.OS === "ios") {
+                console.log("start");
+                // @ts-ignore
+                let dir = `${RNFetchBlob.fs.dirs.CacheDir}\/${props.play?.song?.slug}.mp4`;
+                RNFetchBlob.config({
+                    fileCache: true,
+                    path: dir,
+                    // @ts-ignore
+                }).fetch("GET", props.play?.song?.link_download[0]["1080"] as string).then(res => {
+                    console.log(res.path());
+                    CameraRoll.save(res.path(), {
+                        type: "video",
+                        album: "ibolero"
+                    }).then(() => {
+                            Alert.alert(
+                                "Tải về thành công",
+                                "Tải về thành công",
+                                [
+                                    {
+                                        text: "Đóng", onPress: () => {}
+                                    }
+                                ],
+                                { cancelable: false }
+                            );
+                        })
+                })
             }
         } else {
             alertLogin()
