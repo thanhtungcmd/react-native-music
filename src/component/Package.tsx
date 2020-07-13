@@ -12,10 +12,9 @@ const Tutor: React.FunctionComponent = props => {
         <WebView
             source={{ uri: 'http://ibolero.vn/app/gioi-thieu?link=' }}
             injectedJavaScript={INJECTEDJAVASCRIPT}
-            style={{ marginTop: 0, paddingBottom: 50 }}
+            style={{ marginTop: 0, marginBottom: 120 }}
         />
     )
-
 }
 
 const Package: React.FunctionComponent = props => {
@@ -35,7 +34,7 @@ const Package: React.FunctionComponent = props => {
         <WebView
             source={{ uri: 'http://ibolero.vn/app/goi-cuoc?phone=' + phone }}
             injectedJavaScript={INJECTEDJAVASCRIPT}
-            style={{ marginTop: 0, paddingBottom: 50 }}
+            style={{ marginTop: 0, marginBottom: 120 }}
         />
     )
 
