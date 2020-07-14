@@ -12,6 +12,7 @@ import {useEffect, useRef, useState} from "react";
 import {connect} from "react-redux";
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import CameraRoll from "@react-native-community/cameraroll";
+import ProgressCircle from 'react-native-progress-circle';
 
 // @ts-ignore
 import PlayerAndroid from "../plugin/Player"
@@ -73,6 +74,8 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
     const [source, setSource] = useState("");
     const [sourceText, setSourceText] = useState("360p");
     const [seekSave, setSeekSave] = useState(0);
+    const [showModalProgress, setShowModalProgress] = useState(false);
+    const [progress, setProgress] = useState(0);
 
     const toggleSwitch = async () => {
         setIsEnabled(!isEnabled);
@@ -161,15 +164,19 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
                 );
                 if (grantedWrite == PermissionsAndroid.RESULTS.GRANTED) {
                     ToastAndroid.show(`Đang tải xuống ${props.play?.song?.name}`, ToastAndroid.SHORT);
-
                     let dir = `${RNFetchBlob.fs.dirs.DownloadDir}\/${props.play?.song?.slug}.mp4`;
                     console.log(dir);
                     RNFetchBlob.config({
                         path: dir,
                         fileCache: true
                         // @ts-ignore
-                    }).fetch("GET", props.play?.song?.link_download[0]["1080"] as string).then(res => {
+                    }).fetch("GET", props.play?.song?.link_download[0]["1080"] as string)
+                    .progress((received, total) => {
+                        setProgress(Math.round((received / total) * 100));
+                        setShowModalProgress(true);
+                    }).then(res => {
                         if (Platform.OS === "android") {
+                            setShowModalProgress(false);
                             ToastAndroid.show(`Hoàn thành tải ${props.play?.song?.name}`, ToastAndroid.SHORT);
                         }
                     })
@@ -184,23 +191,29 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
                     fileCache: true,
                     path: dir,
                     // @ts-ignore
-                }).fetch("GET", props.play?.song?.link_download[0]["1080"] as string).then(res => {
+                }).fetch("GET", props.play?.song?.link_download[0]["1080"] as string)
+                .progress((received, total) => {
+                    setProgress(Math.round((received / total) * 100));
+                    setShowModalProgress(true);
+                })
+                .then(res => {
+                    setShowModalProgress(false);
                     console.log(res.path());
                     CameraRoll.save(res.path(), {
                         type: "video",
                         album: "ibolero"
                     }).then(() => {
-                            Alert.alert(
-                                "Tải về thành công",
-                                "Tải về thành công",
-                                [
-                                    {
-                                        text: "Đóng", onPress: () => {}
-                                    }
-                                ],
-                                { cancelable: false }
-                            );
-                        })
+                        Alert.alert(
+                            "Tải về thành công",
+                            "Tải về thành công",
+                            [
+                                {
+                                    text: "Đóng", onPress: () => {}
+                                }
+                            ],
+                            { cancelable: false }
+                        );
+                    })
                 })
             }
         } else {
@@ -282,6 +295,25 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
                 </View>
             )
         }
+    }
+
+    const renderModalProgress = () => {
+        return (
+            <Modal
+                isVisible={showModalProgress}>
+                <View style={PlayStyle.modalContentProgress}>
+                    <ProgressCircle
+                        percent={progress}
+                        radius={50}
+                        borderWidth={8}
+                        color="#3399FF"
+                        shadowColor="#999"
+                        bgColor="#fff">
+                        <Text style={{ fontSize: 18 }}>{ progress.toString()+'%'}</Text>
+                    </ProgressCircle>
+                </View>
+            </Modal>
+        )
     }
 
     const renderModal = () => {
@@ -367,6 +399,7 @@ const Play: React.FunctionComponent<PropsInterface> = props => {
             { renderVideo() }
             { renderContent() }
             { renderModal() }
+            { renderModalProgress() }
         </SafeAreaView>
     )
 }

@@ -173,6 +173,14 @@ export const PlayStyle = StyleSheet.create({
         justifyContent: 'flex-end',
         margin: 0,
     },
+    modalContentProgress: {
+        // backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 4,
+        // borderColor: 'rgba(0, 0, 0, 0.1)',
+        // paddingVertical: 10,
+    }
 });
 
 export const PlayerStyle = StyleSheet.create({
